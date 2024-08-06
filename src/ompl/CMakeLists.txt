@@ -23,6 +23,7 @@ file(GLOB_RECURSE OMPL_HEADERS datastructures/*.h util/*.h base/*.h
 #
 #endif()
 
+
 if (OMPL_EXTENSION_TRIANGLE)
     file(GLOB_RECURSE OMPL_TRIANGLE_EXTENSION_SOURCE_CODE extensions/triangle/*.cpp)
     file(GLOB_RECURSE OMPL_TRIANGLE_EXTENSION_HEADERS extensions/triangle/*.h)
@@ -32,6 +33,9 @@ endif()
 
 source_group("OMPL Source" FILES "${OMPL_SOURCE_CODE}")
 source_group("OMPL Headers" FILES "${OMPL_HEADERS}")
+
+# add ruckig library 
+find_package(ruckig REQUIRED)
 
 # build the library
 if(MSVC)
@@ -50,7 +54,8 @@ target_link_libraries(ompl
         "$<$<BOOL:${OMPL_HAVE_FLANN}>:flann::flann>"
         "$<$<BOOL:${OMPL_EXTENSION_TRIANGLE}>:Triangle::Triangle>"
     PRIVATE
-        "$<$<BOOL:${OMPL_HAVE_SPOT}>:Spot::Spot>")
+        "$<$<BOOL:${OMPL_HAVE_SPOT}>:Spot::Spot>"
+        ruckig)
 
 if (MSVC)
     set_target_properties(ompl PROPERTIES VERSION "${PROJECT_VERSION}" STATIC_LIBRARY_FLAGS "psapi.lib ws2_32.lib")
