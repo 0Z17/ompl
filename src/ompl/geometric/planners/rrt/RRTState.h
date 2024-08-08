@@ -169,11 +169,15 @@ namespace ompl
             void freeMemory();
 
             /** \brief Compute distance between motions (actually distance between contained states) */
-            double distanceFunction(const Motion *a, const Motion *b) const
+            double distanceFunction(const Motion *a, const Motion *b)
             {
-                return si_->distance(a->state, b->state);
-                // return 3.0;
+                // return si_->distance(a->state, b->state);
+                return getduration(a->state, b->state);
             }
+
+            void setupGenerator(std::vector<double> maxV, std::vector<double> maxA, std::vector<double> maxJ);
+
+            double getduration(base::State *a, base::State *b);
 
             /** \brief State sampler */
             base::StateSamplerPtr sampler_;
@@ -196,6 +200,12 @@ namespace ompl
 
             /** \brief The most recent goal motion.  Used for PlannerData computation */
             Motion *lastGoalMotion_{nullptr};
+
+            /** \brief The trajectory generator to generate local motions */
+            ruckig::InputParameter<2> inputParams_;
+            ruckig::Ruckig<2> ruckig_;
+            ruckig::Trajectory<2> trajectory_;
+            
         };
     }
 }

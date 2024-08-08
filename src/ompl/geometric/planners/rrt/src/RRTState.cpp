@@ -105,6 +105,42 @@ void ompl::geometric::RRTState::freeMemory()
     }
 }
 
+void ompl::geometric::RRTState::setupGenerator(std::vector<double> maxV, std::vector<double> maxA, std::vector<double> maxJ)
+{
+    inputParams_.max_velocity[0] = maxV[0];
+    inputParams_.max_velocity[1] = maxV[1];
+    inputParams_.max_acceleration[0] = maxA[0];
+    inputParams_.max_acceleration[1] = maxA[1];
+    inputParams_.max_jerk[0] = maxJ[0];
+    inputParams_.max_jerk[1] = maxJ[1];
+}
+
+double ompl::geometric::RRTState::getduration(base::State *a, base::State *b)
+{
+    base::RealVectorStateSpace::StateType *a_rv = a->as<base::RealVectorStateSpace::StateType>();
+    base::RealVectorStateSpace::StateType *b_rv = b->as<base::RealVectorStateSpace::StateType>();
+    inputParams_.current_position[0] = a_rv->values[0];
+    inputParams_.current_position[1] = a_rv->values[1];
+    inputParams_.current_velocity[0] = a_rv->values[2];
+    inputParams_.current_velocity[1] = a_rv->values[3];
+    inputParams_.current_acceleration[0] = a_rv->values[3];
+    inputParams_.current_acceleration[1] = a_rv->values[4];
+    inputParams_.target_position[1] = b_rv->values[1];
+    inputParams_.target_velocity[0] = b_rv->values[2];
+    inputParams_.target_position[0] = b_rv->values[0];
+    inputParams_.target_velocity[1] = b_rv->values[3];
+    inputParams_.target_acceleration[0] = b_rv->values[4];
+    inputParams_.target_acceleration[1] = b_rv->values[5];
+
+    ruckig::Result result = ruckig_.calculate(inputParams_, trajectory_);
+    if (result == ruckig::Result::ErrorInvalidInput) {
+        std::cout << "Invalid input!" << std::endl;
+        return -1;
+    }
+
+    return trajectory_.get_duration();
+}
+
 ompl::base::PlannerStatus ompl::geometric::RRTState::solve(const base::PlannerTerminationCondition &ptc)
 {
     checkValidity();
