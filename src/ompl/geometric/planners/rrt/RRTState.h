@@ -141,6 +141,9 @@ namespace ompl
 
             void setup() override;
 
+            /** \brief set up the ruckig trajectory generator */
+            void setupGenerator(std::vector<double> maxV, std::vector<double> maxA, std::vector<double> maxJ);
+
         protected:
             /** \brief Representation of a motion
 
@@ -172,12 +175,15 @@ namespace ompl
             double distanceFunction(const Motion *a, const Motion *b)
             {
                 // return si_->distance(a->state, b->state);
-                return getduration(a->state, b->state);
+                // return getduration(a->state, b->state);
+                return 3;
             }
 
-            void setupGenerator(std::vector<double> maxV, std::vector<double> maxA, std::vector<double> maxJ);
-
+            /** \brief get the duration of the trajectory between two states as cost */
             double getduration(base::State *a, base::State *b);
+
+            /** \brief the setup flag for the ruckig trajectory generator */
+            bool is_generatorSetup{false};
 
             /** \brief State sampler */
             base::StateSamplerPtr sampler_;

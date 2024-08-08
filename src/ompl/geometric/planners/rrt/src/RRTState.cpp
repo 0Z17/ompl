@@ -107,6 +107,8 @@ void ompl::geometric::RRTState::freeMemory()
 
 void ompl::geometric::RRTState::setupGenerator(std::vector<double> maxV, std::vector<double> maxA, std::vector<double> maxJ)
 {
+    is_generatorSetup = true;
+    std::cout << is_generatorSetup << std::endl;
     inputParams_.max_velocity[0] = maxV[0];
     inputParams_.max_velocity[1] = maxV[1];
     inputParams_.max_acceleration[0] = maxA[0];
@@ -116,7 +118,9 @@ void ompl::geometric::RRTState::setupGenerator(std::vector<double> maxV, std::ve
 }
 
 double ompl::geometric::RRTState::getduration(base::State *a, base::State *b)
-{
+{   
+    if (is_generatorSetup == false)
+        OMPL_ERROR("Generator is not setup, using default implementation");
     base::RealVectorStateSpace::StateType *a_rv = a->as<base::RealVectorStateSpace::StateType>();
     base::RealVectorStateSpace::StateType *b_rv = b->as<base::RealVectorStateSpace::StateType>();
     inputParams_.current_position[0] = a_rv->values[0];
@@ -134,7 +138,7 @@ double ompl::geometric::RRTState::getduration(base::State *a, base::State *b)
 
     ruckig::Result result = ruckig_.calculate(inputParams_, trajectory_);
     if (result == ruckig::Result::ErrorInvalidInput) {
-        std::cout << "Invalid input!" << std::endl;
+        // std::cout << "Invalid input!" << std::endl;
         return -1;
     }
 
@@ -283,6 +287,7 @@ void ompl::geometric::RRTState::getPlannerData(base::PlannerData &data) const
     std::vector<Motion *> motions;
     if (nn_)
         nn_->list(motions);
+    std::cout << "PlannerData motions size: " << motions.size() << std::endl;
 
     if (lastGoalMotion_ != nullptr)
         data.addGoalVertex(base::PlannerDataVertex(lastGoalMotion_->state));
