@@ -35,7 +35,16 @@ source_group("OMPL Source" FILES "${OMPL_SOURCE_CODE}")
 source_group("OMPL Headers" FILES "${OMPL_HEADERS}")
 
 # add ruckig library 
-find_package(ruckig REQUIRED)
+#find_package(ruckig REQUIRED)
+
+# add NURBS library
+find_package(invkin REQUIRED)
+find_package(nurbs REQUIRED)
+
+include_directories(
+        ${INVKIN_INCLUDE_DIRS}
+        ${NURBS_INCLUDE_DIRS}
+)
 
 # build the library
 if(MSVC)
@@ -55,7 +64,9 @@ target_link_libraries(ompl
         "$<$<BOOL:${OMPL_EXTENSION_TRIANGLE}>:Triangle::Triangle>"
     PRIVATE
         "$<$<BOOL:${OMPL_HAVE_SPOT}>:Spot::Spot>"
-        ruckig)
+        ${invkin_LIBRARIES}
+        ${nurbs_LIBRARIES})
+#        ruckig)
 
 if (MSVC)
     set_target_properties(ompl PROPERTIES VERSION "${PROJECT_VERSION}" STATIC_LIBRARY_FLAGS "psapi.lib ws2_32.lib")
