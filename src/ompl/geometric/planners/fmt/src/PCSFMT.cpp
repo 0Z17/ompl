@@ -47,16 +47,21 @@
 
 #include <ompl/datastructures/BinaryHeap.h>
 #include <ompl/tools/config/SelfConfig.h>
-#include <ompl/base/objectives/PathLengthOptimizationObjective.h>
-#include <ompl/base/objectives/EstimatePathLengthOptimizationObjective.h>
 #include <ompl/geometric/planners/fmt/PCSFMT.h>
+#include <ompl/datastructures/NearestNeighborsLinear.h>
 
-ompl::geometric::PCSFMT::PCSFMT(const base::SpaceInformationPtr &si)
+ompl::geometric::PCSFMT::PCSFMT(const base::SpaceInformationPtr &si, const base::SpaceInformationPtr &stateSi, dp::InvKin* invKin)
   : base::Planner(si, "PCSFMT")
 {
     // An upper bound on the free space volume is the total space volume; the free fraction is estimated in sampleFree
     freeSpaceVolume_ = si_->getStateSpace()->getMeasure();
     lastGoalMotion_ = nullptr;
+
+    // Set the state space information
+    stateSi_ = stateSi;
+
+    // Set the IK solver
+    setIK(invKin);
 
     specs_.approximateSolutions = false;
     specs_.directed = false;
@@ -87,17 +92,26 @@ void ompl::geometric::PCSFMT::setup()
             opt_ = pdef_->getOptimizationObjective();
         else
         {
-            OMPL_INFORM("%s: No optimization objective specified. Defaulting to optimizing path length.",
+            OMPL_INFORM("%s: No optimization objective specified. Defaulting to estimate optimizing path length.",
                         getName().c_str());
-            opt_ = std::make_shared<base::PathLengthOptimizationObjective>(si_);
+            opt_ = std::make_shared<base::EstimatePathLengthOptimizationObjective>(si_);
             // Store the new objective in the problem def'n
             pdef_->setOptimizationObjective(opt_);
         }
+
+        // Set default weight
+        const auto weights = new dp::Vector5d;
+        *weights << 1.0, 1.0, 1.0, 1.0, 1.0;
+        weights_ = weights;
+
+        // The optimization objective needs to be set as the estimated path length optimization objective.
+        optForward()->setStateSpaceInformation(stateSi_);
         Open_.getComparisonOperator().opt_ = opt_.get();
         Open_.getComparisonOperator().heuristics_ = heuristics_;
 
         if (!nn_)
-            nn_.reset(tools::SelfConfig::getDefaultNearestNeighbors<Motion *>(this));
+            // nn_.reset(tools::SelfConfig::getDefaultNearestNeighbors<Motion *>(this));
+                nn_.reset(new NearestNeighborsLinear<Motion *>);
         nn_->setDistanceFunction([this](const Motion *a, const Motion *b)
                                  {
                                      return distanceFunction(a, b);
@@ -131,6 +145,8 @@ void ompl::geometric::PCSFMT::freeMemory()
             delete motion;
         }
     }
+
+    delete weights_;
 }
 
 void ompl::geometric::PCSFMT::clear()
@@ -689,4 +705,12 @@ void ompl::geometric::PCSFMT::updateNeighborhood(Motion *m, const std::vector<Mo
             }
         }
     }
+}
+
+double ompl::geometric::PCSFMT::distanceFunction(const Motion *a, const Motion *b) const
+{
+    dp::Vector5d* dqu = b->getDqu();
+    dp::Vector5d *dqv = a->getDqv();
+    const auto estOpt = optForward();
+    return estOpt->estimateMotionCost(a->getState(), b->getState(), dqu, dqv, getWeights()).value();
 }

@@ -183,6 +183,10 @@ namespace ompl
 
             void setup() override;
 
+            void setWeight(const std::vector<double> &weights);
+
+            void setWeight(const Eigen::Matrix<double, Eigen::Dynamic, 1> *weights);
+
         protected:
             /** \brief The dimension of the space */
             unsigned int dimension_;
@@ -195,6 +199,12 @@ namespace ompl
 
             /** \brief Map from names to index values for dimensions */
             std::map<std::string, unsigned int> dimensionIndex_;
+
+            /** \brief The weights for each dimension in computing distance */
+            std::vector<double> weights_;
+
+            /** \brief Flag indicating whether the space is weighted */
+            bool isWeighted_{false};
 
         private:
             /** \brief The size of a state, in bytes */

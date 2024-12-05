@@ -49,6 +49,7 @@
 #include <ompl/base/OptimizationObjective.h>
 #include <map>
 #include "invkin.h"
+#include <ompl/base/objectives/EstimatePathLengthOptimizationObjective.h>
 
 namespace dp = dynamic_planning;
 
@@ -93,7 +94,7 @@ namespace ompl
         class PCSFMT : public ompl::base::Planner
         {
         public:
-            PCSFMT(const base::SpaceInformationPtr &si);
+            PCSFMT(const base::SpaceInformationPtr &si, const base::SpaceInformationPtr &stateSi, dp::InvKin *ik);
 
             ~PCSFMT() override;
 
@@ -131,6 +132,12 @@ namespace ompl
             bool getNearestK() const
             {
                 return nearestK_;
+            }
+
+            /** \brief Get the weights of the state space dimensions */
+            dp::Vector5d* getWeights() const
+            {
+                return weights_;
             }
 
             /** \brief The planner searches for neighbors of a node within a
@@ -171,6 +178,18 @@ namespace ompl
             double getFreeSpaceVolume() const
             {
                 return freeSpaceVolume_;
+            }
+
+            /** \brief Set the inverse kinematics solver */
+            void setIK(dp::InvKin *ik)
+            {
+                invKin_ = ik;
+            }
+
+            /** \brief Get the inverse kinematics solver */
+            dp::InvKin* getIK() const
+            {
+                return invKin_;
             }
 
             /** \brief Sets the collision check caching to save calls to the collision
@@ -414,13 +433,15 @@ namespace ompl
                 between their contained states. Note that for computationally
                 intensive cost functions, the cost between motions should be
                 stored to avoid duplicate calculations */
-            double distanceFunction(const Motion *a, const Motion *b) const
-            {
-                return opt_->motionCost(a->getState(), b->getState()).value();
-            }
+            double distanceFunction(const Motion *a, const Motion *b) const;
 
             /** \brief Free the memory allocated by this planner */
             void freeMemory();
+
+            base::EstimatePathLengthOptimizationObjective* optForward() const
+            {
+                return dynamic_cast<base::EstimatePathLengthOptimizationObjective *>(opt_.get());;
+            }
 
             /** \brief Sample a state from the free configuration space and save
                 it into the nearest neighbors data structure */
@@ -502,6 +523,8 @@ namespace ompl
             /** \brief Radius employed in the nearestR strategy. */
             double NNr_;
 
+            dp::Vector5d* weights_{nullptr};
+
             /** \brief K used in the nearestK strategy */
             unsigned int NNk_;
 
@@ -521,6 +544,9 @@ namespace ompl
              */
             double radiusMultiplier_{1.1};
 
+            /** \brief The state space information */
+            base::SpaceInformationPtr stateSi_;
+
             /** \brief A nearest-neighbor datastructure containing the set of all motions */
             std::shared_ptr<NearestNeighbors<Motion *>> nn_;
 
@@ -535,6 +561,9 @@ namespace ompl
 
             /** \brief Goal state caching to accelerate cost to go heuristic computation */
             base::State *goalState_;
+
+            /** \brief The inverse kinematics solver */
+            dp::InvKin *invKin_;
 
             /** \brief Add new samples if the tree was not able to find a solution. */
             bool extendedPCSFMT_{true};

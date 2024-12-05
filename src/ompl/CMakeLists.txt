@@ -38,12 +38,16 @@ source_group("OMPL Headers" FILES "${OMPL_HEADERS}")
 #find_package(ruckig REQUIRED)
 
 # add NURBS library
-find_package(invkin REQUIRED)
-find_package(nurbs REQUIRED)
+find_package(PCL 1.14 REQUIRED COMPONENTS
+        io
+        common
+        surface
+        filters)
+find_package(surface_contact REQUIRED)
 
 include_directories(
-        ${INVKIN_INCLUDE_DIRS}
-        ${NURBS_INCLUDE_DIRS}
+        ${SURFACE_CONTACT_INCLUDE_DIRS}
+        ${PCL_INCLUDE_DIRS}
 )
 
 # build the library
@@ -65,8 +69,9 @@ target_link_libraries(ompl
     PRIVATE
         "$<$<BOOL:${OMPL_HAVE_SPOT}>:Spot::Spot>"
         ${invkin_LIBRARIES}
-        ${nurbs_LIBRARIES})
-#        ruckig)
+        ${nurbs_LIBRARIES}
+        ${SURFACE_CONTACT_LIBRARIES}
+        ${PCL_LIBRARIES})
 
 if (MSVC)
     set_target_properties(ompl PROPERTIES VERSION "${PROJECT_VERSION}" STATIC_LIBRARY_FLAGS "psapi.lib ws2_32.lib")

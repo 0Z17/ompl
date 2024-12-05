@@ -54,6 +54,7 @@ if (OMPL_BUILD_DEMOS)
     add_ompl_demo(demo_MultiLevelPlanningHyperCubeBenchmark multilevel/MultiLevelPlanningHyperCubeBenchmark.cpp)
 
     add_ompl_demo(demo_SpaceTimePlanning SpaceTimePlanning.cpp)
+    add_ompl_demo(demo_PcsFmtTest MyPlanner/PcsFmtTest.cpp)
 
     find_package(yaml-cpp CONFIG)
     set_package_properties(yaml-cpp PROPERTIES

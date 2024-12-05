@@ -227,16 +227,41 @@ void ompl::base::RealVectorStateSpace::deserialize(State *state, const void *ser
     memcpy(state->as<StateType>()->values, serialization, stateBytes_);
 }
 
+void ompl::base::RealVectorStateSpace::setWeight(const std::vector<double> &weights)
+{
+    isWeighted_ = true;
+    weights_ = weights;
+}
+
+void ompl::base::RealVectorStateSpace::setWeight(const Eigen::Matrix<double, Eigen::Dynamic, 1> *weights)
+{
+    isWeighted_ = true;
+    weights_.resize(dimension_);
+    for (unsigned int i = 0; i < dimension_; ++i)
+        weights_[i] = (*weights)(i);
+}
+
 double ompl::base::RealVectorStateSpace::distance(const State *state1, const State *state2) const
 {
     double dist = 0.0;
     const double *s1 = static_cast<const StateType *>(state1)->values;
     const double *s2 = static_cast<const StateType *>(state2)->values;
 
-    for (unsigned int i = 0; i < dimension_; ++i)
+    if (isWeighted_)
     {
-        double diff = (*s1++) - (*s2++);
-        dist += diff * diff;
+        for (unsigned int i = 0; i < dimension_; ++i)
+        {
+            double diff = (*s1++) - (*s2++);
+            dist += diff * diff;
+        }
+    }
+    else
+    {
+        for (unsigned int i = 0; i < dimension_; ++i)
+        {
+            double diff = (*s1++) - (*s2++);
+            dist += weights_[i] * diff * diff;
+        }
     }
     return sqrt(dist);
 }

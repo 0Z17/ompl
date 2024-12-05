@@ -52,12 +52,12 @@ ompl::base::Cost ompl::base::EstimatePathLengthOptimizationObjective::stateCost(
 }
 
 ompl::base::Cost ompl::base::EstimatePathLengthOptimizationObjective::estimateMotionCost(const State *s1,
-    const State *s2, Vector5d *dqu_s2, Vector5d *dqv_s1, Vector5d weights) const
+    const State *s2, dp::Vector5d *dqu_s2, dp::Vector5d *dqv_s1, dp::Vector5d* weights) const
 {
 	double du = s2->as<CompoundState>()->components[0] - s1->as<CompoundState>()->components[0];
     double dv = s2->as<CompoundState>()->components[1] - s1->as<CompoundState>()->components[1];
-    Vector5d dq = du * *dqu_s2 + dv * *dqv_s1;
-	return Cost(dq.cwiseProduct(weights).norm());
+    dp::Vector5d dq = du * *dqu_s2 + dv * *dqv_s1;
+	return Cost(dq.cwiseProduct(*weights).norm());
 }
 
 ompl::base::Cost ompl::base::EstimatePathLengthOptimizationObjective::motionCost(const State *s1, const State *s2) const
@@ -79,7 +79,7 @@ ompl::base::Cost ompl::base::EstimatePathLengthOptimizationObjective::motionCost
 
 void ompl::base::EstimatePathLengthOptimizationObjective::setStateSpaceInformation(const SpaceInformationPtr si)
 {
-    stateSi_ = si;
+    stateSi_ = std::move(si);
 }
 
 

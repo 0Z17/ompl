@@ -39,14 +39,14 @@
 
 #include "ompl/base/OptimizationObjective.h"
 #include <Eigen/Dense>
+#include "invkin.h"
 
-
+namespace dp = dynamic_planning;
 
 namespace ompl
 {
     namespace base
     {
-        using Vector5d = Eigen::Matrix<double, 5, 1>;
         /** \brief An optimization objective which corresponds to optimizing path length. */
         class EstimatePathLengthOptimizationObjective : public OptimizationObjective
         {
@@ -64,7 +64,7 @@ namespace ompl
             * @param weights The weights for the state space dimensions.
             */
             Cost estimateMotionCost(const State *s1, const State *s2,
-                Vector5d *dqu_s2, Vector5d *dqv_s2, Vector5d weights) const;
+                dp::Vector5d *dqu_s2, dp::Vector5d *dqv_s2, dp::Vector5d *weights) const;
 
             /** \brief Motion cost for this objective is defined as
                 the configuration space distance between \e s1 and \e
