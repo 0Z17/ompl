@@ -37,7 +37,7 @@ source_group("OMPL Headers" FILES "${OMPL_HEADERS}")
 # add ruckig library 
 #find_package(ruckig REQUIRED)
 
-# add NURBS library
+# add surface_contact library
 find_package(PCL 1.14 REQUIRED COMPONENTS
         io
         common

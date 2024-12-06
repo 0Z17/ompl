@@ -54,7 +54,30 @@ if (OMPL_BUILD_DEMOS)
     add_ompl_demo(demo_MultiLevelPlanningHyperCubeBenchmark multilevel/MultiLevelPlanningHyperCubeBenchmark.cpp)
 
     add_ompl_demo(demo_SpaceTimePlanning SpaceTimePlanning.cpp)
-    add_ompl_demo(demo_PcsFmtTest MyPlanner/PcsFmtTest.cpp)
+
+    # add PCSFMT demo
+
+    find_package(PCL 1.14 REQUIRED COMPONENTS
+            io
+            common
+            surface
+            filters)
+    find_package(surface_contact REQUIRED)
+
+    include_directories(
+            ${SURFACE_CONTACT_INCLUDE_DIRS}
+            ${PCL_INCLUDE_DIRS}
+    )
+
+    add_executable(demo_PcsFmtTest MyPlanners/PcsFmtTest.cpp)
+    target_link_libraries(demo_PcsFmtTest PRIVATE
+            ompl::ompl
+            Eigen3::Eigen
+            Boost::filesystem
+            Boost::system
+            Boost::program_options
+            ${SURFACE_CONTACT_LIBRARIES}
+            ${PCL_IO_LIBRARIES})
 
     find_package(yaml-cpp CONFIG)
     set_package_properties(yaml-cpp PROPERTIES
