@@ -36,6 +36,7 @@
 
 #include "ompl/base/objectives/EstimatePathLengthOptimizationObjective.h"
 #include <memory>
+#include <ompl/util/Time.h>
 
 ompl::base::EstimatePathLengthOptimizationObjective::EstimatePathLengthOptimizationObjective(const SpaceInformationPtr &si)
   : ompl::base::OptimizationObjective(si)
@@ -52,12 +53,24 @@ ompl::base::Cost ompl::base::EstimatePathLengthOptimizationObjective::stateCost(
 }
 
 ompl::base::Cost ompl::base::EstimatePathLengthOptimizationObjective::estimateMotionCost(const State *s1,
-    const State *s2, dp::Vector5d *dqu_s2, dp::Vector5d *dqv_s1, dp::Vector5d* weights) const
+    const State *s2, dp::Vector5d *dqu_s2, dp::Vector5d *dqv_s1, dp::Vector5d* weights)
 {
+    ompl::time::point start_time = ompl::time::now();
 	double du = s2->as<CompoundState>()->components[0] - s1->as<CompoundState>()->components[0];
     double dv = s2->as<CompoundState>()->components[1] - s1->as<CompoundState>()->components[1];
     dp::Vector5d dq = du * *dqu_s2 + dv * *dqv_s1;
-	return Cost(dq.cwiseProduct(*weights).norm());
+    auto cost = Cost(dq.cwiseProduct(*weights).norm());
+    time_ += ompl::time::seconds(ompl::time::now() - start_time);
+    count_ += 1;
+
+	return cost;
+}
+
+void ompl::base::EstimatePathLengthOptimizationObjective::printDebugInfo() const
+{
+    // Update the weights used for the motion cost estimate:
+    OMPL_INFORM("The time costed by the motion cost estimate is %f seconds.", time_);
+    OMPL_INFORM("The number to call the motion cost estimate is %d.", count_);
 }
 
 ompl::base::Cost ompl::base::EstimatePathLengthOptimizationObjective::motionCost(const State *s1, const State *s2) const

@@ -41,6 +41,7 @@
 
 #include <limits>
 #include <iostream>
+#include <fstream>
 
 #include <boost/math/constants/constants.hpp>
 #include <boost/math/distributions/binomial.hpp>
@@ -49,6 +50,7 @@
 #include <ompl/tools/config/SelfConfig.h>
 #include <ompl/base/objectives/PathLengthOptimizationObjective.h>
 #include <ompl/geometric/planners/fmt/FMT.h>
+#include <ompl/base/spaces/RealVectorStateSpace.h>
 
 ompl::geometric::FMT::FMT(const base::SpaceInformationPtr &si)
   : base::Planner(si, "FMT")
@@ -164,6 +166,37 @@ void ompl::geometric::FMT::getPlannerData(base::PlannerData &data) const
             data.addEdge(base::PlannerDataVertex(motions[i]->getParent()->getState()),
                          base::PlannerDataVertex(motions[i]->getState()));
     }
+}
+
+void ompl::geometric::FMT::getPlannerDataCsv(const std::string &filename) const
+{
+    std::vector<Motion *> motions;
+    nn_->list(motions);
+
+    std::ofstream file(filename);
+    file << "Node,X,Y,Parent,Cost,HeuristicCost\n";
+
+    for (size_t i = 0; i < motions.size(); ++i)
+    {
+        const Motion *motion = motions[i];
+        const base::State *state = motion->getState();
+        const double x = state->as<base::RealVectorStateSpace::StateType>()->values[0];
+        const double y = state->as<base::RealVectorStateSpace::StateType>()->values[1];
+        const double cost = motion->getCost().value();
+        const Motion *parentMotion = motion->getParent() ? motion->getParent() : nullptr;
+        const double heurCost = motion->getHeuristicCost().value();
+
+
+        file << motion
+        << "," << x
+        << "," << y
+        << "," << parentMotion
+        << "," << cost
+        << "," << heurCost
+        << "\n";
+    }
+
+    file.close();
 }
 
 void ompl::geometric::FMT::saveNeighborhood(Motion *m)
@@ -473,6 +506,9 @@ ompl::base::PlannerStatus ompl::geometric::FMT::solve(const base::PlannerTermina
         traceSolutionPathThroughTree(lastGoalMotion_);
 
         OMPL_DEBUG("Final path cost: %f", lastGoalMotion_->getCost().value());
+
+        // Print debug information
+        printDebugInfo();
 
         return base::PlannerStatus(true, false);
     }  // if plannerSuccess

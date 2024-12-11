@@ -64,7 +64,7 @@ namespace ompl
             * @param weights The weights for the state space dimensions.
             */
             Cost estimateMotionCost(const State *s1, const State *s2,
-                dp::Vector5d *dqu_s2, dp::Vector5d *dqv_s2, dp::Vector5d *weights) const;
+                dp::Vector5d *dqu_s2, dp::Vector5d *dqv_s2, dp::Vector5d *weights);
 
             /** \brief Motion cost for this objective is defined as
                 the configuration space distance between \e s1 and \e
@@ -85,9 +85,17 @@ namespace ompl
 
             /** Set the state space information */
             void setStateSpaceInformation(SpaceInformationPtr si);
+
+            /** \brief Print the debug information */
+            void printDebugInfo() const;
+
         protected:
             /** \brief The state space information */
             SpaceInformationPtr stateSi_;
+
+            /** \brief The Debug information */
+            unsigned int count_{0};
+            double time_{0.0};
         };
     }
 }

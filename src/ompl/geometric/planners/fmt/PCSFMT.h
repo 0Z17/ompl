@@ -183,12 +183,19 @@ namespace ompl
             /** \brief Set the inverse kinematics solver */
             void setIK(dp::InvKin *ik)
             {
+                if (invKin_ != nullptr)
+                {
+                    delete invKin_;
+                    invKin_ = nullptr;
+                }
                 invKin_ = ik;
             }
 
             /** \brief Get the inverse kinematics solver */
             dp::InvKin* getIK() const
             {
+                if (invKin_ == nullptr)
+                    throw Exception("Inverse kinematics solver is not set");
                 return invKin_;
             }
 
@@ -229,6 +236,9 @@ namespace ompl
             {
                 return extendedPCSFMT_;
             }
+
+            /** \brief Get the whole data of the planner and output it to a csv file */
+            void getPlannerDataCsv(const std::string &filename) const;
 
         protected:
             /** \brief Representation of a motion
@@ -339,9 +349,17 @@ namespace ompl
                     return children_;
                 }
 
+                /** \brief Check if the dqu and dqv are set */
+                bool hasTangentVec() const
+                {
+                    return dqu_ != nullptr && dqv_ != nullptr;
+                }
+
                 /** \brief Get the derivative of the configuration with respect to parameter u */
                 dp::Vector5d* getDqu() const
                 {
+                    if (dqu_ == nullptr)
+                        throw Exception("Derivative of q with respect to u is not set");
                     return dqu_;
                 }
 
@@ -355,6 +373,8 @@ namespace ompl
                 /** \brief Get the derivative of the configuration with respect to parameter v */
                 dp::Vector5d* getDqv() const
                 {
+                    if (dqv_ == nullptr)
+                        throw Exception("Derivative of q with respect to v is not set");
                     return dqv_;
                 }
 
@@ -433,10 +453,13 @@ namespace ompl
                 between their contained states. Note that for computationally
                 intensive cost functions, the cost between motions should be
                 stored to avoid duplicate calculations */
-            double distanceFunction(const Motion *a, const Motion *b) const;
+            double distanceFunction(const Motion *a, const Motion *b);
 
             /** \brief Free the memory allocated by this planner */
             void freeMemory();
+
+            /** \brief get the tangent space of the parameter space state */
+            void setTangentVec(Motion *m) const;
 
             base::EstimatePathLengthOptimizationObjective* optForward() const
             {
@@ -453,7 +476,7 @@ namespace ompl
                 is able to find a solution, if one exists. If no sampled nodes
                 are within a goal region, there would be no way for the
                 algorithm to successfully find a path to that region */
-            void assureGoalIsSampled(const ompl::base::GoalSampleableRegion *goal);
+            void assureGoalIsSampled();
 
             /** \brief Compute the volume of the unit ball in a given dimension */
             double calculateUnitBallVolume(unsigned int dimension) const;
@@ -504,6 +527,12 @@ namespace ompl
             /** \brief A map linking a motion to all of the motions within a
                 distance r of that motion */
             std::map<Motion *, std::vector<Motion *>> neighborhoods_;
+
+            /** \brief For debugging purposes
+             * @debug
+             */
+            unsigned int numNearestSearching_{0u};
+            double nearestSearchingTime_{0.};
 
             /** \brief The number of samples to use when planning */
             unsigned int numSamples_{1000u};
@@ -567,6 +596,9 @@ namespace ompl
 
             /** \brief Add new samples if the tree was not able to find a solution. */
             bool extendedPCSFMT_{true};
+
+            /** \brief Print out the debug information */
+            void printDebugInfo() const;
 
             // For sorting a list of costs and getting only their sorted indices
             struct CostIndexCompare

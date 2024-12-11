@@ -44,6 +44,7 @@
 
 #include <boost/math/constants/constants.hpp>
 #include <boost/math/distributions/binomial.hpp>
+#include <ompl/base/spaces/RealVectorStateSpace.h>
 
 #include <ompl/datastructures/BinaryHeap.h>
 #include <ompl/tools/config/SelfConfig.h>
@@ -183,8 +184,43 @@ void ompl::geometric::PCSFMT::getPlannerData(base::PlannerData &data) const
     }
 }
 
+void ompl::geometric::PCSFMT::getPlannerDataCsv(const std::string &filename) const
+{
+    std::vector<Motion *> motions;
+    nn_->list(motions);
+
+    std::ofstream file(filename);
+    file << "Node,X,Y,Parent,Cost,HeuristicCost\n";
+
+    for (size_t i = 0; i < motions.size(); ++i)
+    {
+        const Motion *motion = motions[i];
+        const base::State *state = motion->getState();
+        const double x = state->as<base::RealVectorStateSpace::StateType>()->values[0];
+        const double y = state->as<base::RealVectorStateSpace::StateType>()->values[1];
+        const double cost = motion->getCost().value();
+        const Motion *parentMotion = motion->getParent() ? motion->getParent() : nullptr;
+        const double heurCost = motion->getHeuristicCost().value();
+
+
+        file << motion
+        << "," << x
+        << "," << y
+        << "," << parentMotion
+        << "," << cost
+        << "," << heurCost
+        << "\n";
+    }
+
+    file.close();
+}
+
 void ompl::geometric::PCSFMT::saveNeighborhood(Motion *m)
 {
+    if (!m->hasTangentVec())
+    {
+        setTangentVec(m);
+    }
     // Check to see if neighborhood has not been saved yet
     if (neighborhoods_.find(m) == neighborhoods_.end())
     {
@@ -215,6 +251,18 @@ double ompl::geometric::PCSFMT::calculateUnitBallVolume(const unsigned int dimen
     if (dimension == 1)
         return 2.0;
     return 2.0 * boost::math::constants::pi<double>() / dimension * calculateUnitBallVolume(dimension - 2);
+}
+
+void ompl::geometric::PCSFMT::setTangentVec(Motion *m) const
+{
+    const auto ik = getIK();
+    const auto u = m->getState()->as<base::RealVectorStateSpace::StateType>()->values[0];
+    const auto v = m->getState()->as<base::RealVectorStateSpace::StateType>()->values[0];
+    auto [dqu, dqv] = ik->getTangentVec(u, v);
+    const auto dquPtr = new dp::Vector5d(dqu);
+    const auto dqvPtr = new dp::Vector5d(dqv);
+    m->setDqu(dquPtr);
+    m->setDqv(dqvPtr);
 }
 
 double ompl::geometric::PCSFMT::calculateRadius(const unsigned int dimension, const unsigned int n) const
@@ -255,7 +303,7 @@ void ompl::geometric::PCSFMT::sampleFree(const base::PlannerTerminationCondition
                        si_->getStateSpace()->getMeasure();
 }
 
-void ompl::geometric::PCSFMT::assureGoalIsSampled(const ompl::base::GoalSampleableRegion *goal)
+void ompl::geometric::PCSFMT::assureGoalIsSampled()
 {
     // Ensure that there is at least one node near each goal
     while (const base::State *goalState = pis_.nextGoal())
@@ -263,30 +311,29 @@ void ompl::geometric::PCSFMT::assureGoalIsSampled(const ompl::base::GoalSampleab
         auto *gMotion = new Motion(si_);
         si_->copyState(gMotion->getState(), goalState);
 
-        std::vector<Motion *> nearGoal;
-        nn_->nearestR(gMotion, goal->getThreshold(), nearGoal);
+        // std::vector<Motion *> nearGoal;
+        // nn_->nearestR(gMotion, goal->getThreshold(), nearGoal);
 
         // If there is no node in the goal region, insert one
-        if (nearGoal.empty())
+        // if (nearGoal.empty())
+        // {
+        OMPL_DEBUG("Setting goal state");
+        if (si_->getStateValidityChecker()->isValid(gMotion->getState()))
         {
-            OMPL_DEBUG("No state inside goal region");
-            if (si_->getStateValidityChecker()->isValid(gMotion->getState()))
-            {
-                nn_->add(gMotion);
-                goalState_ = gMotion->getState();
-            }
-            else
-            {
-                si_->freeState(gMotion->getState());
-                delete gMotion;
-            }
+            nn_->add(gMotion);
+            goalState_ = gMotion->getState();
         }
-        else  // There is already a sample in the goal region
+        else
         {
-            goalState_ = nearGoal[0]->getState();
-            si_->freeState(gMotion->getState());
-            delete gMotion;
+            throw ompl::Exception("Goal state is not valid");
         }
+        // }
+        // else  // There is already a sample in the goal region
+        // {
+        //     goalState_ = nearGoal[0]->getState();
+        //     si_->freeState(gMotion->getState());
+        //     delete gMotion;
+        // }
     }  // For each goal
 }
 
@@ -342,13 +389,14 @@ ompl::base::PlannerStatus ompl::geometric::PCSFMT::solve(const base::PlannerTerm
     if (!sampler_)
         sampler_ = si_->allocStateSampler();
     sampleFree(ptc);
-    assureGoalIsSampled(goal);
+    assureGoalIsSampled();
     OMPL_INFORM("%s: Starting planning with %u states already in datastructure", getName().c_str(), nn_->size());
 
     // Calculate the nearest neighbor search radius
     /// \todo Create a PRM-like connection strategy
     if (nearestK_)
     {
+        radiusMultiplier_ = 0.5;
         NNk_ = std::ceil(std::pow(2.0 * radiusMultiplier_, (double)si_->getStateDimension()) *
                          (boost::math::constants::e<double>() / (double)si_->getStateDimension()) *
                          log((double)nn_->size()));
@@ -491,11 +539,20 @@ ompl::base::PlannerStatus ompl::geometric::PCSFMT::solve(const base::PlannerTerm
 
         OMPL_DEBUG("Final path cost: %f", lastGoalMotion_->getCost().value());
 
+        //DEBUG
+        static_cast<ompl::base::EstimatePathLengthOptimizationObjective*>(opt_.get())->printDebugInfo();
+        printDebugInfo();
+
         return base::PlannerStatus(true, false);
     }  // if plannerSuccess
 
     // Planner terminated without accomplishing goal
     return {false, false};
+}
+
+void ompl::geometric::PCSFMT::printDebugInfo() const
+{
+    OMPL_INFORM("The number to call the distance function: %d", numNearestSearching_);
 }
 
 void ompl::geometric::PCSFMT::traceSolutionPathThroughTree(Motion *goalMotion)
@@ -707,10 +764,11 @@ void ompl::geometric::PCSFMT::updateNeighborhood(Motion *m, const std::vector<Mo
     }
 }
 
-double ompl::geometric::PCSFMT::distanceFunction(const Motion *a, const Motion *b) const
+double ompl::geometric::PCSFMT::distanceFunction(const Motion *a, const Motion *b)
 {
+    numNearestSearching_++;
     dp::Vector5d* dqu = b->getDqu();
-    dp::Vector5d *dqv = a->getDqv();
+    dp::Vector5d *dqv = b->getDqv();
     const auto estOpt = optForward();
     return estOpt->estimateMotionCost(a->getState(), b->getState(), dqu, dqv, getWeights()).value();
 }

@@ -247,7 +247,7 @@ double ompl::base::RealVectorStateSpace::distance(const State *state1, const Sta
     const double *s1 = static_cast<const StateType *>(state1)->values;
     const double *s2 = static_cast<const StateType *>(state2)->values;
 
-    if (isWeighted_)
+    if (!isWeighted_)
     {
         for (unsigned int i = 0; i < dimension_; ++i)
         {

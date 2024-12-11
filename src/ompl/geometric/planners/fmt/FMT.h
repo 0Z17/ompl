@@ -208,6 +208,9 @@ namespace ompl
                 return extendedFMT_;
             }
 
+            /** \brief @debug Compute the cost-to-come of a motion m, taking into account the */
+            void getPlannerDataCsv(const std::string &filename) const;
+
         protected:
             /** \brief Representation of a motion
               */
@@ -363,8 +366,9 @@ namespace ompl
                 between their contained states. Note that for computationally
                 intensive cost functions, the cost between motions should be
                 stored to avoid duplicate calculations */
-            double distanceFunction(const Motion *a, const Motion *b) const
+            double distanceFunction(const Motion *a, const Motion *b) /** const */
             {
+                numNearestSearching_++;
                 return opt_->motionCost(a->getState(), b->getState()).value();
             }
 
@@ -415,6 +419,7 @@ namespace ompl
                 by inserting m (maintaining the cost-based sorting). Computes the nearest neighbors
                 if there is no stored neighborhood. */
             void updateNeighborhood(Motion *m, std::vector<Motion *> nbh);
+
 
             /** \brief Returns the best parent and the connection cost in the neighborhood of a motion m. */
             Motion *getBestParent(Motion *m, std::vector<Motion *> &neighbors, base::Cost &cMin);
@@ -479,6 +484,9 @@ namespace ompl
             /** \brief The cost objective function */
             base::OptimizationObjectivePtr opt_;
 
+            /** \brief The debug information */
+            unsigned int numNearestSearching_{0u};
+
             /** \brief The most recent goal motion.  Used for PlannerData computation */
             Motion *lastGoalMotion_;
 
@@ -487,6 +495,12 @@ namespace ompl
 
             /** \brief Add new samples if the tree was not able to find a solution. */
             bool extendedFMT_{true};
+
+            /** \brief To print the debug information */
+            void printDebugInfo() const
+            {
+                OMPL_INFORM("Number of nearest neighbors searched: %u", numNearestSearching_);
+            }
 
             // For sorting a list of costs and getting only their sorted indices
             struct CostIndexCompare
