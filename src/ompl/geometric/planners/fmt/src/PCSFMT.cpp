@@ -764,11 +764,17 @@ void ompl::geometric::PCSFMT::updateNeighborhood(Motion *m, const std::vector<Mo
     }
 }
 
+// double ompl::geometric::PCSFMT::distanceFunction(const Motion *a, const Motion *b)
+// {
+//     numNearestSearching_++;
+//     dp::Vector5d* dqu = b->getDqu();
+//     dp::Vector5d *dqv = b->getDqv();
+//     const auto estOpt = optForward();
+//     return estOpt->estimateMotionCost(a->getState(), b->getState(), dqu, dqv, getWeights()).value();
+// }
+
 double ompl::geometric::PCSFMT::distanceFunction(const Motion *a, const Motion *b)
 {
     numNearestSearching_++;
-    dp::Vector5d* dqu = b->getDqu();
-    dp::Vector5d *dqv = b->getDqv();
-    const auto estOpt = optForward();
-    return estOpt->estimateMotionCost(a->getState(), b->getState(), dqu, dqv, getWeights()).value();
+    return opt_->motionCost(a->getState(), b->getState()).value();
 }

@@ -90,9 +90,9 @@ ompl::base::Cost ompl::base::EstimatePathLengthOptimizationObjective::motionCost
     return motionCost(s1, s2);
 }
 
-void ompl::base::EstimatePathLengthOptimizationObjective::setStateSpaceInformation(const SpaceInformationPtr si)
+void ompl::base::EstimatePathLengthOptimizationObjective::setStateSpaceInformation(const SpaceInformationPtr& si)
 {
-    stateSi_ = std::move(si);
+    stateSi_ = si;
 }
 
 

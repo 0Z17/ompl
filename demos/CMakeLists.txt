@@ -82,6 +82,16 @@ if (OMPL_BUILD_DEMOS)
             ${SURFACE_CONTACT_LIBRARIES}
             ${PCL_IO_LIBRARIES})
 
+    add_executable(demo_ik_test MyPlanners/ik_test.cpp)
+    target_link_libraries(demo_ik_test PRIVATE
+            ompl::ompl
+            Eigen3::Eigen
+            Boost::filesystem
+            Boost::system
+            Boost::program_options
+            ${SURFACE_CONTACT_LIBRARIES}
+            ${PCL_IO_LIBRARIES})
+
     find_package(yaml-cpp CONFIG)
     set_package_properties(yaml-cpp PROPERTIES
         URL "https://github.com/jbeder/yaml-cpp"

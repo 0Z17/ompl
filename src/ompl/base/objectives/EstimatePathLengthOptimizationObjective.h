@@ -84,7 +84,7 @@ namespace ompl
             Cost motionCostBestEstimate(const State *s1, const State *s2) const override;
 
             /** Set the state space information */
-            void setStateSpaceInformation(SpaceInformationPtr si);
+            void setStateSpaceInformation(const SpaceInformationPtr& si);
 
             /** \brief Print the debug information */
             void printDebugInfo() const;
