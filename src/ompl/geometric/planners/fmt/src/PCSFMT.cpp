@@ -100,6 +100,9 @@ void ompl::geometric::PCSFMT::setup()
             pdef_->setOptimizationObjective(opt_);
         }
 
+        // objective function class forward
+        estOpt_ = dynamic_cast<base::EstimatePathLengthOptimizationObjective*>(opt_.get());
+
         // Set default weight
         const auto weights = new dp::Vector5d;
         *weights << 1.0, 1.0, 1.0, 1.0, 1.0;
@@ -111,8 +114,8 @@ void ompl::geometric::PCSFMT::setup()
         Open_.getComparisonOperator().heuristics_ = heuristics_;
 
         if (!nn_)
-            // nn_.reset(tools::SelfConfig::getDefaultNearestNeighbors<Motion *>(this));
-                nn_.reset(new NearestNeighborsLinear<Motion *>);
+            nn_.reset(tools::SelfConfig::getDefaultNearestNeighbors<Motion *>(this));
+                // nn_.reset(new NearestNeighborsLinear<Motion *>);
         nn_->setDistanceFunction([this](const Motion *a, const Motion *b)
                                  {
                                      return distanceFunction(a, b);
@@ -225,10 +228,11 @@ void ompl::geometric::PCSFMT::saveNeighborhood(Motion *m)
     if (neighborhoods_.find(m) == neighborhoods_.end())
     {
         std::vector<Motion *> nbh;
-        if (nearestK_)
-            nn_->nearestK(m, NNk_, nbh);
-        else
-            nn_->nearestR(m, NNr_, nbh);
+        // if (nearestK_)
+        //     nn_->nearestK(m, NNk_, nbh);
+        // else
+        // @todo: Search with a dynamically adjusted radius
+        nn_->nearestR(m, NNr_, nbh);
         if (!nbh.empty())
         {
             // Save the neighborhood but skip the first element, since it will be motion m
@@ -394,19 +398,19 @@ ompl::base::PlannerStatus ompl::geometric::PCSFMT::solve(const base::PlannerTerm
 
     // Calculate the nearest neighbor search radius
     /// \todo Create a PRM-like connection strategy
-    if (nearestK_)
-    {
-        radiusMultiplier_ = 0.5;
-        NNk_ = std::ceil(std::pow(2.0 * radiusMultiplier_, (double)si_->getStateDimension()) *
-                         (boost::math::constants::e<double>() / (double)si_->getStateDimension()) *
-                         log((double)nn_->size()));
-        OMPL_DEBUG("Using nearest-neighbors k of %d", NNk_);
-    }
-    else
-    {
-        NNr_ = calculateRadius(si_->getStateDimension(), nn_->size());
-        OMPL_DEBUG("Using radius of %f", NNr_);
-    }
+    // if (nearestK_)
+    // {
+    // radiusMultiplier_ = 0.5;
+    NNk_ = std::ceil(std::pow(2.0 * radiusMultiplier_, (double)si_->getStateDimension()) *
+                     (boost::math::constants::e<double>() / (double)si_->getStateDimension()) *
+                     log((double)nn_->size()));
+    OMPL_DEBUG("Using nearest-neighbors k of %d", NNk_);
+    // }
+    // else
+    // {
+    NNr_ = calculateRadius(si_->getStateDimension(), nn_->size());
+    OMPL_DEBUG("Using radius of %f", NNr_);
+    // }
 
     // Execute the planner, and return early if the planner returns a failure
     bool plannerSuccess = false;
@@ -590,19 +594,19 @@ bool ompl::geometric::PCSFMT::expandTreeFromNode(Motion **z)
         if (x->getSetType() == Motion::SET_UNVISITED)
         {
             saveNeighborhood(x);
-            if (nearestK_)
-            {
-                // Only include neighbors that are mutually k-nearest
-                // Relies on NN datastructure returning k-nearest in sorted order
-                const base::Cost connCost = opt_->motionCost((*z)->getState(), x->getState());
-                const base::Cost worstCost = opt_->motionCost(neighborhoods_[x].back()->getState(), x->getState());
+            // if (nearestK_)
+            // {
+            // Only include neighbors that are mutually k-nearest
+            // Relies on NN datastructure returning k-nearest in sorted order
+            const base::Cost connCost = estOpt_->motionCost(x->getState(), (*z)->getState());
+            const base::Cost worstCost = opt_->motionCost(neighborhoods_[x].back()->getState(), x->getState());
 
-                if (opt_->isCostBetterThan(worstCost, connCost))
-                    continue;
-                xNear.push_back(x);
-            }
-            else
-                xNear.push_back(x);
+            if (opt_->isCostBetterThan(worstCost, connCost))
+                continue;
+            xNear.push_back(x);
+            // }
+            // else
+            //     xNear.push_back(x);
         }
     }
 
@@ -664,6 +668,11 @@ bool ompl::geometric::PCSFMT::expandTreeFromNode(Motion **z)
                 Open_new.push_back(x);
                 // Remove x from Unvisited
                 x->setSetType(Motion::SET_CLOSED);
+
+                if (debug_x == nullptr && x->getParent()->getParent() != nullptr)
+                {
+                    debug_x = x;
+                }
             }
         }  // An optimal connection from Open to x was found
     }      // For each node near z and in set Unvisited, try to connect it to set Open
@@ -702,7 +711,10 @@ ompl::geometric::PCSFMT::Motion *ompl::geometric::PCSFMT::getBestParent(Motion *
     for (unsigned int j = 0; j < neighborsSize; ++j)
     {
         const base::State *s = neighbors[j]->getState();
-        const base::Cost dist = opt_->motionCost(s, m->getState());
+        // const base::Cost dist = opt_->motionCost(s, m->getState());
+        dp::Vector5d* dqu = m->getDqu();
+        dp::Vector5d *dqv = m->getDqv();
+        const base::Cost dist = estOpt_->estimateMotionCost(s, m->getState(), dqu, dqv, getWeights());
         const base::Cost cNew = opt_->combineCosts(neighbors[j]->getCost(), dist);
 
         if (opt_->isCostBetterThan(cNew, cMin))

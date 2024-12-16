@@ -105,10 +105,12 @@ void plan(PlanningType planning_type)
     if (planning_type == PCSFMT)
     {
         planner = std::make_shared<og::PCSFMT>(si, stateSi,ik);
+        dynamic_cast<og::PCSFMT*>(planner.get())->setNumSamples(5000);
     }
     else if (planning_type == FMT)
     {
         planner = std::make_shared<og::FMT>(si);
+        dynamic_cast<og::FMT*>(planner.get())->setNumSamples(5000);
     }
 
 
@@ -156,7 +158,11 @@ void plan(PlanningType planning_type)
         path->print(std::cout);
     }
     else
+    {
+        static_cast<og::PCSFMT*>(planner.get())->getPlannerDataCsv("/home/wsl/proj/my_ompl/demos/MyPlanners/"
+                                                                      "test_output/PCSFMT_planner_data.csv");
         std::cout << "No solution found" << std::endl;
+    }
 }
 
 int main(int argc, char **argv)

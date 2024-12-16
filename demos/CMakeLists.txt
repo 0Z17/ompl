@@ -4,6 +4,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
 option(OMPL_BUILD_DEMOS "Build OMPL demos" ON)
 add_feature_info(OMPL_BUILD_DEMOS "${OMPL_BUILD_DEMOS}" "Whether to build the OMPL demo programs.")
 
+add_subdirectory(external/cpp_client)
+
 if (OMPL_BUILD_DEMOS)
     file(TO_NATIVE_PATH "${CMAKE_SOURCE_DIR}/tests/resources" TEST_RESOURCES_DIR)
     string(REPLACE "\\" "\\\\" TEST_RESOURCES_DIR "${TEST_RESOURCES_DIR}")
@@ -67,9 +69,38 @@ if (OMPL_BUILD_DEMOS)
             filters)
     find_package(surface_contact REQUIRED)
 
+#    # Set the configs of the CoppeliaSim collision checker
+#    set(COPPELIASIM_LIBRARY_DIRS /home/wsl/software/CoppeliaSim_Edu_V4_8_0_rev0_Ubuntu20_04)
+#    set(COPPELIASIM_CLIENT_LIBRARY ${COPPELIASIM_LIBRARY_DIRS}/programming/zmqRemoteApi/clients/cpp/build/libRemoteAPIClient.a)
+#    set(COPPELIASIM_INCLUDE_DIRS ${COPPELIASIM_LIBRARY_DIRS}/programming/zmqRemoteApi/clients/cpp)
+#    set(JSONCONS_INCLUDE_DIRS ${COPPELIASIM_LIBRARY_DIRS}/programming/zmqRemoteApi/clients/cpp/build/jsoncons/include)
+
     include_directories(
             ${SURFACE_CONTACT_INCLUDE_DIRS}
             ${PCL_INCLUDE_DIRS}
+#            ${COPPELIASIM_INCLUDE_DIRS}
+#            ${JSONCONS_INCLUDE_DIRS}
+            ${CMAKE_CURRENT_SOURCE_DIR}/external/cpp_client
+    )
+
+#    add_library(collision_checker STATIC external/CollisionChecker.cpp)
+#    target_include_directories(collision_checker PUBLIC
+#            ${COPPELIASIM_INCLUDE_DIRS})
+#    target_link_libraries(collision_checker PUBLIC
+#            ${COPPELIASIM_CLIENT_LIBRARY})
+#
+#    add_executable(collision_checker_test external/collision_checker_test.cpp)
+#    add_dependencies(collision_checker_test collision_checker)
+#    target_link_libraries(collision_checker_test
+#            collision_checker)
+#
+#    message(STATUS "COPPELIASIM_LIBRARY_DIRS: ${COPPELIASIM_LIBRARY_DIRS}")
+#    message(STATUS "COPPELIASIM_INCLUDE_DIRS: ${COPPELIASIM_INCLUDE_DIRS}")
+
+
+    add_executable(collision_checker_test external/collision_check_test.cpp)
+    target_link_libraries(collision_checker_test PRIVATE
+            collisionChecker
     )
 
     add_executable(demo_PcsFmtTest MyPlanners/PcsFmtTest.cpp)

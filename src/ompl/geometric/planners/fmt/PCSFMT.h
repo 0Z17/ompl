@@ -541,7 +541,10 @@ namespace ompl
             unsigned int collisionChecks_{0u};
 
             /** \brief Flag to activate the K nearest neighbors strategy */
-            bool nearestK_{true};
+            bool nearestK_{false};
+
+            /** \brief @debug For debugging purposes, set the number of samples to a small value */
+            Motion* debug_x{nullptr};
 
             /** \brief Flag to activate the collision check caching */
             bool cacheCC_{true};
@@ -572,6 +575,7 @@ namespace ompl
                 In general, a radius between 0.9 and 5 appears to perform the best
              */
             double radiusMultiplier_{1.1};
+            // double radiusMultiplier_{3.0};
 
             /** \brief The state space information */
             base::SpaceInformationPtr stateSi_;
@@ -585,6 +589,9 @@ namespace ompl
             /** \brief The cost objective function */
             base::OptimizationObjectivePtr opt_;
 
+            /** \brief The estimate path length objective function */
+            base::EstimatePathLengthOptimizationObjective* estOpt_;
+
             /** \brief The most recent goal motion.  Used for PlannerData computation */
             Motion *lastGoalMotion_;
 
@@ -592,10 +599,10 @@ namespace ompl
             base::State *goalState_;
 
             /** \brief The inverse kinematics solver */
-            dp::InvKin *invKin_;
+            dp::InvKin *invKin_{nullptr};
 
             /** \brief Add new samples if the tree was not able to find a solution. */
-            bool extendedPCSFMT_{true};
+            bool extendedPCSFMT_{false};
 
             /** \brief Print out the debug information */
             void printDebugInfo() const;

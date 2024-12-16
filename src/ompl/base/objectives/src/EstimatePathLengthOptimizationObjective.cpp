@@ -36,6 +36,7 @@
 
 #include "ompl/base/objectives/EstimatePathLengthOptimizationObjective.h"
 #include <memory>
+#include <ompl/base/spaces/RealVectorStateSpace.h>
 #include <ompl/util/Time.h>
 
 ompl::base::EstimatePathLengthOptimizationObjective::EstimatePathLengthOptimizationObjective(const SpaceInformationPtr &si)
@@ -56,8 +57,10 @@ ompl::base::Cost ompl::base::EstimatePathLengthOptimizationObjective::estimateMo
     const State *s2, dp::Vector5d *dqu_s2, dp::Vector5d *dqv_s1, dp::Vector5d* weights)
 {
     ompl::time::point start_time = ompl::time::now();
-	double du = s2->as<CompoundState>()->components[0] - s1->as<CompoundState>()->components[0];
-    double dv = s2->as<CompoundState>()->components[1] - s1->as<CompoundState>()->components[1];
+	double du = s2->as<RealVectorStateSpace::StateType>()->values[0]
+                - s1->as<RealVectorStateSpace::StateType>()->values[0];
+    double dv = s2->as<RealVectorStateSpace::StateType>()->values[1]
+                - s1->as<RealVectorStateSpace::StateType>()->values[1];
     dp::Vector5d dq = du * *dqu_s2 + dv * *dqv_s1;
     auto cost = Cost(dq.cwiseProduct(*weights).norm());
     time_ += ompl::time::seconds(ompl::time::now() - start_time);
@@ -74,6 +77,11 @@ void ompl::base::EstimatePathLengthOptimizationObjective::printDebugInfo() const
 }
 
 ompl::base::Cost ompl::base::EstimatePathLengthOptimizationObjective::motionCost(const State *s1, const State *s2) const
+{
+    return Cost(si_->distance(s1, s2));
+}
+
+ompl::base::Cost ompl::base::EstimatePathLengthOptimizationObjective::configMotionCost(const State *s1, const State *s2) const
 {
     return Cost(stateSi_->distance(s1, s2));
 }

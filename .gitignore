@@ -15,4 +15,4 @@ py-bindings/ompl/bindings_generator.py
 *.so.*
 *.egg-info
 *.pyi
-cmake-build-debug/
+cmake-build-*/

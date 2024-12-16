@@ -67,9 +67,14 @@ namespace ompl
                 dp::Vector5d *dqu_s2, dp::Vector5d *dqv_s2, dp::Vector5d *weights);
 
             /** \brief Motion cost for this objective is defined as
-                the configuration space distance between \e s1 and \e
+                the param space distance between \e s1 and \e
                 s2, using the method SpaceInformation::distance(). */
             Cost motionCost(const State *s1, const State *s2) const override;
+
+            /** \brief Motion cost for this objective is defined as
+                the configuration space distance between \e s1 and \e s2,
+                using the method SpaceInformation::distance(). */
+            Cost configMotionCost(const State *s1, const State *s2) const;
 
             /** \brief the motion cost heuristic for this objective is
                 simply the configuration space distance between \e s1
