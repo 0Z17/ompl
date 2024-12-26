@@ -101,6 +101,7 @@ if (OMPL_BUILD_DEMOS)
     add_executable(collision_checker_test external/collision_check_test.cpp)
     target_link_libraries(collision_checker_test PRIVATE
             collisionChecker
+            RemoteAPIClient
     )
 
     add_executable(demo_PcsFmtTest MyPlanners/PcsFmtTest.cpp)

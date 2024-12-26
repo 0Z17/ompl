@@ -46,6 +46,16 @@ if(NOT cppzmq_POPULATED)
     add_subdirectory(${cppzmq_SOURCE_DIR} ${cppzmq_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
+
+#set(cppzmq_SOURCE_DIR /home/wsl/proj/my_ompl/cmake-build-debug/demos/external/cpp_client/cppzmq)
+#set(cppzmq_BINARY_DIR /home/wsl/proj/my_ompl/cmake-build-debug/_deps/cppzmq-build)
+#
+#add_subdirectory(${cppzmq_SOURCE_DIR} ${cppzmq_BINARY_DIR} EXCLUDE_FROM_ALL)
+#include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+#message("jsoncons_SOURCE_DIR: ${jsoncons_SOURCE_DIR} jsoncons_BINARY_DIR: ${jsoncons_BINARY_DIR}")
+#message("cppzmq_SOURCE_DIR: ${cppzmq_SOURCE_DIR} cppzmq_BINARY_DIR: ${cppzmq_BINARY_DIR}")
+
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/generated)
 
 add_custom_command(
@@ -127,8 +137,12 @@ target_link_libraries(RemoteAPIClient PUBLIC cppzmq)
 add_executable(example example.cpp)
 target_link_libraries(example PRIVATE RemoteAPIClient)
 
+find_package(Eigen3 REQUIRED)
+include_directories(${EIGEN3_INCLUDE_DIR})
+
 add_library(collisionChecker CollisionChecker.cpp)
-target_link_libraries(collisionChecker PRIVATE RemoteAPIClient)
+target_link_libraries(collisionChecker PRIVATE RemoteAPIClient
+        Eigen3::Eigen)
 
 add_executable(synchronousImageTransmission synchronousImageTransmission.cpp)
 target_link_libraries(synchronousImageTransmission PRIVATE RemoteAPIClient)

@@ -9,8 +9,7 @@ namespace cc = collision_checker;
 
 int main()
 {
-    std::cout << "Hello, world!" << std::endl;
     cc::CollisionChecker checker;
-    std::cout << checker.getHost() << std::endl;
+    checker.setConfig(std::vector<double>{1,1,1,0,M_PI/2});
     return 0;
 }
