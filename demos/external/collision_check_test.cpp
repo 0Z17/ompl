@@ -5,7 +5,7 @@
 #include "CollisionChecker.h"
 #include <iostream>
 
-namespace cc = collision_checker;
+namespace cc = collision_checker_coppeliaSim;
 
 int main()
 {

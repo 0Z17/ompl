@@ -4,7 +4,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
 option(OMPL_BUILD_DEMOS "Build OMPL demos" ON)
 add_feature_info(OMPL_BUILD_DEMOS "${OMPL_BUILD_DEMOS}" "Whether to build the OMPL demo programs.")
 
-add_subdirectory(external/cpp_client)
+#add_subdirectory(external/cpp_client)
+add_subdirectory(external/mjc_client)
 
 if (OMPL_BUILD_DEMOS)
     file(TO_NATIVE_PATH "${CMAKE_SOURCE_DIR}/tests/resources" TEST_RESOURCES_DIR)
@@ -81,6 +82,7 @@ if (OMPL_BUILD_DEMOS)
 #            ${COPPELIASIM_INCLUDE_DIRS}
 #            ${JSONCONS_INCLUDE_DIRS}
             ${CMAKE_CURRENT_SOURCE_DIR}/external/cpp_client
+            ${CMAKE_CURRENT_SOURCE_DIR}/external/mjc_client/include
     )
 
 #    add_library(collision_checker STATIC external/CollisionChecker.cpp)
@@ -98,10 +100,12 @@ if (OMPL_BUILD_DEMOS)
 #    message(STATUS "COPPELIASIM_INCLUDE_DIRS: ${COPPELIASIM_INCLUDE_DIRS}")
 
 
-    add_executable(collision_checker_test external/collision_check_test.cpp)
+    add_executable(collision_checker_test external/collision_checker_test.cpp)
+    add_dependencies(collision_checker_test mujoco_client)
     target_link_libraries(collision_checker_test PRIVATE
-            collisionChecker
-            RemoteAPIClient
+            mujoco_client
+            mujoco
+            glfw
     )
 
     add_executable(demo_PcsFmtTest MyPlanners/PcsFmtTest.cpp)

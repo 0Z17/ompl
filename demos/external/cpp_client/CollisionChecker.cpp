@@ -6,9 +6,9 @@
 #include "RemoteAPIClient.h"
 
 
-namespace cc = collision_checker;
+namespace cc = collision_checker_coppeliaSim;
 
-collision_checker::CollisionChecker::CollisionChecker(const std::string &host, std::string name, std::string jointName)
+collision_checker_coppeliaSim::CollisionChecker::CollisionChecker(const std::string &host, std::string name, std::string jointName)
     : host_(host), sim_(RemoteAPIClient(host).getObject().sim()){
     baseHandle_ = sim_.getObject(name);
     jointHandle_ = sim_.getObject(jointName);
@@ -16,11 +16,11 @@ collision_checker::CollisionChecker::CollisionChecker(const std::string &host, s
     sim_.addItemToCollection(coll_, sim_.handle_tree, baseHandle_, 0B00);
 }
 
-std::string collision_checker::CollisionChecker::getHost() const {
+std::string collision_checker_coppeliaSim::CollisionChecker::getHost() const {
     return host_;
 }
 
-void collision_checker::CollisionChecker::getConfig(cc::Vector5d &config){
+void collision_checker_coppeliaSim::CollisionChecker::getConfig(cc::Vector5d &config){
     std::vector<double> ori = sim_.getObjectOrientation(baseHandle_);
     double yaw = ori[2];
     std::vector<double> pos = sim_.getObjectPosition(baseHandle_);
@@ -33,7 +33,7 @@ void collision_checker::CollisionChecker::getConfig(cc::Vector5d &config){
     config = conf;
 }
 
-void collision_checker::CollisionChecker::getConfig(std::vector<double> &config){
+void collision_checker_coppeliaSim::CollisionChecker::getConfig(std::vector<double> &config){
     std::vector<double> ori = sim_.getObjectOrientation(baseHandle_);
     double yaw = ori[2];
     std::vector<double> pos = sim_.getObjectPosition(baseHandle_);
@@ -44,7 +44,7 @@ void collision_checker::CollisionChecker::getConfig(std::vector<double> &config)
     config = {x, y, z, yaw, jointPos};
 }
 
-void collision_checker::CollisionChecker::setConfig(const cc::Vector5d &config){
+void collision_checker_coppeliaSim::CollisionChecker::setConfig(const cc::Vector5d &config){
     std::vector<double> pos = {config(0), config(1), config(2)};
     std::vector<double> ori = {0.0, 0.0, config(3)};
     const double jointPos = config(4);
@@ -53,7 +53,7 @@ void collision_checker::CollisionChecker::setConfig(const cc::Vector5d &config){
     sim_.setJointPosition(jointHandle_, jointPos);
 }
 
-void collision_checker::CollisionChecker::setConfig(const std::vector<double> &config){
+void collision_checker_coppeliaSim::CollisionChecker::setConfig(const std::vector<double> &config){
     std::vector<double> pos = {config[0], config[1], config[2]};
     std::vector<double> ori = {0.0, 0.0, config[3]};
     const double jointPos = config[4];
@@ -62,7 +62,7 @@ void collision_checker::CollisionChecker::setConfig(const std::vector<double> &c
     sim_.setJointPosition(jointHandle_, jointPos);
 }
 
-bool collision_checker::CollisionChecker::checkCollision() {
+bool collision_checker_coppeliaSim::CollisionChecker::checkCollision() {
     auto [result, collision] = sim_.checkCollision(coll_, sim_.handle_all);
     return !collision.empty();
 }

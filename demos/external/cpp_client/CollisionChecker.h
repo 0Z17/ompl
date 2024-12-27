@@ -9,7 +9,7 @@
 #include <string>
 #include <Eigen/Dense>
 
-namespace collision_checker {
+namespace collision_checker_coppeliaSim {
 
 using Vector5d = Eigen::Matrix<double, 5, 1>;
 
