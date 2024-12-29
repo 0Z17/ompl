@@ -71,7 +71,8 @@ target_link_libraries(ompl
         ${invkin_LIBRARIES}
         ${nurbs_LIBRARIES}
         ${SURFACE_CONTACT_LIBRARIES}
-        ${PCL_LIBRARIES})
+        ${PCL_LIBRARIES}
+        mujoco_client)
 
 if (MSVC)
     set_target_properties(ompl PROPERTIES VERSION "${PROJECT_VERSION}" STATIC_LIBRARY_FLAGS "psapi.lib ws2_32.lib")

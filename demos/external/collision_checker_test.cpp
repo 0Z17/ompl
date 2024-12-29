@@ -12,7 +12,7 @@ int main() {
 
 
     while (true) {
-        client.setConfig(std::vector<double>{0.0, 0.0, pos_rnd(gen), 0.0, 1.0});
+        client.setConfig(std::vector<double>{0.0, 0.0, 0.0, pos_rnd(gen), 0.0});
         client.render();
         glfwPollEvents();
     };

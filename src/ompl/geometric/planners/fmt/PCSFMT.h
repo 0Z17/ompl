@@ -49,6 +49,7 @@
 #include <ompl/base/OptimizationObjective.h>
 #include <map>
 #include "invkin.h"
+#include "mujoco_client.h"
 #include <ompl/base/objectives/EstimatePathLengthOptimizationObjective.h>
 
 namespace dp = dynamic_planning;

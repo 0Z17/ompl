@@ -28,12 +28,17 @@ public:
      *  @param config The configuration of the robot [x,y,z,psi,theta].
      *  @return True if the robot is in collision, false otherwise.
      */
-    bool checkCollision(const std::vector<double> &config);
+    bool isCollision(const std::vector<double> &config);
 
     /** @brief Check if the robot is in collision in the current configuration.
      *  @return True if the robot is in collision, false otherwise.
      */
-    bool checkCollision() const;
+    bool isCollision() const;
+
+    /** @brief Print the collision information of the robot.
+     *  The information includes the number of contacts, and the contact geometry.
+     */
+    void printCollisionInfo() const;
 
     /** @brief Initialize GLFW for rendering. */
     void initializeGlfw();
@@ -85,8 +90,14 @@ protected:
     mjvCamera cam_;
     mjvOption opt_;
 
-    std::vector<double> camPoint_{0.0,0.0,1.0};
-    double camDis_{2.0};
+    // Model parameters
+    double yawOffset_{0.0};
+    double jointOffset_{-M_PI/6.0};
+
+    std::vector<double> camPoint_{0.0,-1.0,2.0};
+    double camDis_{4.0};
+    double camAzimuth_{30.0};
+    double camElevation_{0.0};
 
     const char* baseName_{"robot"};
     const char* jointName_{"operator_1_joint"};

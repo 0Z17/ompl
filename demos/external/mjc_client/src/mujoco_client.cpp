@@ -49,6 +49,8 @@ mc::MujocoClient::MujocoClient(const char* model_path)
     cam_.lookat[1] = camPoint_[1];
     cam_.lookat[2] = camPoint_[2];
     cam_.distance = camDis_;
+    cam_.azimuth = camAzimuth_;
+    cam_.elevation = camElevation_;
 
     // Get the control joints
     const int root_id = mj_name2id(model_.get(), mjOBJ_JOINT, baseName_);
@@ -80,8 +82,6 @@ void mc::MujocoClient::initializeGlfw()
     glEnable(GL_DEPTH_TEST);
 
     glfwSetWindowUserPointer(window_.get(), this);
-
-    std::cout << "User pointer set to "<< glfwGetWindowUserPointer(window_.get()) << std::endl;
 
 
     // Register callbacks
@@ -127,21 +127,37 @@ void mc::MujocoClient::setConfig(const std::vector<double> &config) {
     data_->qpos[rootQPos_+6] = quad.z();
 
     // Set the joint angle of the operator
-    data_->qpos[jointQPos_] = config[4];
+    data_->qpos[jointQPos_] = config[4] + jointOffset_;
 
     mj_fwdPosition(model_.get(), data_.get());
 }
 
-bool mc::MujocoClient::checkCollision(const std::vector<double> &config) {
+bool mc::MujocoClient::isCollision(const std::vector<double> &config) {
     setConfig(config);
     mj_collision(model_.get(), data_.get());
     return data_->ncon > 0;
 }
 
-bool mc::MujocoClient::checkCollision() const
+bool mc::MujocoClient::isCollision() const
 {
     mj_collision(model_.get(), data_.get());
     return data_->ncon > 0;
+}
+
+void mc::MujocoClient::printCollisionInfo() const
+{
+    std::cout << "Collision info:" << std::endl;
+    for (int j = 0; j < data_->ncon; j++) {
+        const mjContact& contact = data_->contact[j];
+        int geom1_id = contact.geom1;
+        int geom2_id = contact.geom2;
+        const char* geom1_name = mj_id2name(model_.get(), mjOBJ_GEOM, geom1_id);
+        const char* geom2_name = mj_id2name(model_.get(), mjOBJ_GEOM, geom2_id);
+        std::cout << "Contact: geom1=" << (geom1_name ? geom1_name : std::to_string(geom1_id).c_str())
+        << " geom2=" << (geom2_name ? geom2_name : std::to_string(geom2_id).c_str())
+        << " dist=" << contact.dist << std::endl;
+    }
+
 }
 
 void mc::MujocoClient::mouse_button_callback_impl(GLFWwindow* window, int button, int action, int mods) {

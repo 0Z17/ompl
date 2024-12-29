@@ -104,8 +104,6 @@ if (OMPL_BUILD_DEMOS)
     add_dependencies(collision_checker_test mujoco_client)
     target_link_libraries(collision_checker_test PRIVATE
             mujoco_client
-            mujoco
-            glfw
     )
 
     add_executable(demo_PcsFmtTest MyPlanners/PcsFmtTest.cpp)
@@ -116,7 +114,8 @@ if (OMPL_BUILD_DEMOS)
             Boost::system
             Boost::program_options
             ${SURFACE_CONTACT_LIBRARIES}
-            ${PCL_IO_LIBRARIES})
+            ${PCL_IO_LIBRARIES}
+            mujoco_client)
 
     add_executable(demo_ik_test MyPlanners/ik_test.cpp)
     target_link_libraries(demo_ik_test PRIVATE
@@ -126,7 +125,8 @@ if (OMPL_BUILD_DEMOS)
             Boost::system
             Boost::program_options
             ${SURFACE_CONTACT_LIBRARIES}
-            ${PCL_IO_LIBRARIES})
+            ${PCL_IO_LIBRARIES}
+            mujoco_client)
 
     find_package(yaml-cpp CONFIG)
     set_package_properties(yaml-cpp PROPERTIES

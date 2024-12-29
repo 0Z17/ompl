@@ -17,5 +17,5 @@ include_directories(
 add_library(mujoco_client src/mujoco_client.cpp)
 
 target_link_libraries(mujoco_client mujoco glfw OpenGL::GL)
-
+target_include_directories(mujoco_client PUBLIC include)
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
