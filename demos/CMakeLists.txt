@@ -6,6 +6,7 @@ add_feature_info(OMPL_BUILD_DEMOS "${OMPL_BUILD_DEMOS}" "Whether to build the OM
 
 #add_subdirectory(external/cpp_client)
 add_subdirectory(external/mjc_client)
+add_subdirectory(external/surface_contact)
 
 if (OMPL_BUILD_DEMOS)
     file(TO_NATIVE_PATH "${CMAKE_SOURCE_DIR}/tests/resources" TEST_RESOURCES_DIR)
@@ -68,7 +69,7 @@ if (OMPL_BUILD_DEMOS)
             common
             surface
             filters)
-    find_package(surface_contact REQUIRED)
+#    find_package(surface_contact REQUIRED)
 
 #    # Set the configs of the CoppeliaSim collision checker
 #    set(COPPELIASIM_LIBRARY_DIRS /home/wsl/software/CoppeliaSim_Edu_V4_8_0_rev0_Ubuntu20_04)
@@ -77,12 +78,13 @@ if (OMPL_BUILD_DEMOS)
 #    set(JSONCONS_INCLUDE_DIRS ${COPPELIASIM_LIBRARY_DIRS}/programming/zmqRemoteApi/clients/cpp/build/jsoncons/include)
 
     include_directories(
-            ${SURFACE_CONTACT_INCLUDE_DIRS}
+#            ${SURFACE_CONTACT_INCLUDE_DIRS}
             ${PCL_INCLUDE_DIRS}
 #            ${COPPELIASIM_INCLUDE_DIRS}
 #            ${JSONCONS_INCLUDE_DIRS}
             ${CMAKE_CURRENT_SOURCE_DIR}/external/cpp_client
             ${CMAKE_CURRENT_SOURCE_DIR}/external/mjc_client/include
+            ${CMAKE_CURRENT_SOURCE_DIR}/external/surface_contact/include
     )
 
 #    add_library(collision_checker STATIC external/CollisionChecker.cpp)
@@ -104,6 +106,7 @@ if (OMPL_BUILD_DEMOS)
     add_dependencies(collision_checker_test mujoco_client)
     target_link_libraries(collision_checker_test PRIVATE
             mujoco_client
+            surface_contact
     )
 
     add_executable(demo_PcsFmtTest MyPlanners/PcsFmtTest.cpp)
@@ -113,9 +116,13 @@ if (OMPL_BUILD_DEMOS)
             Boost::filesystem
             Boost::system
             Boost::program_options
-            ${SURFACE_CONTACT_LIBRARIES}
+#            ${SURFACE_CONTACT_LIBRARIES}
+            ${PCL_COMMON_LIBRARIES}
+            ${PCL_SURFACE_LIBRARIES}
             ${PCL_IO_LIBRARIES}
-            mujoco_client)
+            ${VTK_LIBRARIES}
+            mujoco_client
+            surface_contact)
 
     add_executable(demo_ik_test MyPlanners/ik_test.cpp)
     target_link_libraries(demo_ik_test PRIVATE
@@ -124,9 +131,13 @@ if (OMPL_BUILD_DEMOS)
             Boost::filesystem
             Boost::system
             Boost::program_options
-            ${SURFACE_CONTACT_LIBRARIES}
+#            ${SURFACE_CONTACT_LIBRARIES}
             ${PCL_IO_LIBRARIES}
-            mujoco_client)
+            ${PCL_COMMON_LIBRARIES}
+            ${PCL_SURFACE_LIBRARIES}
+            ${VTK_LIBRARIES}
+            mujoco_client
+            surface_contact)
 
     find_package(yaml-cpp CONFIG)
     set_package_properties(yaml-cpp PROPERTIES

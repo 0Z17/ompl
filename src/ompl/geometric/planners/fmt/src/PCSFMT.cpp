@@ -104,9 +104,12 @@ void ompl::geometric::PCSFMT::setup()
         estOpt_ = dynamic_cast<base::EstimatePathLengthOptimizationObjective*>(opt_.get());
 
         // Set default weight
-        const auto weights = new dp::Vector5d;
-        *weights << 1.0, 1.0, 1.0, 1.0, 1.0;
-        weights_ = weights;
+        if (weights_ == nullptr)
+        {
+            const auto weights = new dp::Vector5d;
+            *weights << 1.0, 1.0, 1.0, 1.0, 1.0;
+            weights_ = weights;
+        }
 
         // The optimization objective needs to be set as the estimated path length optimization objective.
         optForward()->setStateSpaceInformation(stateSi_);
@@ -261,7 +264,7 @@ void ompl::geometric::PCSFMT::setTangentVec(Motion *m) const
 {
     const auto ik = getIK();
     const auto u = m->getState()->as<base::RealVectorStateSpace::StateType>()->values[0];
-    const auto v = m->getState()->as<base::RealVectorStateSpace::StateType>()->values[0];
+    const auto v = m->getState()->as<base::RealVectorStateSpace::StateType>()->values[1];
     auto [dqu, dqv] = ik->getTangentVec(u, v);
     const auto dquPtr = new dp::Vector5d(dqu);
     const auto dqvPtr = new dp::Vector5d(dqv);

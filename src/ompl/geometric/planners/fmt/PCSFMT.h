@@ -117,6 +117,20 @@ namespace ompl
                 numSamples_ = numSamples;
             }
 
+            void setWeights(dp::Vector5d &weights)
+            {
+                delete weights_;
+                weights_ = new dp::Vector5d(weights);
+                *weights_ << weights(0), weights(1), weights(2), weights(3), weights(4);
+            }
+
+            void setWeights(const std::vector<double> &weights)
+            {
+                delete weights_;
+                weights_ = new dp::Vector5d(5);
+                *weights_ << weights[0], weights[1], weights[2], weights[3], weights[4];
+            }
+
             /** \brief Get the number of states that the planner will sample */
             unsigned int getNumSamples() const
             {
@@ -478,6 +492,7 @@ namespace ompl
                 are within a goal region, there would be no way for the
                 algorithm to successfully find a path to that region */
             void assureGoalIsSampled();
+
 
             /** \brief Compute the volume of the unit ball in a given dimension */
             double calculateUnitBallVolume(unsigned int dimension) const;

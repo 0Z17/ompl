@@ -11,6 +11,7 @@
 #include <ompl/util/Time.h>
 #include <ompl/config.h>
 #include <iostream>
+#include "mujoco_client.h"
 
 namespace ob = ompl::base;
 namespace og = ompl::geometric;
@@ -24,7 +25,11 @@ enum PlanningType
     PCSFMT
 };
 
-std::string pcdFile = "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd";
+// std::string pcdFile = "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd";
+// std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_bridge1.pcd";
+// std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_plane2.pcd";
+// std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_cylinder.pcd";
+std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_exp.pcd";
 std::string modelFile = "/home/wsl/proj/skyvortex_mujoco/scene.xml";
 const auto nurbs = new sr::Nurbs(pcdFile);
 auto ik = new dp::InvKin(nurbs);
@@ -32,6 +37,9 @@ mc::MujocoClient client(modelFile.c_str());
 std::vector<dynamic_planning::Vector5d> collConfig;
 ob::PathPtr path;
 ob::PathPtr statePath;
+double planning_time = 0.0;
+// std::vector<double> weights = {1.0, 1.0, 1.0, 1.0, 6.0};
+std::vector<double> weights = {1.0, 1.0, 1.0, 1.0, 3.0};
 
 bool isStateValid(const ob::State *state)
 {
@@ -45,14 +53,14 @@ bool isStateValid(const ob::State *state)
     // OMPL_INFORM("cc result: %s", ret ? "true" : "false");
     // if (ret) collConfig.push_back(q);
     return !ret;
-    return true;
+    // return true;
 }
 
 bool isStateValidForQ(const ob::State *state)
 {
     // alway return true for test
-    // @todo: implement a real state validity checking function
-
+    // // @todo: implement a real state validity checking function
+    //
     auto q =state->as<ob::RealVectorStateSpace::StateType>()->values;
     auto vec = std::vector<double>(q, q + 5);
     OMPL_INFORM("state: %f, %f, %f, %f, %f", vec[0], vec[1], vec[2], vec[3], vec[4]);
@@ -60,7 +68,77 @@ bool isStateValidForQ(const ob::State *state)
     // OMPL_INFORM("cc result: %s", ret ? "true" : "false");
     // if (ret) collConfig.push_back(q);
     return !ret;
-    return true;
+    // return true;
+}
+
+void getPathCsv(const ob::PathPtr &path, const std::string &filename)
+{
+    std::ofstream file(filename);
+    file << "X,Y,Z,Psi,Theta\n";
+
+    for (const auto point : path->as<og::PathGeometric>()->getStates())
+    {
+        const auto statePt = point->as<ob::RealVectorStateSpace::StateType>();
+        file << statePt->values[0]
+        << "," << statePt->values[1]
+        << "," << statePt->values[2]
+        << "," << statePt->values[3]
+        << "," << statePt->values[4]
+        << "\n";
+    }
+}
+
+double getPathCost(const ob::PathPtr &path, const std::vector<double> &weight)
+{
+    auto pathStates = path->as<og::PathGeometric>()->getStates();
+    double cost = 0.0;
+    for (auto it = pathStates.begin(); it != pathStates.end(); ++it)
+    {
+        const auto statePt = (*it)->as<ob::RealVectorStateSpace::StateType>();
+        if (it != pathStates.begin())
+        {
+            const auto prevStatePt = (*(it-1))->as<ob::RealVectorStateSpace::StateType>();
+            double test = std::pow(2,2);
+            cost += std::sqrt(  std::pow(weight[0] * (statePt->values[0] - prevStatePt->values[0]), 2) +
+                                std::pow(weight[1] * (statePt->values[1] - prevStatePt->values[1]), 2) +
+                                std::pow(weight[2] * (statePt->values[2] - prevStatePt->values[2]), 2) +
+                                std::pow(weight[3] * (statePt->values[3] - prevStatePt->values[3]), 2) +
+                                std::pow(weight[4] * (statePt->values[4] - prevStatePt->values[4]), 2));
+        }
+    }
+
+    return cost;
+}
+
+double getOperatorMovement(const ob::PathPtr &path)
+{
+    auto pathStates = path->as<og::PathGeometric>()->getStates();
+    double movement = 0.0;
+    for (auto it = pathStates.begin(); it != pathStates.end(); ++it)
+    {
+        const auto statePt = (*it)->as<ob::RealVectorStateSpace::StateType>();
+        if (it != pathStates.begin())
+        {
+            const auto prevStatePt = (*(it-1))->as<ob::RealVectorStateSpace::StateType>();
+            movement += std::sqrt(std::pow(statePt->values[4] - prevStatePt->values[4], 2));
+        }
+    }
+    return movement;
+}
+
+void getPlanningData(const int idx, const ob::PathPtr &path, const double planning_time, const std::string &filename)
+{
+    std::ofstream file(filename);
+    // if the file is empty, write the header
+    if (file.tellp() == 0)
+    {
+        file << "idx,planning_time,path_cost,operator_movement\n";
+    }
+    file << idx << ","
+         << planning_time << ","
+         << getPathCost(path, weights) << ","
+         << getOperatorMovement(path) << "\n";
+
 }
 
 void plan(PlanningType planning_type)
@@ -113,14 +191,20 @@ void plan(PlanningType planning_type)
     // create a random start state
     ob::ScopedState<> start(space);
     // start.random();
-    start->as<ob::RealVectorStateSpace::StateType>()->values[0] = 0.2;
-    start->as<ob::RealVectorStateSpace::StateType>()->values[1] = 0.2;
+    // std::vector<double> start_config = {0.2, 0.1};
+    // std::vector<double> goal_config = {0.8, 0.9};
+
+    std::vector<double> start_config = {0.9, 0.5};
+    std::vector<double> goal_config = {0.1, 0.1};
+
+    start->as<ob::RealVectorStateSpace::StateType>()->values[0] = start_config[0];
+    start->as<ob::RealVectorStateSpace::StateType>()->values[1] = start_config[1];
 
     // create a random goal state
     ob::ScopedState<> goal(space);
-    goal.random();
-    goal->as<ob::RealVectorStateSpace::StateType>()->values[0] = 0.8;
-    goal->as<ob::RealVectorStateSpace::StateType>()->values[1] = 0.8;
+    // goal.random();
+    goal->as<ob::RealVectorStateSpace::StateType>()->values[0] = goal_config[0];
+    goal->as<ob::RealVectorStateSpace::StateType>()->values[1] = goal_config[1];
 
     // create a problem instance
     auto pdef(std::make_shared<ob::ProblemDefinition>(si));
@@ -133,20 +217,23 @@ void plan(PlanningType planning_type)
 
     // load the inverse kinematics solver
     // const auto nurbs = new sr::Nurbs(pcdFile);
-    nurbs->fitSurface();
+
     // auto ik = new dp::InvKin(nurbs);
 
     // create a planner for the defined space
     ob::PlannerPtr planner;
+    // int sampleNum = 20000;
+    int sampleNum = 20000;
     if (planning_type == PCSFMT)
     {
-        planner = std::make_shared<og::PCSFMT>(si, stateSi,ik);
-        dynamic_cast<og::PCSFMT*>(planner.get())->setNumSamples(5000);
+        planner = std::make_shared<og::PCSFMT>(si, stateSi, ik);
+        dynamic_cast<og::PCSFMT*>(planner.get())->setNumSamples(sampleNum);
+        dynamic_cast<og::PCSFMT*>(planner.get())->setWeights(weights);
     }
     else if (planning_type == FMT)
     {
         planner = std::make_shared<og::FMT>(si);
-        dynamic_cast<og::FMT*>(planner.get())->setNumSamples(5000);
+        dynamic_cast<og::FMT*>(planner.get())->setNumSamples(sampleNum);
     }
 
 
@@ -165,8 +252,8 @@ void plan(PlanningType planning_type)
 
     ompl::time::point start_time = ompl::time::now();
     // attempt to solve the problem within one second of planning time
-    ob::PlannerStatus solved = planner->ob::Planner::solve(10.0);
-    const double planning_time = ompl::time::seconds(ompl::time::now() - start_time);
+    ob::PlannerStatus solved = planner->ob::Planner::solve(20.0);
+    planning_time = ompl::time::seconds(ompl::time::now() - start_time);
     OMPL_INFORM("Planning time: %.3f seconds", planning_time);
 
     if (solved)
@@ -195,8 +282,16 @@ void plan(PlanningType planning_type)
     }
     else
     {
-        static_cast<og::PCSFMT*>(planner.get())->getPlannerDataCsv("/home/wsl/proj/my_ompl/demos/MyPlanners/"
-                                                                      "test_output/PCSFMT_planner_data.csv");
+        if (planning_type == PCSFMT)
+        {
+            static_cast<og::PCSFMT*>(planner.get())->getPlannerDataCsv("/home/wsl/proj/my_ompl/demos/MyPlanners/"
+                                                                       "test_output/PCSFMT_planner_data.csv");
+        }
+        else if (planning_type == FMT)
+        {
+            static_cast<og::FMT*>(planner.get())->getPlannerDataCsv("/home/wsl/proj/my_ompl/demos/MyPlanners/"
+                                                                   "test_output/FMT_planner_data.csv");
+        }
         std::cout << "No solution found" << std::endl;
     }
 
@@ -222,22 +317,44 @@ void plan(PlanningType planning_type)
    }
 
     og::PathSimplifier ps(stateSi);
-    ps.smoothBSpline(*statePath->as<og::PathGeometric>(), 3, 0.05);
+    ps.smoothBSpline(*statePath->as<og::PathGeometric>(), 3, 0.005);
 }
 
 int main(int argc, char **argv)
 {
-    PlanningType planning_type = PCSFMT;
-    // PlanningType planning_type = FMT;
+    int idx = 0;
+
+    // PlanningType planning_type = PCSFMT;
+    PlanningType planning_type = FMT;
+    // glfwMakeContextCurrent(nullptr);
+    nurbs->fitSurface();
     plan(planning_type);
+    int count = 0;
     for (auto point : statePath->as<og::PathGeometric>()->getStates())
     {
+        count++;
         auto statePt = point->as<ob::RealVectorStateSpace::StateType>();
+        auto q = std::vector<double>(statePt->values, statePt->values + 5);
+        // std::cout << "state"<< count << ": " << q[0] << ", " << q[1] << ", " << q[2] << ", " << q[3] << ", " << q[4] << std::endl;
         client.setConfig(std::vector<double>(statePt->values, statePt->values + 5));
         client.render();
         glfwPollEvents();
-        sleep(0.2);
+        sleep(0.1);
     }
+    if (planning_type == PCSFMT)
+    {
+        getPathCsv(statePath, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_PCSFMT.csv");
+        getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_PCSFMT.csv");
+    }
+    else if (planning_type == FMT)
+    {
+        getPathCsv(statePath, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_FMT.csv");
+        getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_FMT.csv");
+    };
+
+
+
+
     // print the elems in the collConfig
     // for (auto elem : collConfig)
     // {
