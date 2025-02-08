@@ -94,24 +94,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4458a72d-a736-4beb-9c5a-bef049197ce3" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/demos/external/surface_contact/CMakeLists.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/external/surface_contact/include/invkin.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/external/surface_contact/include/nurbs.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/external/surface_contact/src/invkin.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/external/surface_contact/src/nurbs.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/external/surface_contact/src/test_demo.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/demos/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/ik_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/ik_test.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/FMT_planner_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/FMT_planner_data.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/PCSFMT_planner_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/PCSFMT_planner_data.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/external/collision_checker_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/external/collision_checker_test.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/external/mjc_client/include/mujoco_client.h" beforeDir="false" afterPath="$PROJECT_DIR$/demos/external/mjc_client/include/mujoco_client.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/external/mjc_client/src/mujoco_client.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/external/mjc_client/src/mujoco_client.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/PCSFMT.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/PCSFMT.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/PCSFMT.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/PCSFMT.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -687,7 +670,7 @@
       <workItem from="1738463036925" duration="14659000" />
       <workItem from="1738633244177" duration="1319000" />
       <workItem from="1738802676655" duration="7355000" />
-      <workItem from="1738892781128" duration="8822000" />
+      <workItem from="1738892781128" duration="12198000" />
     </task>
     <servers />
   </component>
