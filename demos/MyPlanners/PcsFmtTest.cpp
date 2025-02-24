@@ -12,6 +12,8 @@
 #include <ompl/config.h>
 #include <iostream>
 #include "mujoco_client.h"
+#include <chrono>
+#include <thread>
 
 namespace ob = ompl::base;
 namespace og = ompl::geometric;
@@ -25,11 +27,12 @@ enum PlanningType
     PCSFMT
 };
 
-// std::string pcdFile = "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd";
+std::string pcdFile = "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd";
 // std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_bridge1.pcd";
 // std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_plane2.pcd";
 // std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_cylinder.pcd";
-std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_exp.pcd";
+// std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_EXP.pcd";
+// std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_turbine.pcd";
 std::string modelFile = "/home/wsl/proj/skyvortex_mujoco/scene.xml";
 const auto nurbs = new sr::Nurbs(pcdFile);
 auto ik = new dp::InvKin(nurbs);
@@ -39,7 +42,9 @@ ob::PathPtr path;
 ob::PathPtr statePath;
 double planning_time = 0.0;
 // std::vector<double> weights = {1.0, 1.0, 1.0, 1.0, 6.0};
-std::vector<double> weights = {1.0, 1.0, 1.0, 1.0, 3.0};
+// std::vector<double> weights = {1.0, 1.0, 1.0, 1.5, 2.5};
+// std::vector<double> weights = {1.0, 1.0, 1.0, 3.0, 6.0};
+std::vector<double> weights = {1.0, 1.0, 1.0, 2.0, 3.5};
 
 bool isStateValid(const ob::State *state)
 {
@@ -191,11 +196,19 @@ void plan(PlanningType planning_type)
     // create a random start state
     ob::ScopedState<> start(space);
     // start.random();
-    // std::vector<double> start_config = {0.2, 0.1};
-    // std::vector<double> goal_config = {0.8, 0.9};
+    std::vector<double> start_config = {0.2, 0.1};
+    std::vector<double> goal_config = {0.8, 0.9};
 
-    std::vector<double> start_config = {0.9, 0.5};
-    std::vector<double> goal_config = {0.1, 0.1};
+    // std::vector<double> start_config = {0.9, 0.5};
+    // std::vector<double> goal_config = {0.1, 0.1};
+
+
+    // For experiment
+    // std::vector<double> start_config = {0.3, 0.7};
+    // std::vector<double> goal_config = {0.7, 0.3};
+    //
+    // std::vector<double> start_config = {0.3, 0.7};
+    // std::vector<double> goal_config = {0.3, 0.3};
 
     start->as<ob::RealVectorStateSpace::StateType>()->values[0] = start_config[0];
     start->as<ob::RealVectorStateSpace::StateType>()->values[1] = start_config[1];
@@ -219,6 +232,7 @@ void plan(PlanningType planning_type)
     // const auto nurbs = new sr::Nurbs(pcdFile);
 
     // auto ik = new dp::InvKin(nurbs);
+    ik->setLinkLength(0.97);
 
     // create a planner for the defined space
     ob::PlannerPtr planner;
@@ -308,6 +322,7 @@ void plan(PlanningType planning_type)
         stateS->values[0] = q(0);
         stateS->values[1] = q(1);
         stateS->values[2] = q(2);
+        // if (q(3) < 0) q(3) += 2*M_PI;
         stateS->values[3] = q(3);
         stateS->values[4] = q(4);
 
@@ -317,30 +332,22 @@ void plan(PlanningType planning_type)
    }
 
     og::PathSimplifier ps(stateSi);
-    ps.smoothBSpline(*statePath->as<og::PathGeometric>(), 3, 0.005);
+    ps.smoothBSpline(*statePath->as<og::PathGeometric>(), 3, 0.0005);
 }
 
 int main(int argc, char **argv)
 {
     int idx = 0;
 
-    // PlanningType planning_type = PCSFMT;
-    PlanningType planning_type = FMT;
+    PlanningType planning_type = PCSFMT;
+    // PlanningType planning_type = FMT;
     // glfwMakeContextCurrent(nullptr);
+    // nurbs->fitSurface(Eigen::Vector3d::UnitZ());
     nurbs->fitSurface();
+    nurbs->saveSurfaceAsStl("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/surface_EXP.stl");
     plan(planning_type);
     int count = 0;
-    for (auto point : statePath->as<og::PathGeometric>()->getStates())
-    {
-        count++;
-        auto statePt = point->as<ob::RealVectorStateSpace::StateType>();
-        auto q = std::vector<double>(statePt->values, statePt->values + 5);
-        // std::cout << "state"<< count << ": " << q[0] << ", " << q[1] << ", " << q[2] << ", " << q[3] << ", " << q[4] << std::endl;
-        client.setConfig(std::vector<double>(statePt->values, statePt->values + 5));
-        client.render();
-        glfwPollEvents();
-        sleep(0.1);
-    }
+
     if (planning_type == PCSFMT)
     {
         getPathCsv(statePath, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_PCSFMT.csv");
@@ -352,7 +359,40 @@ int main(int argc, char **argv)
         getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_FMT.csv");
     };
 
+    constexpr double frq_render = 100;
+    constexpr double frq_cal = 20;
+    constexpr auto rate_render = std::chrono::milliseconds(static_cast<int>(1000 / frq_render));
+    constexpr auto rate_cal = std::chrono::milliseconds(static_cast<int>(1000 / frq_cal));
 
+    auto nex_render = std::chrono::steady_clock::now();
+    auto nex_cal = std::chrono::steady_clock::now();
+    auto states = statePath->as<og::PathGeometric>()->getStates();
+
+    while (!glfwWindowShouldClose(client.getWindow()))
+    {
+        auto now = std::chrono::steady_clock::now();
+        // rendering loop
+        if (now > nex_render)
+        {
+            client.render();
+            glfwPollEvents();
+            nex_render += rate_render;
+        }
+        if (now > nex_cal)
+        {
+            // planning loop
+            count++;
+            if (count > states.size())
+            {
+                continue;
+            }
+            const auto point = states[count-1];
+            const auto statePt = point->as<ob::RealVectorStateSpace::StateType>();
+            auto q = std::vector<double>(statePt->values, statePt->values + 5);
+            client.setConfig(std::vector<double>(statePt->values, statePt->values + 5));
+            nex_cal += rate_cal;
+        }
+    }
 
 
     // print the elems in the collConfig

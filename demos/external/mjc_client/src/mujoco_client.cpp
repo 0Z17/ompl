@@ -320,31 +320,43 @@ void mc::MujocoClient::printCollisionInfo() const
 // }
 
 void mc::MujocoClient::mouse_button_callback_impl(GLFWwindow* window, int button, int action, int mods) {
-    if (button == GLFW_MOUSE_BUTTON_LEFT) {
-        if (action == GLFW_PRESS) {
-            isMousePressed_ = true;
-            glfwGetCursorPos(window, &lastMouseX_, &lastMouseY_);
-        } else if (action == GLFW_RELEASE) {
-            isMousePressed_ = false;
-        }
-    }
+    buttonLeft_ = (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT)==GLFW_PRESS);
+    buttonMiddle_ = (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE)==GLFW_PRESS);
+    buttonRight_ = (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT)==GLFW_PRESS);
+
+    // update mouse position
+    glfwGetCursorPos(window, &lastMouseX_, &lastMouseY_);
 }
 
 void mc::MujocoClient::cursor_position_callback_impl(GLFWwindow* window, double xpos, double ypos) {
-    if (isMousePressed_) {
-        double dx = xpos - lastMouseX_;
-        double dy = ypos - lastMouseY_;
-        lastMouseX_ = xpos;
-        lastMouseY_ = ypos;
-
-        // Update camera angles
-        cam_.azimuth += dx * 0.1; // Adjust rotation speed
-        cam_.elevation -= dy * 0.1;
-
-        // Clamp elevation to prevent flipping
-        if (cam_.elevation > 90) cam_.elevation = 90;
-        if (cam_.elevation < -90) cam_.elevation = -90;
+    if (!buttonLeft_ && !buttonMiddle_ && !buttonRight_) {
+        return;
     }
+
+
+    const double dx = xpos - lastMouseX_;
+    const double dy = ypos - lastMouseY_;
+    lastMouseX_ = xpos;
+    lastMouseY_ = ypos;
+
+    // get current window size
+    int width, height;
+    glfwGetWindowSize(window, &width, &height);
+
+    // get shift key state
+    bool mod_shift = (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)==GLFW_PRESS ||
+                      glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT)==GLFW_PRESS);
+
+    // determine action based on mouse button
+    mjtMouse action;
+    if (buttonRight_) {
+        action = mod_shift ? mjMOUSE_MOVE_H : mjMOUSE_MOVE_V;
+    } else if (buttonLeft_) {
+        action = mod_shift ? mjMOUSE_ROTATE_H : mjMOUSE_ROTATE_V;
+    } else {
+        action = mjMOUSE_ZOOM;
+    }
+    mjv_moveCamera(model_.get(), action, dx/height, dy/height, &scene_, &cam_);
 }
 
 void mc::MujocoClient::scroll_callback_impl(GLFWwindow* window, double xoffset, double yoffset) {

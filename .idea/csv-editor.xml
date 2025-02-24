@@ -31,6 +31,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\demos\MyPlanners\test_output\refine_path_FMT.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\refine_path_PCSFMT.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\demos\MyPlanners\test_output\state_path_FMT.csv">
           <value>
             <Attribute>

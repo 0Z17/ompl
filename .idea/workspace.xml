@@ -7,6 +7,7 @@
     <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="3" type="long" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -93,8 +94,21 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4458a72d-a736-4beb-9c5a-bef049197ce3" name="更改" comment="">
+    <list default="true" id="4458a72d-a736-4beb-9c5a-bef049197ce3" name="更改" comment="commit again">
+      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/demos/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/FMT_planner_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/FMT_planner_data.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/PCSFMT_planner_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/PCSFMT_planner_data.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_FMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_FMT.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT_pre.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/external/mjc_client/include/mujoco_client.h" beforeDir="false" afterPath="$PROJECT_DIR$/demos/external/mjc_client/include/mujoco_client.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/external/mjc_client/src/mujoco_client.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/external/mjc_client/src/mujoco_client.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/PCSFMT.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/PCSFMT.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,39 +137,8 @@
     <setting file="file://$PROJECT_DIR$/demos/external/mjc_client/src/mujoco_client.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/demos/external/surface_contact/src/nurbs.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/ompl/base/src/StateSpace.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../usr/local/include/pcl-1.14/pcl/surface/on_nurbs/fitting_surface_tdm.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../usr/local/surface_contact/include/nurbs.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
@@ -176,6 +159,8 @@
   &quot;keyToString&quot;: {
     &quot;C/C++ 文件.test_demo.cpp.executor&quot;: &quot;Run&quot;,
     &quot;CMake 应用程序.collision_checker_test.executor&quot;: &quot;Run&quot;,
+    &quot;CMake 应用程序.demo_ConstrainedPlanningSphere.executor&quot;: &quot;Run&quot;,
+    &quot;CMake 应用程序.demo_ConstrainedPlanningTorus.executor&quot;: &quot;Debug&quot;,
     &quot;CMake 应用程序.demo_PcsFmtTest.executor&quot;: &quot;Run&quot;,
     &quot;CMake 应用程序.demo_ik_test.executor&quot;: &quot;Run&quot;,
     &quot;CMake 应用程序.test_demo.executor&quot;: &quot;Run&quot;,
@@ -197,7 +182,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CPPToolchains&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -496,11 +481,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="surface_contact" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="surface_contact" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="test_2dcircles_opt_geometric" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_2dcircles_opt_geometric" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_2dcircles_opt_geometric">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -522,11 +502,6 @@
       </method>
     </configuration>
     <configuration name="test_constraint_sphere" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_constraint_sphere" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_constraint_sphere">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="test_demo" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_demo" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_demo">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -613,13 +588,11 @@
       <item itemvalue="CMake 应用程序.ompl" />
       <item itemvalue="CMake 应用程序.py_ompl" />
       <item itemvalue="CMake 应用程序.regression_test" />
-      <item itemvalue="CMake 应用程序.surface_contact" />
       <item itemvalue="CMake 应用程序.test_2dcircles_opt_geometric" />
       <item itemvalue="CMake 应用程序.test_2dmap_control" />
       <item itemvalue="CMake 应用程序.test_2dmap_geometric_simple" />
       <item itemvalue="CMake 应用程序.test_2dpath_simplifying" />
       <item itemvalue="CMake 应用程序.test_constraint_sphere" />
-      <item itemvalue="CMake 应用程序.test_demo" />
       <item itemvalue="CMake 应用程序.test_experience_planning" />
       <item itemvalue="CMake 应用程序.test_nearestneighbors" />
       <item itemvalue="CMake 应用程序.test_planner_data_control" />
@@ -670,8 +643,38 @@
       <workItem from="1738463036925" duration="14659000" />
       <workItem from="1738633244177" duration="1319000" />
       <workItem from="1738802676655" duration="7355000" />
-      <workItem from="1738892781128" duration="12198000" />
+      <workItem from="1738892781128" duration="13233000" />
+      <workItem from="1738998947622" duration="9912000" />
+      <workItem from="1739151975145" duration="5794000" />
+      <workItem from="1739272446796" duration="8748000" />
+      <workItem from="1739349586477" duration="2601000" />
+      <workItem from="1739436648198" duration="11953000" />
+      <workItem from="1739515497471" duration="24000" />
+      <workItem from="1739515554366" duration="2330000" />
+      <workItem from="1739584282722" duration="3248000" />
+      <workItem from="1739778636595" duration="604000" />
+      <workItem from="1739779256849" duration="3150000" />
+      <workItem from="1739849081100" duration="5608000" />
+      <workItem from="1739865376988" duration="686000" />
+      <workItem from="1739881452266" duration="3168000" />
+      <workItem from="1739934742429" duration="2288000" />
+      <workItem from="1739956022286" duration="5482000" />
+      <workItem from="1740016297446" duration="14044000" />
+      <workItem from="1740058665301" duration="2249000" />
+      <workItem from="1740187320958" duration="3544000" />
+      <workItem from="1740294780535" duration="4399000" />
+      <workItem from="1740311851785" duration="5407000" />
+      <workItem from="1740362395179" duration="13845000" />
     </task>
+    <task id="LOCAL-00001" summary="commit again">
+      <option name="closed" value="true" />
+      <created>1738997422491</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1738997422491</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -682,7 +685,20 @@
     <isAutomaticFoundErrors value="true" />
     <isAutomaticReloadCMake value="true" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="commit again" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit again" />
+  </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/demos/constraint/ConstrainedPlanningTorus.cpp</url>
+          <line>36</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="CMakeRunConfiguration">
         <watch expression="i" />

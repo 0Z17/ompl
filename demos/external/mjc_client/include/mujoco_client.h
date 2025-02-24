@@ -67,6 +67,7 @@ public:
     void mouse_button_callback_impl(GLFWwindow* window, int button, int action, int mods);
     void cursor_position_callback_impl(GLFWwindow* window, double xpos, double ypos);
     void scroll_callback_impl(GLFWwindow* window, double xoffset, double yoffset);
+    [[nodiscard]] GLFWwindow* getWindow() const { return window_.get(); }
 
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     {
@@ -133,6 +134,7 @@ protected:
     mjvCamera cam_;
     mjvOption opt_;
 
+
     // Model parameters
     double yawOffset_{0.0};
     double jointOffset_{-M_PI/6.0};
@@ -169,9 +171,11 @@ protected:
 
     // GLFW window and context
     std::shared_ptr<GLFWwindow> window_;
-    bool isMousePressed_{false};
     double lastMouseX_{0.0};
     double lastMouseY_{0.0};
+    bool buttonLeft_{false};
+    bool buttonMiddle_{false};
+    bool buttonRight_{false};
 };
 } // namespace mujoco_client
 
