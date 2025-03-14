@@ -11,8 +11,8 @@ int main()
 {
     // Load the point cloud
     // std::string pcdFile = "/home/wsl/proj/pcl/test/milk.pcd";
-    // std::string pcdFile = "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd";
-    std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_blade_trans_02.pcd";
+     std::string pcdFile = "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd";
+//    std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_blade_trans_02.pcd";
     const auto nurbs = new sr::Nurbs(pcdFile);
     nurbs->fitSurface();
     auto ik = new dp::InvKin(nurbs);

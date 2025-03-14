@@ -4,6 +4,7 @@
 #include <ompl/geometric/planners/fmt/FMT.h>
 #include <ompl/geometric/SimpleSetup.h>
 #include <ompl/base/objectives/EstimatePathLengthOptimizationObjective.h>
+#include <ompl/base/objectives/WeightedPathLengthOptimizationObjective.h>
 #include <ompl/base/objectives/PathLengthOptimizationObjective.h>
 #include "invkin.h"
 #include "nurbs.h"
@@ -15,6 +16,8 @@
 #include <chrono>
 #include <thread>
 
+#include "ConstrainedPlanningCommon.h"
+
 namespace ob = ompl::base;
 namespace og = ompl::geometric;
 namespace dp = dynamic_planning;
@@ -24,7 +27,8 @@ namespace mc = mujoco_client;
 enum PlanningType
 {
     FMT,
-    PCSFMT
+    PCSFMT,
+    AtlasRRTstar,
 };
 
 std::string pcdFile = "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd";
@@ -33,6 +37,8 @@ std::string pcdFile = "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd";
 // std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_cylinder.pcd";
 // std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_EXP.pcd";
 // std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_turbine.pcd";
+// std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/surface_complex.pcd";
+// std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/blade_segment.pcd";
 std::string modelFile = "/home/wsl/proj/skyvortex_mujoco/scene.xml";
 const auto nurbs = new sr::Nurbs(pcdFile);
 auto ik = new dp::InvKin(nurbs);
@@ -61,6 +67,48 @@ bool isStateValid(const ob::State *state)
     // return true;
 }
 
+std::vector<std::vector<double>> read_csv(const std::string& filename) {
+    std::vector<std::vector<double>> data;
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        std::cerr << "Error opening file: " << filename << std::endl;
+        return data;
+    }
+
+    std::string line;
+    bool header_skipped = false;
+
+    while (std::getline(file, line)) {
+        if (!header_skipped) {
+            header_skipped = true;
+            continue; // skip header line
+        }
+
+        std::vector<double> row;
+        std::stringstream ss(line);
+        std::string value;
+
+        while (std::getline(ss, value, ',')) {
+            try {
+                row.push_back(std::stod(value));
+            } catch (const std::exception& e) {
+                std::cerr << "Error converting value: " << value
+                          << " - " << e.what() << std::endl;
+                row.clear();
+                break;
+            }
+        }
+
+        if (!row.empty()) {
+            data.push_back(row);
+        }
+    }
+
+    file.close();
+    return data;
+}
+
 bool isStateValidForQ(const ob::State *state)
 {
     // alway return true for test
@@ -68,7 +116,22 @@ bool isStateValidForQ(const ob::State *state)
     //
     auto q =state->as<ob::RealVectorStateSpace::StateType>()->values;
     auto vec = std::vector<double>(q, q + 5);
-    OMPL_INFORM("state: %f, %f, %f, %f, %f", vec[0], vec[1], vec[2], vec[3], vec[4]);
+    // OMPL_INFORM("check state: %f, %f, %f, %f, %f", vec[0], vec[1], vec[2], vec[3], vec[4]);
+    auto ret = client.isCollision(std::vector<double>(q, q + 5));
+    // OMPL_INFORM("cc result: %s", ret ? "true" : "false");
+    // if (ret) collConfig.push_back(q);
+    return !ret;
+    // return true;
+}
+
+bool isStateValidForAtlas(const ob::State *state)
+{
+    // alway return true for test
+    // // @todo: implement a real state validity checking function
+    //
+    auto q = state->as<ob::ConstrainedStateSpace::StateType>()->getState()->as<ob::RealVectorStateSpace::StateType>()->values;
+    auto vec = std::vector<double>(q, q + 5);
+    // OMPL_INFORM("check state: %f, %f, %f, %f, %f", vec[0], vec[1], vec[2], vec[3], vec[4]);
     auto ret = client.isCollision(std::vector<double>(q, q + 5));
     // OMPL_INFORM("cc result: %s", ret ? "true" : "false");
     // if (ret) collConfig.push_back(q);
@@ -103,7 +166,7 @@ double getPathCost(const ob::PathPtr &path, const std::vector<double> &weight)
         if (it != pathStates.begin())
         {
             const auto prevStatePt = (*(it-1))->as<ob::RealVectorStateSpace::StateType>();
-            double test = std::pow(2,2);
+            // std::cout << statePt->values[0] << " " << statePt->values[1] << " " << statePt->values[2] << " " << statePt->values[3] << " " << statePt->values[4] << std::endl;
             cost += std::sqrt(  std::pow(weight[0] * (statePt->values[0] - prevStatePt->values[0]), 2) +
                                 std::pow(weight[1] * (statePt->values[1] - prevStatePt->values[1]), 2) +
                                 std::pow(weight[2] * (statePt->values[2] - prevStatePt->values[2]), 2) +
@@ -131,25 +194,44 @@ double getOperatorMovement(const ob::PathPtr &path)
     return movement;
 }
 
-void getPlanningData(const int idx, const ob::PathPtr &path, const double planning_time, const std::string &filename)
+void getPlanningData(const int idx, const ob::PathPtr &path, const double planning_time, const std::string &filename, bool isValid = true)
 {
-    std::ofstream file(filename);
+    std::ofstream file(filename, std::ios::app);
     // if the file is empty, write the header
     if (file.tellp() == 0)
     {
         file << "idx,planning_time,path_cost,operator_movement\n";
     }
-    file << idx << ","
-         << planning_time << ","
-         << getPathCost(path, weights) << ","
-         << getOperatorMovement(path) << "\n";
-
+    if (isValid)
+    {
+        file << idx << ","
+             << planning_time << ","
+             << getPathCost(path, weights) << ","
+             << getOperatorMovement(path) << "\n";
+    }
+    else
+    {
+        file << idx << ","
+             << "NaN" << ","
+             << "NaN" << ","
+             << "NaN" << "\n";
+    }
+    file.close();
 }
+
 
 void plan(PlanningType planning_type)
 {
-    unsigned int seed = 114514;
-    ompl::RNG::setSeed(seed);
+    ik->setLinkLength(0.96);
+    // ik->setLinkLength(1.0);
+    // unsigned int seed = 114514;
+    // ompl::RNG::setSeed(seed);
+
+    // std::vector<double> start_config = {0.2, 0.8};
+    // std::vector<double> goal_config = {0.8, 0.2};
+
+    std::vector<double> start_config = {0.2, 0.1};
+    std::vector<double> goal_config = {0.8, 0.9};
 
     /* params for the planner */
     uint paramDimensionsNum = 2;
@@ -158,6 +240,78 @@ void plan(PlanningType planning_type)
 
     auto space(std::make_shared<ob::RealVectorStateSpace>(paramDimensionsNum));
     auto stateSpace(std::make_shared<ob::RealVectorStateSpace>(stateDimensionsNum));
+
+    // Atlas configuration Space
+    class SurfaceConstraint : public ob::Constraint
+    {
+    public:
+        // SurfaceConstraint(const sr::Nurbs* nurbs) : ompl::base::Constraint(5, 3, 3e-2), nurbs_(nurbs) {};
+        SurfaceConstraint(const sr::Nurbs* nurbs) : ompl::base::Constraint(5, 3, 3e-3), nurbs_(nurbs) {};
+
+        void function(const Eigen::Ref<const Eigen::VectorXd> &x, Eigen::Ref<Eigen::VectorXd> out) const override
+        {
+            const auto peFull = ik->qToQe(x);
+            // std::cout << x << std::endl;
+            const Eigen::Vector3d pe = peFull.head<3>();
+            double u, v;
+            nurbs_->getClosestPoint(pe, u, v);
+            Eigen::Vector3d surface_point;
+            nurbs_->getPos(u, v, surface_point);
+            auto qs = ik->xToQ(u,v);
+            const double distance = (pe-surface_point).norm();
+            out[0] = distance;
+            out[1] = qs[3] - x[3];
+            out[2] = qs[4] - x[4];
+
+        }
+
+        // void jacobian(const Eigen::Ref<const Eigen::VectorXd> &x, Eigen::Ref<Eigen::MatrixXd> out) const override
+        // {
+        //     auto J = ik->getJacobian(x);
+        //     const auto peFull = ik->qToQe(x);
+        //     const Eigen::Vector3d pe = peFull.head<3>();
+        //     double u, v;
+        //     nurbs_->getClosestPoint(pe, u, v);
+        //     Eigen::Vector3d normal;
+        //     nurbs_->getNormal(u, v, normal);
+        //     auto jacbCon = normal.transpose() * J.block(0, 0, 3, 5);
+        //     out.block(0, 0, 1, 5) = jacbCon;
+        //     out.block(1, 0, 2, 5) = J.block(1, 0, 2, 5);
+        // }
+
+    private:
+        const sr::Nurbs* nurbs_;
+    };
+
+
+    auto rvss = std::make_shared<ob::RealVectorStateSpace>(5);
+
+    ob::RealVectorBounds stateBounds(5);
+    std::vector<double> bound_x{0.0, 3.0}, bound_y{-3.0, 3.0}, bound_z{0.0, 3.5},
+                        bound_psi{-M_PI/2, M_PI/2}, bound_theta{-M_PI/2, M_PI/2};
+
+    /** For blade segment */
+    // std::vector<double> bound_x{4.0, 8.5}, bound_y{13.0, 28.0}, bound_z{60.0, 72.0},
+    //                 bound_psi{-1*M_PI/6, 1*M_PI/6}, bound_theta{-M_PI/2, M_PI/2};
+
+    stateBounds.setLow(0, bound_x[0]);
+    stateBounds.setHigh(0, bound_x[1]);
+    stateBounds.setLow(1, bound_y[0]);
+    stateBounds.setHigh(1, bound_y[1]);
+    stateBounds.setLow(2, bound_z[0]);
+    stateBounds.setHigh(2, bound_z[1]);
+    stateBounds.setLow(3, bound_psi[0]);
+    stateBounds.setHigh(3, bound_psi[1]);
+    stateBounds.setLow(4, bound_theta[0]);
+    stateBounds.setHigh(4, bound_theta[1]);
+    rvss->setBounds(stateBounds);
+
+    auto constraint = std::make_shared<SurfaceConstraint>(nurbs);
+    auto css = std::make_shared<ob::AtlasStateSpace>(rvss, constraint);
+    auto csi = std::make_shared<ob::ConstrainedSpaceInformation>(css);
+
+    csi->setStateValidityChecker(isStateValidForAtlas);
+    csi->setup();
 
     ob::RealVectorBounds bounds(paramDimensionsNum);
     bounds.setLow(0.0);
@@ -183,12 +337,59 @@ void plan(PlanningType planning_type)
     if (planning_type == PCSFMT)
     // set the optimal objective
     {
-         opt = std::make_shared<ob::EstimatePathLengthOptimizationObjective>(si);
+        opt = std::make_shared<ob::EstimatePathLengthOptimizationObjective>(si);
     }
     else if (planning_type == FMT)
     {
-         opt = std::make_shared<ob::PathLengthOptimizationObjective>(si);
+        opt = std::make_shared<ob::PathLengthOptimizationObjective>(si);
     }
+    else if (planning_type == AtlasRRTstar)
+    {
+        // opt = std::make_shared<ob::PathLengthOptimizationObjective>(csi);
+        Eigen::Matrix<double, 5, 1> costWeights;
+        costWeights << weights[0] , weights[1] , weights[2],  weights[3] , weights[4];
+        opt = std::make_shared<ob::WeightedPathLengthOptimizationObjective>(csi, costWeights);
+    }
+
+
+    auto ss = std::make_shared<og::SimpleSetup>(csi);
+
+
+    // setting for the AtlasRRTstar planner
+    auto state_config_ls = ik->xToQ(start_config[0], start_config[1]);
+    std::cout << "state_config_ls: " << state_config_ls.transpose() << std::endl;
+    double cu, cv;
+    auto qe = ik->qToQe(state_config_ls);
+    auto qs = ik->xToQs(start_config[0], start_config[1]);
+    std::cout << "qs: " << qs.transpose() << std::endl;
+    std::cout << "qe: " << qe.transpose() << std::endl;
+    nurbs->getClosestPoint(state_config_ls.head<3>(), cu, cv);
+    auto surface_point = ik->xToQs(cu, cv);
+    std::cout << "surface_point: " << surface_point.transpose() << std::endl;
+    std::cout << "closest point: " << cu << ", " << cv << std::endl;
+    auto goal_config_ls = ik->xToQ(goal_config[0], goal_config[1]);
+
+    ob::ScopedState<> state_start(css);
+    ob::ScopedState<> state_goal(css);
+    state_start->as<ob::ConstrainedStateSpace::StateType>()->copy(state_config_ls);
+    state_goal->as<ob::ConstrainedStateSpace::StateType>()->copy(goal_config_ls);
+
+    css->as<ob::AtlasStateSpace>()->anchorChart(state_start.get());
+    css->as<ob::AtlasStateSpace>()->anchorChart(state_goal.get());
+
+    ss->setStartAndGoalStates(state_start, state_goal);
+    ss->setOptimizationObjective(opt);
+
+    auto plannerCon = std::make_shared<og::RRTstar>(csi);
+    ss->setPlanner(plannerCon);
+    ss->setup();
+    auto maxMotion = plannerCon->getRange();
+    // plannerCon->setRange(0.4);
+    std::cout << maxMotion << std::endl;
+    // plannerCon->getSpecs().approximateSolutions = false;
+
+
+
 
     // set state validity checking for this space
     si->setStateValidityChecker(isStateValid);
@@ -196,11 +397,12 @@ void plan(PlanningType planning_type)
     // create a random start state
     ob::ScopedState<> start(space);
     // start.random();
-    std::vector<double> start_config = {0.2, 0.1};
-    std::vector<double> goal_config = {0.8, 0.9};
+    // std::vector<double> start_config = {0.2, 0.1};
+    // std::vector<double> goal_config = {0.8, 0.9};
 
     // std::vector<double> start_config = {0.9, 0.5};
     // std::vector<double> goal_config = {0.1, 0.1};
+
 
 
     // For experiment
@@ -219,6 +421,8 @@ void plan(PlanningType planning_type)
     goal->as<ob::RealVectorStateSpace::StateType>()->values[0] = goal_config[0];
     goal->as<ob::RealVectorStateSpace::StateType>()->values[1] = goal_config[1];
 
+
+
     // create a problem instance
     auto pdef(std::make_shared<ob::ProblemDefinition>(si));
 
@@ -232,12 +436,11 @@ void plan(PlanningType planning_type)
     // const auto nurbs = new sr::Nurbs(pcdFile);
 
     // auto ik = new dp::InvKin(nurbs);
-    ik->setLinkLength(0.97);
 
     // create a planner for the defined space
     ob::PlannerPtr planner;
     // int sampleNum = 20000;
-    int sampleNum = 20000;
+    int sampleNum = 5000;
     if (planning_type == PCSFMT)
     {
         planner = std::make_shared<og::PCSFMT>(si, stateSi, ik);
@@ -251,22 +454,36 @@ void plan(PlanningType planning_type)
     }
 
 
-    // set the problem we are trying to solve for the planner
-    planner->setProblemDefinition(pdef);
+    if (planning_type != AtlasRRTstar)
+    {
+        // set the problem we are trying to solve for the planner
+        planner->setProblemDefinition(pdef);
 
-    // perform setup steps for the planner
-    planner->setup();
+        // perform setup steps for the planner
+        planner->setup();
 
 
-    // print the settings for this space
-    si->printSettings(std::cout);
+        // print the settings for this space
+        si->printSettings(std::cout);
 
-    // print the problem settings
-    pdef->print(std::cout);
+        // print the problem settings
+        pdef->print(std::cout);
+    }
+
 
     ompl::time::point start_time = ompl::time::now();
     // attempt to solve the problem within one second of planning time
-    ob::PlannerStatus solved = planner->ob::Planner::solve(20.0);
+    ob::PlannerStatus solved;
+    if (planning_type == AtlasRRTstar)
+    {
+        // solved = ss->solve(1.5);
+        solved = ss->solve(5.0);
+        // solved = ss->solve(120.0);
+    }
+    else
+    {
+        solved = planner->ob::Planner::solve(20.0);
+    }
     planning_time = ompl::time::seconds(ompl::time::now() - start_time);
     OMPL_INFORM("Planning time: %.3f seconds", planning_time);
 
@@ -292,7 +509,10 @@ void plan(PlanningType planning_type)
         // planner->getPlannerData(data);
 
         // print the path to screen
-        path->print(std::cout);
+        if (planning_type != AtlasRRTstar)
+        {
+            path->print(std::cout);
+        }
     }
     else
     {
@@ -309,91 +529,219 @@ void plan(PlanningType planning_type)
         std::cout << "No solution found" << std::endl;
     }
 
-    // ob::ScopedState<> s(stateSi);
-    ob::State *s = stateSi->allocState();
-   //  // Postprocess
-    for (auto point : path->as<og::PathGeometric>()->getStates())
+    if (planning_type != AtlasRRTstar)
     {
-        auto u = point->as<ob::RealVectorStateSpace::StateType>()->values[0];
-        auto v = point->as<ob::RealVectorStateSpace::StateType>()->values[1];
-        auto q = ik->xToQ(u,v);
         // ob::ScopedState<> s(stateSi);
-        auto stateS = s->as<ob::RealVectorStateSpace::StateType>();
-        stateS->values[0] = q(0);
-        stateS->values[1] = q(1);
-        stateS->values[2] = q(2);
-        // if (q(3) < 0) q(3) += 2*M_PI;
-        stateS->values[3] = q(3);
-        stateS->values[4] = q(4);
+        ob::State *s = stateSi->allocState();
+        //  // Postprocess
+        for (auto point : path->as<og::PathGeometric>()->getStates())
+        {
+            auto u = point->as<ob::RealVectorStateSpace::StateType>()->values[0];
+            auto v = point->as<ob::RealVectorStateSpace::StateType>()->values[1];
+            auto q = ik->xToQ(u,v);
+            // ob::ScopedState<> s(stateSi);
+            auto stateS = s->as<ob::RealVectorStateSpace::StateType>();
+            stateS->values[0] = q(0);
+            stateS->values[1] = q(1);
+            stateS->values[2] = q(2);
+            // if (q(3) < 0) q(3) += 2*M_PI;
+            stateS->values[3] = q(3);
+            stateS->values[4] = q(4);
 
-        OMPL_INFORM("state %f, %f, %f, %f, %f", stateS->values[0], stateS->values[1], stateS->values[2],
-            stateS->values[3], stateS->values[4]);
-        statePath->as<og::PathGeometric>()->append(s->as<ob::State>());
-   }
+            OMPL_INFORM("state %f, %f, %f, %f, %f", stateS->values[0], stateS->values[1], stateS->values[2],
+                stateS->values[3], stateS->values[4]);
+            statePath->as<og::PathGeometric>()->append(s->as<ob::State>());
+        }
 
-    og::PathSimplifier ps(stateSi);
-    ps.smoothBSpline(*statePath->as<og::PathGeometric>(), 3, 0.0005);
+        og::PathSimplifier ps(stateSi);
+        ps.smoothBSpline(*statePath->as<og::PathGeometric>(), 3, 0.0005);
+    }
+    else
+    {
+
+        auto pathAtlas = ss->getSolutionPath();
+        pathAtlas.print(std::cout);
+
+        OMPL_INFORM("Interpolating path...");
+        pathAtlas.interpolate();
+
+        if (!pathAtlas.check())
+            OMPL_WARN("Interpolated simplified path fails check!");
+
+        std::ofstream file("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_AtlasRRTstar.csv");
+        file << "X,Y,Z,Psi,Theta\n";
+
+
+        for (auto point : pathAtlas.getStates())
+        {
+            ob::State *s = csi->allocState();
+            const Eigen::Map<Eigen::VectorXd> &point_data = *point->as<ob::ConstrainedStateSpace::StateType>();
+            csi->copyState(s, point);
+            const Eigen::Map<Eigen::VectorXd> &stateS = *s->as<ob::ConstrainedStateSpace::StateType>();
+
+            file << point_data[0]
+            << "," << point_data[1]
+            << "," << point_data[2]
+            << "," << point_data[3]
+            << "," << point_data[4]
+            << "\n";
+
+            OMPL_INFORM("state %f, %f, %f, %f, %f", stateS[0], stateS[1], stateS[2],
+                                                    stateS[3], stateS[4]);
+            // statePath->as<og::PathGeometric>()->append(s->as<ob::State>());
+        }
+
+        // og::PathSimplifier ps(csi);
+        // ps.smoothBSpline(*statePath->as<og::PathGeometric>(), 3, 0.0005);
+
+    }
+
+
 }
 
 int main(int argc, char **argv)
 {
     int idx = 0;
+    // int planningRound = 200;
+    int planningRound = 1;
 
-    PlanningType planning_type = PCSFMT;
-    // PlanningType planning_type = FMT;
+    bool isRenderResult = false;
+    // bool isRenderResult = true;
+    // PlanningType planning_type = PCSFMT;
+    PlanningType planning_type = FMT;
+    // PlanningType planning_type = AtlasRRTstar;
     // glfwMakeContextCurrent(nullptr);
     // nurbs->fitSurface(Eigen::Vector3d::UnitZ());
     nurbs->fitSurface();
     nurbs->saveSurfaceAsStl("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/surface_EXP.stl");
-    plan(planning_type);
-    int count = 0;
 
-    if (planning_type == PCSFMT)
+    for (int round =  0; round < planningRound; round++)
     {
-        getPathCsv(statePath, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_PCSFMT.csv");
-        getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_PCSFMT.csv");
-    }
-    else if (planning_type == FMT)
-    {
-        getPathCsv(statePath, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_FMT.csv");
-        getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_FMT.csv");
-    };
 
-    constexpr double frq_render = 100;
-    constexpr double frq_cal = 20;
-    constexpr auto rate_render = std::chrono::milliseconds(static_cast<int>(1000 / frq_render));
-    constexpr auto rate_cal = std::chrono::milliseconds(static_cast<int>(1000 / frq_cal));
+        idx ++;
+        plan(planning_type);
+        int count = 0;
 
-    auto nex_render = std::chrono::steady_clock::now();
-    auto nex_cal = std::chrono::steady_clock::now();
-    auto states = statePath->as<og::PathGeometric>()->getStates();
+        std::vector<std::vector<double>> data;
 
-    while (!glfwWindowShouldClose(client.getWindow()))
-    {
-        auto now = std::chrono::steady_clock::now();
-        // rendering loop
-        if (now > nex_render)
+        if (planning_type == AtlasRRTstar)
         {
-            client.render();
-            glfwPollEvents();
-            nex_render += rate_render;
+            data = read_csv("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_AtlasRRTstar.csv");
         }
-        if (now > nex_cal)
+
+        auto stateSpace(std::make_shared<ob::RealVectorStateSpace>(5));
+        auto stateSi(std::make_shared<ob::SpaceInformation>(stateSpace));
+
+        for (auto elem : data)
         {
-            // planning loop
-            count++;
-            if (count > states.size())
+            auto s = stateSi->allocState();
+            for (int i = 0; i < 5; i++)
             {
-                continue;
+                // std::cout << "elem " << elem[i] << " " << std::endl;
+                s->as<ob::RealVectorStateSpace::StateType>()->values[i] = elem[i];
             }
-            const auto point = states[count-1];
-            const auto statePt = point->as<ob::RealVectorStateSpace::StateType>();
-            auto q = std::vector<double>(statePt->values, statePt->values + 5);
-            client.setConfig(std::vector<double>(statePt->values, statePt->values + 5));
-            nex_cal += rate_cal;
-        }
-    }
 
+            statePath->as<og::PathGeometric>()->append(s->as<ob::State>());
+        }
+
+        if (planning_type == PCSFMT)
+        {
+            getPathCsv(statePath, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_PCSFMT.csv");
+            getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_PCSFMT.csv");
+        }
+        else if (planning_type == FMT)
+        {
+            getPathCsv(statePath, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_FMT.csv");
+            getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_FMT.csv");
+        }
+        else
+        {
+            // getPathCsv(statePath, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_AtlasRRTstar.csv");
+            const ob::State *lastState = statePath->as<og::PathGeometric>()->getStates().back();
+            dp::Vector5d lastConfig;
+            lastConfig << lastState->as<ob::RealVectorStateSpace::StateType>()->values[0],
+            lastState->as<ob::RealVectorStateSpace::StateType>()->values[1],
+            lastState->as<ob::RealVectorStateSpace::StateType>()->values[2],
+            lastState->as<ob::RealVectorStateSpace::StateType>()->values[3],
+            lastState->as<ob::RealVectorStateSpace::StateType>()->values[4];
+
+            auto goalConfig = ik->xToQ(0.8, 0.9);
+
+            bool isValid = true;
+            if ((goalConfig - lastConfig).norm() > 0.3 )
+            {
+                isValid = false;
+            }
+            else
+            {
+                getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_AtlasRRTstar.csv", isValid);
+                // break;
+            }
+
+        }
+
+        if (isRenderResult)
+        {
+            constexpr double frq_render = 100;
+            // constexpr double frq_cal = 20;
+            constexpr double frq_cal = 20;
+            constexpr auto rate_render = std::chrono::milliseconds(static_cast<int>(1000 / frq_render));
+            constexpr auto rate_cal = std::chrono::milliseconds(static_cast<int>(1000 / frq_cal));
+
+            auto nex_render = std::chrono::steady_clock::now();
+            auto nex_cal = std::chrono::steady_clock::now();
+            auto states = statePath->as<og::PathGeometric>()->getStates();
+
+            while (!glfwWindowShouldClose(client.getWindow()))
+            {
+                auto now = std::chrono::steady_clock::now();
+                // rendering loop
+                if (now > nex_render)
+                {
+                    client.render();
+                    glfwPollEvents();
+                    nex_render += rate_render;
+                }
+                if (now > nex_cal)
+                {
+                    // planning loop
+                    count++;
+                    if (count > states.size())
+                    {
+                        continue;
+                    }
+                    if (planning_type != AtlasRRTstar)
+                    {
+                        const auto point = states[count-1];
+                        const auto statePt = point->as<ob::RealVectorStateSpace::StateType>();
+                        auto q = std::vector<double>(statePt->values, statePt->values + 5);
+                        client.setConfig(std::vector<double>(statePt->values, statePt->values + 5));
+                        nex_cal += rate_cal;
+                    }
+                    else
+                    {
+                        if (count > data.size())
+                        {
+                            continue;
+                        }
+                        auto q = data[count-1];
+                        client.setConfig(q);
+                        nex_cal += rate_cal;
+
+                        // const auto point = states[count-1];
+                        // // const auto statePt = point->as<ob::RealVectorStateSpace::StateType>();
+                        // const auto statePt = point->as<ob::ConstrainedStateSpace::StateType>()->getState()->as<ob::RealVectorStateSpace::StateType>();
+                        // auto q = std::vector<double>(statePt->values, statePt->values + 5);
+                        // std::cout<< q[0] << " " << q[1] << " " << q[2] << " " << q[3] << " " << q[4] << std::endl;
+                        // client.setConfig(std::vector<double>(statePt->values, statePt->values + 5));
+                        // nex_cal += rate_cal;
+                    }
+
+                }
+            }
+        }
+
+    }
 
     // print the elems in the collConfig
     // for (auto elem : collConfig)

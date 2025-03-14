@@ -85,6 +85,7 @@ if (OMPL_BUILD_DEMOS)
             ${CMAKE_CURRENT_SOURCE_DIR}/external/cpp_client
             ${CMAKE_CURRENT_SOURCE_DIR}/external/mjc_client/include
             ${CMAKE_CURRENT_SOURCE_DIR}/external/surface_contact/include
+            ${CMAKE_CURRENT_SOURCE_DIR}/constraint
     )
 
 #    add_library(collision_checker STATIC external/CollisionChecker.cpp)

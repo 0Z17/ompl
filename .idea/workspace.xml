@@ -7,7 +7,7 @@
     <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="3" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="4" type="long" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -91,10 +91,23 @@
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+      <configuration PROFILE_NAME="Release" ENABLED="true" CONFIG_NAME="Release" />
     </configurations>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4458a72d-a736-4beb-9c5a-bef049197ce3" name="更改" comment="commit again">
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp.bak" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_AtlasRRTstar_S3_3.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_AtlasRRTstar_S1.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_AtlasRRTstar_S2.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_AtlasRRTstar_S3.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_S1.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_S2.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_S3.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT_S1.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT_S2.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ompl/base/objectives/WeightedPathLengthOptimizationObjective.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ompl/base/objectives/src/WeightedPathLengthOptimizationObjective.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -102,20 +115,21 @@
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/FMT_planner_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/FMT_planner_data.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/PCSFMT_planner_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/PCSFMT_planner_data.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_FMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_FMT.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT_pre.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/nurbs.stl" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/segment.stl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_FMT.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_FMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_FMT.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_PCSFMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_PCSFMT.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/external/mjc_client/include/mujoco_client.h" beforeDir="false" afterPath="$PROJECT_DIR$/demos/external/mjc_client/include/mujoco_client.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/external/mjc_client/src/mujoco_client.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/external/mjc_client/src/mujoco_client.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/PCSFMT.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/PCSFMT.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/external/surface_contact/src/test_demo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/external/surface_contact/src/test_demo.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -139,6 +153,12 @@
     <setting file="file://$PROJECT_DIR$/src/ompl/base/src/StateSpace.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../usr/local/include/pcl-1.14/pcl/surface/on_nurbs/fitting_surface_tdm.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../usr/local/surface_contact/include/nurbs.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
@@ -176,53 +196,57 @@
     &quot;ctest.advertisement.all.test.configuration.is.created&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/S/PhD/末端机构/code/cpp&quot;,
+    &quot;last_opened_file_path&quot;: &quot;//wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/test_output&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\demos\MyPlanners\test_output" />
+      <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\src\ompl\base\objectives" />
+      <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\src\ompl\base\objectives\src" />
+      <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\demos\MyPlanners" />
       <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\demos\external\surface_contact" />
     </key>
   </component>
   <component name="RunManager" selected="CMake 应用程序.demo_PcsFmtTest">
-    <configuration name="test_2dmap_ik" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_2dmap_ik" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_2dmap_ik" TEST_MODE="SUITE_TEST">
+    <configuration name="test_2dmap_ik" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_2dmap_ik" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_2dmap_ik" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_adjacency_list" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_adjacency_list" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_adjacency_list" TEST_MODE="SUITE_TEST">
+    <configuration name="test_adjacency_list" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_adjacency_list" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_adjacency_list" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_grid" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_grid" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_grid" TEST_MODE="SUITE_TEST">
+    <configuration name="test_grid" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_grid" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_grid" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_gridb" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_gridb" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_gridb" TEST_MODE="SUITE_TEST">
+    <configuration name="test_gridb" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_gridb" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_gridb" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_halton_sampling" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_halton_sampling" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_halton_sampling" TEST_MODE="SUITE_TEST">
+    <configuration name="test_halton_sampling" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_halton_sampling" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_halton_sampling" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_heap" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_heap" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_heap" TEST_MODE="SUITE_TEST">
+    <configuration name="test_heap" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_heap" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_heap" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -234,299 +258,302 @@
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_pdf" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_pdf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_pdf" TEST_MODE="SUITE_TEST">
+    <configuration name="test_pdf" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_pdf" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_pdf" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_planner_data" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_planner_data" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_planner_data" TEST_MODE="SUITE_TEST">
+    <configuration name="test_planner_data" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_planner_data" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_planner_data" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_ptc" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_ptc" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_ptc" TEST_MODE="SUITE_TEST">
+    <configuration name="test_ptc" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_ptc" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_ptc" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_random" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_random" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_random" TEST_MODE="SUITE_TEST">
+    <configuration name="test_random" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_random" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_random" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_state_operations" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_state_operations" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_state_operations" TEST_MODE="SUITE_TEST">
+    <configuration name="test_state_operations" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_state_operations" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_state_operations" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_state_spaces" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_state_spaces" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_state_spaces" TEST_MODE="SUITE_TEST">
+    <configuration name="test_state_spaces" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_state_spaces" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_state_spaces" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_state_storage" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_state_storage" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_state_storage" TEST_MODE="SUITE_TEST">
+    <configuration name="test_state_storage" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_state_storage" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_state_storage" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="clean_bindings" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="clean_bindings" CONFIG_NAME="Debug">
+    <configuration name="surface_contact" type="CMakeListConfigurationType" factoryName="CMakeListConfigurationFactory" temporary="true">
+      <method v="2" />
+    </configuration>
+    <configuration name="clean_bindings" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="clean_bindings" CONFIG_NAME="Release">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="collision_checker_test" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="collision_checker_test" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="collision_checker_test">
+    <configuration name="collision_checker_test" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="collision_checker_test" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="collision_checker_test">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_CForestCircleGridBenchmark" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_CForestCircleGridBenchmark" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_CForestCircleGridBenchmark">
+    <configuration name="demo_CForestCircleGridBenchmark" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_CForestCircleGridBenchmark" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_CForestCircleGridBenchmark">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_ConstrainedPlanningImplicitChain" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_ConstrainedPlanningImplicitChain" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_ConstrainedPlanningImplicitChain">
+    <configuration name="demo_ConstrainedPlanningImplicitChain" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_ConstrainedPlanningImplicitChain" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_ConstrainedPlanningImplicitChain">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_ConstrainedPlanningImplicitParallel" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_ConstrainedPlanningImplicitParallel" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_ConstrainedPlanningImplicitParallel">
+    <configuration name="demo_ConstrainedPlanningImplicitParallel" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_ConstrainedPlanningImplicitParallel" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_ConstrainedPlanningImplicitParallel">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_ConstrainedPlanningKinematicChain" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_ConstrainedPlanningKinematicChain" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_ConstrainedPlanningKinematicChain">
+    <configuration name="demo_ConstrainedPlanningKinematicChain" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_ConstrainedPlanningKinematicChain" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_ConstrainedPlanningKinematicChain">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_ConstrainedPlanningSphere" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_ConstrainedPlanningSphere" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_ConstrainedPlanningSphere">
+    <configuration name="demo_ConstrainedPlanningSphere" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_ConstrainedPlanningSphere" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_ConstrainedPlanningSphere">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_ConstrainedPlanningTorus" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_ConstrainedPlanningTorus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_ConstrainedPlanningTorus">
+    <configuration name="demo_ConstrainedPlanningTorus" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_ConstrainedPlanningTorus" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_ConstrainedPlanningTorus">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_Diagonal" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_Diagonal" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_Diagonal">
+    <configuration name="demo_Diagonal" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_Diagonal" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_Diagonal">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_GeometricCarPlanning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_GeometricCarPlanning" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_GeometricCarPlanning">
+    <configuration name="demo_GeometricCarPlanning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_GeometricCarPlanning" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_GeometricCarPlanning">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_HybridSystemPlanning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_HybridSystemPlanning" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_HybridSystemPlanning">
+    <configuration name="demo_HybridSystemPlanning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_HybridSystemPlanning" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_HybridSystemPlanning">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_HypercubeBenchmark" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_HypercubeBenchmark" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_HypercubeBenchmark">
+    <configuration name="demo_HypercubeBenchmark" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_HypercubeBenchmark" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_HypercubeBenchmark">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_KinematicChainBenchmark" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_KinematicChainBenchmark" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_KinematicChainBenchmark">
+    <configuration name="demo_KinematicChainBenchmark" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_KinematicChainBenchmark" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_KinematicChainBenchmark">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_Koules" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_Koules" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_Koules">
+    <configuration name="demo_Koules" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_Koules" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_Koules">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_MultiLevelPlanarManipulator" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_MultiLevelPlanarManipulator" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_MultiLevelPlanarManipulator">
+    <configuration name="demo_MultiLevelPlanarManipulator" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_MultiLevelPlanarManipulator" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_MultiLevelPlanarManipulator">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_MultiLevelPlanningHyperCube" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_MultiLevelPlanningHyperCube" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_MultiLevelPlanningHyperCube">
+    <configuration name="demo_MultiLevelPlanningHyperCube" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_MultiLevelPlanningHyperCube" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_MultiLevelPlanningHyperCube">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_MultiLevelPlanningHyperCubeBenchmark" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_MultiLevelPlanningHyperCubeBenchmark" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_MultiLevelPlanningHyperCubeBenchmark">
+    <configuration name="demo_MultiLevelPlanningHyperCubeBenchmark" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_MultiLevelPlanningHyperCubeBenchmark" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_MultiLevelPlanningHyperCubeBenchmark">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_MultiLevelPlanningKinematicChain" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_MultiLevelPlanningKinematicChain" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_MultiLevelPlanningKinematicChain">
+    <configuration name="demo_MultiLevelPlanningKinematicChain" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_MultiLevelPlanningKinematicChain" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_MultiLevelPlanningKinematicChain">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_MultiLevelPlanningRigidBody2D" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_MultiLevelPlanningRigidBody2D" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_MultiLevelPlanningRigidBody2D">
+    <configuration name="demo_MultiLevelPlanningRigidBody2D" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_MultiLevelPlanningRigidBody2D" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_MultiLevelPlanningRigidBody2D">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_MultiLevelPlanningRigidBody3D" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_MultiLevelPlanningRigidBody3D" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_MultiLevelPlanningRigidBody3D">
+    <configuration name="demo_MultiLevelPlanningRigidBody3D" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_MultiLevelPlanningRigidBody3D" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_MultiLevelPlanningRigidBody3D">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_OptimalPlanning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_OptimalPlanning" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_OptimalPlanning">
+    <configuration name="demo_OptimalPlanning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_OptimalPlanning" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_OptimalPlanning">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_PcsFmtTest" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PcsFmtTest" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PcsFmtTest">
+    <configuration name="demo_PcsFmtTest" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PcsFmtTest" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PcsFmtTest">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_PlanarManipulator" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PlanarManipulator" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PlanarManipulator">
+    <configuration name="demo_PlanarManipulator" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PlanarManipulator" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PlanarManipulator">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_PlannerData" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PlannerData" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PlannerData">
+    <configuration name="demo_PlannerData" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PlannerData" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PlannerData">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_PlannerProgressProperties" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PlannerProgressProperties" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PlannerProgressProperties">
+    <configuration name="demo_PlannerProgressProperties" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PlannerProgressProperties" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PlannerProgressProperties">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_Point2DPlanning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_Point2DPlanning" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_Point2DPlanning">
+    <configuration name="demo_Point2DPlanning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_Point2DPlanning" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_Point2DPlanning">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_RigidBodyPlanning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_RigidBodyPlanning" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_RigidBodyPlanning">
+    <configuration name="demo_RigidBodyPlanning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_RigidBodyPlanning" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_RigidBodyPlanning">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_RigidBodyPlanningWithControls" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_RigidBodyPlanningWithControls" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_RigidBodyPlanningWithControls">
+    <configuration name="demo_RigidBodyPlanningWithControls" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_RigidBodyPlanningWithControls" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_RigidBodyPlanningWithControls">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_RigidBodyPlanningWithIK" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_RigidBodyPlanningWithIK" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_RigidBodyPlanningWithIK">
+    <configuration name="demo_RigidBodyPlanningWithIK" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_RigidBodyPlanningWithIK" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_RigidBodyPlanningWithIK">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_RigidBodyPlanningWithIntegrationAndControls" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_RigidBodyPlanningWithIntegrationAndControls" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_RigidBodyPlanningWithIntegrationAndControls">
+    <configuration name="demo_RigidBodyPlanningWithIntegrationAndControls" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_RigidBodyPlanningWithIntegrationAndControls" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_RigidBodyPlanningWithIntegrationAndControls">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_RigidBodyPlanningWithODESolverAndControls" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_RigidBodyPlanningWithODESolverAndControls" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_RigidBodyPlanningWithODESolverAndControls">
+    <configuration name="demo_RigidBodyPlanningWithODESolverAndControls" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_RigidBodyPlanningWithODESolverAndControls" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_RigidBodyPlanningWithODESolverAndControls">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_SpaceTimePlanning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_SpaceTimePlanning" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_SpaceTimePlanning">
+    <configuration name="demo_SpaceTimePlanning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_SpaceTimePlanning" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_SpaceTimePlanning">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_StateSampling" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_StateSampling" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_StateSampling">
+    <configuration name="demo_StateSampling" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_StateSampling" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_StateSampling">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_ThunderLightning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_ThunderLightning" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_ThunderLightning">
+    <configuration name="demo_ThunderLightning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_ThunderLightning" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_ThunderLightning">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_VectorFieldConservative" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_VectorFieldConservative" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_VectorFieldConservative">
+    <configuration name="demo_VectorFieldConservative" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_VectorFieldConservative" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_VectorFieldConservative">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_VectorFieldNonconservative" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_VectorFieldNonconservative" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_VectorFieldNonconservative">
+    <configuration name="demo_VectorFieldNonconservative" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_VectorFieldNonconservative" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_VectorFieldNonconservative">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_ik_test" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_ik_test" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_ik_test">
+    <configuration name="demo_ik_test" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_ik_test" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_ik_test">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="mujoco_client" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="mujoco_client" CONFIG_NAME="Debug">
+    <configuration name="mujoco_client" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="mujoco_client" CONFIG_NAME="Release">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ompl" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="ompl" CONFIG_NAME="Debug">
+    <configuration name="ompl" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="ompl" CONFIG_NAME="Release">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="py_ompl" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="py_ompl" CONFIG_NAME="Debug">
+    <configuration name="py_ompl" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="py_ompl" CONFIG_NAME="Release">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="regression_test" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="regression_test" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="regression_test">
+    <configuration name="regression_test" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="regression_test" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="regression_test">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_2dcircles_opt_geometric" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_2dcircles_opt_geometric" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_2dcircles_opt_geometric">
+    <configuration name="test_2dcircles_opt_geometric" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_2dcircles_opt_geometric" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_2dcircles_opt_geometric">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_2dmap_control" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_2dmap_control" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_2dmap_control">
+    <configuration name="test_2dmap_control" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_2dmap_control" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_2dmap_control">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_2dmap_geometric_simple" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_2dmap_geometric_simple" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_2dmap_geometric_simple">
+    <configuration name="test_2dmap_geometric_simple" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_2dmap_geometric_simple" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_2dmap_geometric_simple">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_2dpath_simplifying" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_2dpath_simplifying" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_2dpath_simplifying">
+    <configuration name="test_2dpath_simplifying" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_2dpath_simplifying" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_2dpath_simplifying">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_constraint_sphere" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_constraint_sphere" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_constraint_sphere">
+    <configuration name="test_constraint_sphere" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_constraint_sphere" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_constraint_sphere">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_experience_planning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_experience_planning" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_experience_planning">
+    <configuration name="test_experience_planning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_experience_planning" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_experience_planning">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_nearestneighbors" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_nearestneighbors" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_nearestneighbors">
+    <configuration name="test_nearestneighbors" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_nearestneighbors" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_nearestneighbors">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test_planner_data_control" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_planner_data_control" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_planner_data_control">
+    <configuration name="test_planner_data_control" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_planner_data_control" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_planner_data_control">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="uninstall" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="uninstall" CONFIG_NAME="Debug">
+    <configuration name="uninstall" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="uninstall" CONFIG_NAME="Release">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="所有 CTest" type="CTestRunConfiguration" factoryName="CTestRun" PROGRAM_PARAMS="--extra-verbose" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" WORKING_DIR="file://$CMakeCurrentLocalGenerationDir$" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_PATH="$CTestCurrentExecutableName$" EXPLICIT_BUILD_TARGET_NAME="all" TEST_MODE="SUITE_TEST">
+    <configuration name="所有 CTest" type="CTestRunConfiguration" factoryName="CTestRun" PROGRAM_PARAMS="--extra-verbose" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" WORKING_DIR="file://$CMakeCurrentLocalGenerationDir$" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Release" RUN_PATH="$CTestCurrentExecutableName$" EXPLICIT_BUILD_TARGET_NAME="all" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -597,8 +624,14 @@
       <item itemvalue="CMake 应用程序.test_nearestneighbors" />
       <item itemvalue="CMake 应用程序.test_planner_data_control" />
       <item itemvalue="CMake 应用程序.uninstall" />
+      <item itemvalue="CMake 调试.surface_contact" />
       <item itemvalue="CTest 应用程序.所有 CTest" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="CMake 调试.surface_contact" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -664,7 +697,18 @@
       <workItem from="1740187320958" duration="3544000" />
       <workItem from="1740294780535" duration="4399000" />
       <workItem from="1740311851785" duration="5407000" />
-      <workItem from="1740362395179" duration="13845000" />
+      <workItem from="1740362395179" duration="39843000" />
+      <workItem from="1740473067798" duration="23722000" />
+      <workItem from="1740559901134" duration="30713000" />
+      <workItem from="1740677143903" duration="36341000" />
+      <workItem from="1740756416860" duration="12924000" />
+      <workItem from="1741082073555" duration="2330000" />
+      <workItem from="1741161353103" duration="11259000" />
+      <workItem from="1741506665630" duration="2397000" />
+      <workItem from="1741594552308" duration="9614000" />
+      <workItem from="1741770936907" duration="1538000" />
+      <workItem from="1741871199208" duration="2848000" />
+      <workItem from="1741938335237" duration="1132000" />
     </task>
     <task id="LOCAL-00001" summary="commit again">
       <option name="closed" value="true" />
@@ -697,11 +741,21 @@
           <line>36</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/demos/constraint/ConstrainedPlanningTorus.cpp</url>
+          <line>39</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/ompl/geometric/planners/rrt/src/RRTstar.cpp</url>
+          <line>204</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="CMakeRunConfiguration">
-        <watch expression="i" />
+        <watch expression="data" />
       </configuration>
     </watches-manager>
   </component>
