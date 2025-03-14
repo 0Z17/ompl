@@ -605,11 +605,11 @@ int main(int argc, char **argv)
     // int planningRound = 200;
     int planningRound = 1;
 
-    bool isRenderResult = false;
-    // bool isRenderResult = true;
+    // bool isRenderResult = false;
+    bool isRenderResult = true;
     // PlanningType planning_type = PCSFMT;
-    PlanningType planning_type = FMT;
-    // PlanningType planning_type = AtlasRRTstar;
+    // PlanningType planning_type = FMT;
+    PlanningType planning_type = AtlasRRTstar;
     // glfwMakeContextCurrent(nullptr);
     // nurbs->fitSurface(Eigen::Vector3d::UnitZ());
     nurbs->fitSurface();
