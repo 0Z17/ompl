@@ -297,6 +297,18 @@ namespace ompl
                     return state_;
                 }
 
+                /** \brief Set the configuration associated with the motion */
+                void setConState(base::State *state)
+                {
+                    conState_ = state;
+                }
+
+                /** \brief Get the state associated with the motion */
+                base::State *getConState() const
+                {
+                    return conState_;
+                }
+
                 /** \brief Set the parent motion of the current motion */
                 void setParent(Motion *parent)
                 {
@@ -417,6 +429,9 @@ namespace ompl
                 /** \brief The state contained by the motion */
                 base::State *state_{nullptr};
 
+                /** \brief The configuration contained by the motion */
+                base::State *conState_{nullptr};
+
                 /** \brief The parent motion in the exploration tree */
                 Motion *parent_{nullptr};
 
@@ -485,6 +500,9 @@ namespace ompl
                 it into the nearest neighbors data structure */
             void sampleFree(const ompl::base::PlannerTerminationCondition &ptc);
 
+            /** \brief Sample states from the configuration space with a parameter atlas */
+            void sample(const base::PlannerTerminationCondition &ptc);
+
             /** \brief For each goal region, check to see if any of the sampled
                 states fall within that region. If not, add a goal state from
                 that region directly into the set of vertices. In this way, PCSFMT
@@ -529,6 +547,9 @@ namespace ompl
 
             /** \brief Returns the best parent and the connection cost in the neighborhood of a motion m. */
             Motion *getBestParent(Motion *m, std::vector<Motion *> &neighbors, base::Cost &cMin);
+
+            /** \brief Print out the debug information */
+            void printDebugInfo() const;
 
             /** \brief A binary heap for storing explored motions in
                 cost-to-come sorted order */
@@ -620,8 +641,14 @@ namespace ompl
             /** \brief Add new samples if the tree was not able to find a solution. */
             bool extendedPCSFMT_{false};
 
-            /** \brief Print out the debug information */
-            void printDebugInfo() const;
+            /** \brief The number of anchor node of each dimension */
+            double numAnchorNodes_{10};
+
+            /** \brief The list to store the anchor node */
+            std::vector<std::pair<Motion *, double>> anchorNodesWithWeight_;
+
+            /** \brief The weight vector for the anchor node */
+            double totalAnchorWeight_{0.};
 
             // For sorting a list of costs and getting only their sorted indices
             struct CostIndexCompare

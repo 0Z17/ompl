@@ -172,7 +172,9 @@ void ompl::geometric::PCSFMT::clear()
     Open_.clear();
     neighborhoods_.clear();
 
-    collisionChecks_ = 0;
+    // clear the anchor nodes and their weights
+    anchorNodesWithWeight_.clear();
+    totalAnchorWeight_ = 0.0;
 }
 
 void ompl::geometric::PCSFMT::getPlannerData(base::PlannerData &data) const
@@ -317,9 +319,9 @@ void ompl::geometric::PCSFMT::sampleFree(const base::PlannerTerminationCondition
     while (nodeCount < numSamples_ && !ptc)
     {
         sampler_->sampleUniform(motion->getState());
-        sampleAttempts++;
 
         bool collision_free = si_->isValid(motion->getState());
+        sampleAttempts++;
 
         if (collision_free)
         {
@@ -334,6 +336,81 @@ void ompl::geometric::PCSFMT::sampleFree(const base::PlannerTerminationCondition
     // 95% confidence limit for an upper bound for the true free space volume
     freeSpaceVolume_ = boost::math::binomial_distribution<>::find_upper_bound_on_p(sampleAttempts, nodeCount, 0.05) *
                        si_->getStateSpace()->getMeasure();
+}
+
+void ompl::geometric::PCSFMT::sample(const base::PlannerTerminationCondition &ptc)
+{
+    unsigned int nodeCount = 0;
+    unsigned int sampleAttempts = 0;
+    auto *motion = new Motion(si_);
+
+    // search the anchor states
+    for (double u = 0.0; u < 1.0; u += 1.0/numAnchorNodes_)
+    {
+        for (double v = 0.0; v < 1.0; v += 1.0/numAnchorNodes_)
+        {
+            if (ptc)
+                break;
+
+            // set the state
+            auto state = motion->getState()->as<base::RealVectorStateSpace::StateType>();
+            state->values[0] = u;
+            state->values[1] = v;
+            setTangentVec(motion); // set the tangent vectors
+            sampleAttempts++;
+
+            // add the node to the nearest neighbor data structure
+            nodeCount++;
+            nn_->add(motion);
+            
+            // calculate weight for the anchor states
+            double weight = motion->getDqu()->norm() * motion->getDqu()->norm();
+            anchorNodesWithWeight_.emplace_back(motion, weight);
+            totalAnchorWeight_ += weight;
+            
+            motion = new Motion(si_);
+        }
+    }
+
+    while (nodeCount < numSamples_ && !ptc)
+    {
+        // select a random anchor node according to its weight
+        ompl::RNG rngAnchor;
+        double rngWeight = rngAnchor.uniformReal(0.0, totalAnchorWeight_);
+        double sumWeight = 0.0;
+        Motion* anchorMotion;
+        for (auto &anchorNodeWithWeight : anchorNodesWithWeight_)
+        {
+            if (sumWeight >= rngWeight)
+            {
+                anchorMotion = anchorNodeWithWeight.first;
+                sumWeight += anchorNodeWithWeight.second;
+            }
+        }
+
+        // sample in the region around the selected anchor node
+        auto state = motion->getState();
+        auto *rstate = static_cast<base::RealVectorStateSpace::StateType *>(state);
+        double dim = si_->getStateSpace()->getDimension();
+        for (unsigned int i = 0; i < dim; ++i)
+            rstate->values[i] = rngAnchor.uniformReal(bounds.low[i], bounds.high[i]);
+
+
+        bool collision_free = si_->isValid(motion->getState());
+        sampleAttempts++;
+
+        if (collision_free)
+        {
+            nodeCount++;
+            nn_->add(motion);
+            motion = new Motion(si_);
+        }  // If collision free
+    }
+
+    // free the last unused motion object
+    si_->freeState(motion->getState());
+    delete motion;
+
 }
 
 void ompl::geometric::PCSFMT::assureGoalIsSampled()
@@ -819,3 +896,4 @@ double ompl::geometric::PCSFMT::distanceFunction(const Motion *a, const Motion *
     numNearestSearching_++;
     return opt_->motionCost(a->getState(), b->getState()).value();
 }
+

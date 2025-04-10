@@ -7,7 +7,8 @@
     <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="4" type="long" />
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexRemoved" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="3" type="long" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -96,33 +97,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4458a72d-a736-4beb-9c5a-bef049197ce3" name="更改" comment="commit again">
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp.bak" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_AtlasRRTstar_S3_3.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_AtlasRRTstar_S1.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_AtlasRRTstar_S2.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_AtlasRRTstar_S3.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_S1.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_S2.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_S3.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT_S1.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT_S2.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ompl/base/objectives/WeightedPathLengthOptimizationObjective.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ompl/base/objectives/src/WeightedPathLengthOptimizationObjective.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/base_path.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_1.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_2.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_3.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_4.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_rectangle.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/demos/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/FMT_planner_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/FMT_planner_data.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/PCSFMT_planner_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/PCSFMT_planner_data.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/nurbs.stl" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/segment.stl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_FMT.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_FMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_FMT.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_PCSFMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_PCSFMT.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/external/surface_contact/src/test_demo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/external/surface_contact/src/test_demo.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_FMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_FMT.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_PCSFMT_S3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_PCSFMT_S3.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/surface_EXP.stl" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/surface_EXP.stl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/PCSFMT.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/PCSFMT.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/PCSFMT.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/PCSFMT.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -202,7 +196,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -709,6 +703,22 @@
       <workItem from="1741770936907" duration="1538000" />
       <workItem from="1741871199208" duration="2848000" />
       <workItem from="1741938335237" duration="1132000" />
+      <workItem from="1741955915970" duration="2954000" />
+      <workItem from="1742090663844" duration="5395000" />
+      <workItem from="1742172243860" duration="1165000" />
+      <workItem from="1742181602403" duration="6343000" />
+      <workItem from="1742287020777" duration="1399000" />
+      <workItem from="1743331852977" duration="344000" />
+      <workItem from="1743333943869" duration="4315000" />
+      <workItem from="1743381438869" duration="3920000" />
+      <workItem from="1743564626704" duration="5080000" />
+      <workItem from="1743768453389" duration="9388000" />
+      <workItem from="1744029670068" duration="22000" />
+      <workItem from="1744029732564" duration="8033000" />
+      <workItem from="1744082001695" duration="3626000" />
+      <workItem from="1744101787357" duration="2880000" />
+      <workItem from="1744245836000" duration="4050000" />
+      <workItem from="1744250410125" duration="8992000" />
     </task>
     <task id="LOCAL-00001" summary="commit again">
       <option name="closed" value="true" />
@@ -750,6 +760,11 @@
           <url>file://$PROJECT_DIR$/src/ompl/geometric/planners/rrt/src/RRTstar.cpp</url>
           <line>204</line>
           <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/ompl/base/spaces/src/RealVectorStateSpace.cpp</url>
+          <line>36</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

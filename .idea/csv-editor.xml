@@ -17,6 +17,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\demos\MyPlanners\test_output\base_path.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\demos\MyPlanners\test_output\planning_data_AtlasRRTstar.csv">
           <value>
             <Attribute>
@@ -143,6 +150,34 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\demos\MyPlanners\test_output\state_path_FMT_1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\state_path_FMT_2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\state_path_FMT_3.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\state_path_FMT_4.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\demos\MyPlanners\test_output\state_path_FMT_S1.csv">
           <value>
             <Attribute>
@@ -151,6 +186,13 @@
           </value>
         </entry>
         <entry key="\demos\MyPlanners\test_output\state_path_FMT_S2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\state_path_FMT_rectangle.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
