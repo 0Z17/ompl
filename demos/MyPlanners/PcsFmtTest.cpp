@@ -31,7 +31,7 @@ enum PlanningType
     AtlasRRTstar,
 };
 
-std::string pcdFile = "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd";
+// std::string pcdFile = "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd";
 // std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_bridge1.pcd";
 // std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_plane2.pcd";
 // std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_cylinder.pcd";
@@ -39,6 +39,7 @@ std::string pcdFile = "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd";
 // std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_turbine.pcd";
 // std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/surface_complex.pcd";
 // std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/blade_segment.pcd";
+std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/surf.pcd";
 std::string modelFile = "/home/wsl/proj/skyvortex_mujoco/scene.xml";
 const auto nurbs = new sr::Nurbs(pcdFile);
 auto ik = new dp::InvKin(nurbs);
@@ -230,8 +231,11 @@ void plan(PlanningType planning_type)
     // std::vector<double> start_config = {0.2, 0.8};
     // std::vector<double> goal_config = {0.8, 0.2};
 
-    std::vector<double> start_config = {0.2, 0.1};
-    std::vector<double> goal_config = {0.8, 0.9};
+    // std::vector<double> start_config = {0.2, 0.1};
+    // std::vector<double> goal_config = {0.8, 0.9};
+
+    std::vector<double> start_config = {0.6, 0.4};
+    std::vector<double> goal_config = {0.4, 0.4};
 
     /* params for the planner */
     uint paramDimensionsNum = 2;
@@ -608,8 +612,8 @@ int main(int argc, char **argv)
     // bool isRenderResult = false;
     bool isRenderResult = true;
     // PlanningType planning_type = PCSFMT;
-    // PlanningType planning_type = FMT;
-    PlanningType planning_type = AtlasRRTstar;
+    PlanningType planning_type = FMT;
+    // PlanningType planning_type = AtlasRRTstar;
     // glfwMakeContextCurrent(nullptr);
     // nurbs->fitSurface(Eigen::Vector3d::UnitZ());
     nurbs->fitSurface();
