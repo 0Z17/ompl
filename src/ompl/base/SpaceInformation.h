@@ -354,6 +354,16 @@ namespace ompl
                 return motionValidator_->checkMotion(s1, s2);
             }
 
+            virtual bool checkMotion(const State *s1, const State *s2, std::pair<State *, double> &lastValid, double estimatedCost) const
+            {
+                return motionValidator_->checkMotion(s1, s2, lastValid, estimatedCost);
+            }
+
+            virtual bool checkMotion(const State *s1, const State *s2, double estimatedCost) const
+            {
+                return motionValidator_->checkMotion(s1, s2, estimatedCost);
+            }
+
             /** \brief Incrementally check if a sequence of states is valid. Given a vector of states, this routine only
                 checks the first \e count elements and marks the index of the first invalid state
                 \param states the array of states to be checked

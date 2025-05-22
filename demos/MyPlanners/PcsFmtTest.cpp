@@ -6,6 +6,7 @@
 #include <ompl/base/objectives/EstimatePathLengthOptimizationObjective.h>
 #include <ompl/base/objectives/WeightedPathLengthOptimizationObjective.h>
 #include <ompl/base/objectives/PathLengthOptimizationObjective.h>
+#include <ompl/base/AdaptiveDiscreteMotionValidator.h>
 #include "invkin.h"
 #include "nurbs.h"
 #include <pcl/io/pcd_io.h>
@@ -29,6 +30,7 @@ enum PlanningType
     FMT,
     PCSFMT,
     AtlasRRTstar,
+    BundleBITstar
 };
 
 // std::string pcdFile = "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd";
@@ -40,6 +42,7 @@ enum PlanningType
 // std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/surface_complex.pcd";
 // std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/blade_segment.pcd";
 std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/surf.pcd";
+// std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud.pcd";
 std::string modelFile = "/home/wsl/proj/skyvortex_mujoco/scene.xml";
 const auto nurbs = new sr::Nurbs(pcdFile);
 auto ik = new dp::InvKin(nurbs);
@@ -51,7 +54,7 @@ double planning_time = 0.0;
 // std::vector<double> weights = {1.0, 1.0, 1.0, 1.0, 6.0};
 // std::vector<double> weights = {1.0, 1.0, 1.0, 1.5, 2.5};
 // std::vector<double> weights = {1.0, 1.0, 1.0, 3.0, 6.0};
-std::vector<double> weights = {1.0, 1.0, 1.0, 2.0, 3.5};
+std::vector<double> weights = {1.0, 1.0, 1.0, 1.5, 3.5};
 
 bool isStateValid(const ob::State *state)
 {
@@ -224,18 +227,27 @@ void getPlanningData(const int idx, const ob::PathPtr &path, const double planni
 void plan(PlanningType planning_type)
 {
     ik->setLinkLength(0.96);
+    // std::vector<double> clipBound = {0.2, 0.8, 0.2, 0.8};
+    std::vector<double> clipBound = {0.1, 0.9, 0.1, 0.9};
+    ik->setClipBound(clipBound);
     // ik->setLinkLength(1.0);
-    // unsigned int seed = 114514;
-    // ompl::RNG::setSeed(seed);
+    unsigned int seed = 114514;
+    ompl::RNG::setSeed(seed);
 
     // std::vector<double> start_config = {0.2, 0.8};
     // std::vector<double> goal_config = {0.8, 0.2};
 
-    // std::vector<double> start_config = {0.2, 0.1};
-    // std::vector<double> goal_config = {0.8, 0.9};
+    // std::vector<double> start_config = {0.4, 0.1};
+    // std::vector<double> goal_config = {0.7, 0.6};
 
-    std::vector<double> start_config = {0.6, 0.4};
-    std::vector<double> goal_config = {0.4, 0.4};
+    // std::vector<double> start_config = {0.2, 0.2};
+    // std::vector<double> goal_config = {0.8, 0.8};
+
+    // std::vector<double> start_config = {0.2, 0.2};
+    // std::vector<double> goal_config = {0.5, 0.5};
+
+    std::vector<double> start_config = {0.5, 0.5};
+    std::vector<double> goal_config = {0.8, 0.2};
 
     /* params for the planner */
     uint paramDimensionsNum = 2;
@@ -313,9 +325,15 @@ void plan(PlanningType planning_type)
     auto constraint = std::make_shared<SurfaceConstraint>(nurbs);
     auto css = std::make_shared<ob::AtlasStateSpace>(rvss, constraint);
     auto csi = std::make_shared<ob::ConstrainedSpaceInformation>(css);
-
     csi->setStateValidityChecker(isStateValidForAtlas);
     csi->setup();
+
+    // for BundleBITstar
+    auto cssBundle = std::make_shared<ob::TangentBundleStateSpace>(rvss, constraint);
+    auto csiBundle = std::make_shared<ob::ConstrainedSpaceInformation>(cssBundle);
+    csiBundle->setStateValidityChecker(isStateValidForAtlas);
+    csiBundle->setup();
+
 
     ob::RealVectorBounds bounds(paramDimensionsNum);
     bounds.setLow(0.0);
@@ -325,11 +343,29 @@ void plan(PlanningType planning_type)
 
     // construct an instance of  space information from this state space
     auto si(std::make_shared<ob::SpaceInformation>(space));
+
+    // si->setStateValidityCheckingResolution(0.02);
+    std::cout<< "space valid check resolution: " << si->getStateValidityCheckingResolution() << std::endl;
+    // create a space information instance for the state spa
     auto stateSi(std::make_shared<ob::SpaceInformation>(stateSpace));
 
     // set the state validity checking for the param space
     si->setStateValidityChecker(isStateValid);
+    auto motionValidator = std::make_shared<ompl::base::AdaptiveDiscreteMotionValidator>(si);
+
+    if (planning_type == PCSFMT) si->setMotionValidator(motionValidator);
     si->setup();
+
+    Eigen::Matrix<double, 5, 1> weightsVec;
+    weightsVec << weights[0] , weights[1] , weights[2],  weights[3] , weights[4];
+
+    auto qStart = ik->xToQ(start_config[0], start_config[1]);
+    auto qGoal = ik->xToQ(goal_config[0], goal_config[1]);
+
+    double estimateResol = (qStart - qGoal).cwiseProduct(weightsVec).norm() * 0.05;
+    // double estimateResol = (qStart - qGoal).cwiseProduct(weightsVec).norm() * 0.2;
+
+    motionValidator->setCostResolution(estimateResol);
 
     stateSi->setStateValidityChecker(isStateValidForQ);
     // stateSi->setup();
@@ -353,6 +389,13 @@ void plan(PlanningType planning_type)
         Eigen::Matrix<double, 5, 1> costWeights;
         costWeights << weights[0] , weights[1] , weights[2],  weights[3] , weights[4];
         opt = std::make_shared<ob::WeightedPathLengthOptimizationObjective>(csi, costWeights);
+    }
+    else if (planning_type == BundleBITstar)
+    {
+        // opt = std::make_shared<ob::PathLengthOptimizationObjective>(csi);
+        Eigen::Matrix<double, 5, 1> costWeights;
+        costWeights << weights[0] , weights[1] , weights[2],  weights[3] , weights[4];
+        opt = std::make_shared<ob::WeightedPathLengthOptimizationObjective>(csiBundle, costWeights);
     }
 
 
@@ -391,6 +434,23 @@ void plan(PlanningType planning_type)
     // plannerCon->setRange(0.4);
     std::cout << maxMotion << std::endl;
     // plannerCon->getSpecs().approximateSolutions = false;
+
+    // setting for the BundleBITstar planner
+    auto ssBundle = std::make_shared<og::SimpleSetup>(csiBundle);
+    ob::ScopedState<> state_startBundle(cssBundle);
+    ob::ScopedState<> state_goalBundle(cssBundle);
+    state_startBundle->as<ob::ConstrainedStateSpace::StateType>()->copy(state_config_ls);
+    state_goalBundle->as<ob::ConstrainedStateSpace::StateType>()->copy(goal_config_ls);
+
+    cssBundle->as<ob::AtlasStateSpace>()->anchorChart(state_startBundle.get());
+    cssBundle->as<ob::AtlasStateSpace>()->anchorChart(state_goalBundle.get());
+    ssBundle->setStartAndGoalStates(state_startBundle, state_goalBundle);
+    ssBundle->setOptimizationObjective(opt);
+
+    auto plannerCon2 = std::make_shared<og::BITstar>(csiBundle);
+    ssBundle->setPlanner(plannerCon2);
+    ssBundle->setup();
+
 
 
 
@@ -443,8 +503,9 @@ void plan(PlanningType planning_type)
 
     // create a planner for the defined space
     ob::PlannerPtr planner;
-    // int sampleNum = 20000;
+    // int sampleNum = 40000;
     int sampleNum = 5000;
+    // int sampleNum = 4000;
     if (planning_type == PCSFMT)
     {
         planner = std::make_shared<og::PCSFMT>(si, stateSi, ik);
@@ -455,10 +516,11 @@ void plan(PlanningType planning_type)
     {
         planner = std::make_shared<og::FMT>(si);
         dynamic_cast<og::FMT*>(planner.get())->setNumSamples(sampleNum);
+        // dynamic_cast<og::FMT*>(planner.get())->setNearestK(false);
     }
 
 
-    if (planning_type != AtlasRRTstar)
+    if (planning_type != AtlasRRTstar && planning_type != BundleBITstar)
     {
         // set the problem we are trying to solve for the planner
         planner->setProblemDefinition(pdef);
@@ -483,6 +545,10 @@ void plan(PlanningType planning_type)
         // solved = ss->solve(1.5);
         solved = ss->solve(5.0);
         // solved = ss->solve(120.0);
+    }
+    else if (planning_type == BundleBITstar)
+    {
+        solved = ssBundle->solve(5.0);
     }
     else
     {
@@ -513,7 +579,7 @@ void plan(PlanningType planning_type)
         // planner->getPlannerData(data);
 
         // print the path to screen
-        if (planning_type != AtlasRRTstar)
+        if (planning_type != AtlasRRTstar && planning_type != BundleBITstar)
         {
             path->print(std::cout);
         }
@@ -533,7 +599,7 @@ void plan(PlanningType planning_type)
         std::cout << "No solution found" << std::endl;
     }
 
-    if (planning_type != AtlasRRTstar)
+    if (planning_type != AtlasRRTstar && planning_type != BundleBITstar)
     {
         // ob::ScopedState<> s(stateSi);
         ob::State *s = stateSi->allocState();
@@ -559,6 +625,48 @@ void plan(PlanningType planning_type)
 
         og::PathSimplifier ps(stateSi);
         ps.smoothBSpline(*statePath->as<og::PathGeometric>(), 3, 0.0005);
+    }
+    else if (planning_type == BundleBITstar)
+    {
+        auto pathBundle = ssBundle->getSolutionPath();
+        pathBundle.print(std::cout);
+
+        OMPL_INFORM("Interpolating path...");
+        pathBundle.interpolate();
+
+        if (!pathBundle.check())
+            OMPL_WARN("Interpolated simplified path fails check!");
+
+        std::ofstream file("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_BundleBITstar.csv");
+        file << "X,Y,Z,Psi,Theta\n";
+
+        int idxP = 0;
+
+        for (auto point : pathBundle.getStates())
+        {
+            ob::State *s = csi->allocState();
+            const Eigen::Map<Eigen::VectorXd> &point_data = *point->as<ob::ConstrainedStateSpace::StateType>();
+            csi->copyState(s, point);
+            const Eigen::Map<Eigen::VectorXd> &stateS = *s->as<ob::ConstrainedStateSpace::StateType>();
+
+
+            auto isValid = stateSi->checkMotion(pathBundle.getState(idxP),pathBundle.getState(idxP+1));
+
+            file << point_data[0]
+            << "," << point_data[1]
+            << "," << point_data[2]
+            << "," << point_data[3]
+            << "," << point_data[4]
+            << "\n";
+
+            OMPL_INFORM("state %f, %f, %f, %f, %f", stateS[0], stateS[1], stateS[2],
+                                                    stateS[3], stateS[4]);
+            // statePath->as<og::PathGeometric>()->append(s->as<ob::State>());
+        }
+
+        // og::PathSimplifier ps(csi);
+        // ps.smoothBSpline(*statePath->as<og::PathGeometric>(), 3, 0.0005);
+
     }
     else
     {
@@ -614,6 +722,7 @@ int main(int argc, char **argv)
     // PlanningType planning_type = PCSFMT;
     PlanningType planning_type = FMT;
     // PlanningType planning_type = AtlasRRTstar;
+    // PlanningType planning_type = BundleBITstar;
     // glfwMakeContextCurrent(nullptr);
     // nurbs->fitSurface(Eigen::Vector3d::UnitZ());
     nurbs->fitSurface();
@@ -631,6 +740,10 @@ int main(int argc, char **argv)
         if (planning_type == AtlasRRTstar)
         {
             data = read_csv("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_AtlasRRTstar.csv");
+        }
+        if (planning_type == BundleBITstar)
+        {
+            data = read_csv("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_BundleBITstar.csv");
         }
 
         auto stateSpace(std::make_shared<ob::RealVectorStateSpace>(5));
@@ -658,7 +771,7 @@ int main(int argc, char **argv)
             getPathCsv(statePath, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_FMT.csv");
             getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_FMT.csv");
         }
-        else
+        else if (planning_type == AtlasRRTstar)
         {
             // getPathCsv(statePath, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_AtlasRRTstar.csv");
             const ob::State *lastState = statePath->as<og::PathGeometric>()->getStates().back();
@@ -669,7 +782,7 @@ int main(int argc, char **argv)
             lastState->as<ob::RealVectorStateSpace::StateType>()->values[3],
             lastState->as<ob::RealVectorStateSpace::StateType>()->values[4];
 
-            auto goalConfig = ik->xToQ(0.8, 0.9);
+            auto goalConfig = ik->xToQ(0.8, 0.8);
 
             bool isValid = true;
             if ((goalConfig - lastConfig).norm() > 0.3 )
@@ -679,6 +792,31 @@ int main(int argc, char **argv)
             else
             {
                 getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_AtlasRRTstar.csv", isValid);
+                // break;
+            }
+
+        }
+        else if (planning_type == BundleBITstar)
+        {
+            // getPathCsv(statePath, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_AtlasRRTstar.csv");
+            const ob::State *lastState = statePath->as<og::PathGeometric>()->getStates().back();
+            dp::Vector5d lastConfig;
+            lastConfig << lastState->as<ob::RealVectorStateSpace::StateType>()->values[0],
+            lastState->as<ob::RealVectorStateSpace::StateType>()->values[1],
+            lastState->as<ob::RealVectorStateSpace::StateType>()->values[2],
+            lastState->as<ob::RealVectorStateSpace::StateType>()->values[3],
+            lastState->as<ob::RealVectorStateSpace::StateType>()->values[4];
+
+            auto goalConfig = ik->xToQ(0.8, 0.8);
+
+            bool isValid = true;
+            if ((goalConfig - lastConfig).norm() > 0.3 )
+            {
+                isValid = false;
+            }
+            else
+            {
+                getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_BundleBITstar.csv", isValid);
                 // break;
             }
 

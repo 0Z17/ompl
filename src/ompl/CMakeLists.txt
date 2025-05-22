@@ -23,6 +23,9 @@ file(GLOB_RECURSE OMPL_HEADERS datastructures/*.h util/*.h base/*.h
 #
 #endif()
 
+list(APPEND OMPL_SOURCE_CODE "${CMAKE_CURRENT_SOURCE_DIR}/base/src/AdaptiveDiscreteMotionValidator.cpp")
+list(APPEND OMPL_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/base/AdaptiveDiscreteMotionValidator.h")
+
 
 if (OMPL_EXTENSION_TRIANGLE)
     file(GLOB_RECURSE OMPL_TRIANGLE_EXTENSION_SOURCE_CODE extensions/triangle/*.cpp)

@@ -45,6 +45,7 @@
 #include <boost/math/constants/constants.hpp>
 #include <boost/math/distributions/binomial.hpp>
 #include <ompl/base/spaces/RealVectorStateSpace.h>
+#include <ompl/base/objectives/EstimatePathLengthOptimizationObjective.h>
 
 #include <ompl/datastructures/BinaryHeap.h>
 #include <ompl/tools/config/SelfConfig.h>
@@ -203,22 +204,33 @@ void ompl::geometric::PCSFMT::getPlannerDataCsv(const std::string &filename) con
     nn_->list(motions);
 
     std::ofstream file(filename);
-    file << "Node,X,Y,Parent,Cost,HeuristicCost\n";
+    file << "Node,U,V,X,Y,Z,Psi,Theta,Parent,Cost,HeuristicCost\n";
 
     for (size_t i = 0; i < motions.size(); ++i)
     {
         const Motion *motion = motions[i];
         const base::State *state = motion->getState();
-        const double x = state->as<base::RealVectorStateSpace::StateType>()->values[0];
-        const double y = state->as<base::RealVectorStateSpace::StateType>()->values[1];
+        const double u = state->as<base::RealVectorStateSpace::StateType>()->values[0];
+        const double v = state->as<base::RealVectorStateSpace::StateType>()->values[1];
         const double cost = motion->getCost().value();
         const Motion *parentMotion = motion->getParent() ? motion->getParent() : nullptr;
         const double heurCost = motion->getHeuristicCost().value();
 
+        std::vector<double> q(5);
+        for (unsigned int j = 0; j < 5; ++j)
+        {
+            q[j] = motion->getConState()->as<base::RealVectorStateSpace::StateType>()->values[j];
+        }
+
 
         file << motion
-        << "," << x
-        << "," << y
+        << "," << u
+        << "," << v
+        << "," << q[0]
+        << "," << q[1]
+        << "," << q[2]
+        << "," << q[3]
+        << "," << q[4]
         << "," << parentMotion
         << "," << cost
         << "," << heurCost
@@ -303,9 +315,27 @@ void ompl::geometric::PCSFMT::setTangentVec(Motion *m) const
 double ompl::geometric::PCSFMT::calculateRadius(const unsigned int dimension, const unsigned int n) const
 {
     double a = 1.0 / (double)dimension;
-    double unitBallVolume = calculateUnitBallVolume(dimension);
+    // double unitBallVolume = calculateUnitBallVolume(dimension);
+    double unitBallVolume = calculateUnitBallVolume(2);
+    double minWeight = std::numeric_limits<double>::max();
+    if (!anchorNodesWithWeight_.empty())
+    {
+        auto min_it = std::min_element(
+            anchorNodesWithWeight_.begin(),
+            anchorNodesWithWeight_.end(),
+            [](const auto& a, const auto& b) {
+                return a.second < b.second;
+            }
+        );
+        minWeight = min_it->second;
+    }
+    else
+    {
+        std::cerr << "anchorNodesWithWeight_ is empty" << std::endl;
+    }
 
-    return radiusMultiplier_ * 2.0 * std::pow(a, a) * std::pow(freeSpaceVolume_ / unitBallVolume, a) *
+    return radiusMultiplier_ * 2.0 * std::pow(a, a) * std::pow(freeSpaceVolume_ *
+        totalAnchorWeight_* pow( 1.0 / numAnchorNodes_, 2) / (unitBallVolume * minWeight), a) *
            std::pow(log((double)n) / (double)n, a);
 }
 
@@ -313,7 +343,7 @@ void ompl::geometric::PCSFMT::sampleFree(const base::PlannerTerminationCondition
 {
     unsigned int nodeCount = 0;
     unsigned int sampleAttempts = 0;
-    auto *motion = new Motion(si_);
+    auto *motion = new Motion(si_, stateSi_);
 
     // Sample numSamples_ number of nodes from the free configuration space
     while (nodeCount < numSamples_ && !ptc)
@@ -327,7 +357,7 @@ void ompl::geometric::PCSFMT::sampleFree(const base::PlannerTerminationCondition
         {
             nodeCount++;
             nn_->add(motion);
-            motion = new Motion(si_);
+            motion = new Motion(si_, stateSi_);
         }  // If collision free
     }      // While nodeCount < numSamples
     si_->freeState(motion->getState());
@@ -342,35 +372,117 @@ void ompl::geometric::PCSFMT::sample(const base::PlannerTerminationCondition &pt
 {
     unsigned int nodeCount = 0;
     unsigned int sampleAttempts = 0;
-    auto *motion = new Motion(si_);
+    auto *motion = new Motion(si_, stateSi_);
+
+    const double step = 1.0 / numAnchorNodes_;
+    const double halfStep = step / 2.0;
+    const double samplingRange = halfStep;
 
     // search the anchor states
-    for (double u = 0.0; u < 1.0; u += 1.0/numAnchorNodes_)
+    for (double u = halfStep; u <= 1.0 - halfStep + 1e-6; u += step)
     {
-        for (double v = 0.0; v < 1.0; v += 1.0/numAnchorNodes_)
+        for (double v = halfStep; v <= 1.0 - halfStep + 1e-6; v += step)
         {
             if (ptc)
                 break;
 
             // set the state
-            auto state = motion->getState()->as<base::RealVectorStateSpace::StateType>();
+            const auto state = motion->getState()->as<base::RealVectorStateSpace::StateType>();
             state->values[0] = u;
             state->values[1] = v;
+            const auto conState = motion->getConState()->as<base::RealVectorStateSpace::StateType>();
+            auto q = getIK()->xToQ(state->values[0], state->values[1]);
+            for (unsigned int i = 0; i < stateSi_->getStateSpace()->getDimension(); i++)
+            {
+                conState->values[i] = q(i);
+            }
+
             setTangentVec(motion); // set the tangent vectors
             sampleAttempts++;
 
             // add the node to the nearest neighbor data structure
             nodeCount++;
             nn_->add(motion);
+
+
+            // // @Debug
+            // auto dqeU =getIK()->dxToDqe(state->values[0], state->values[1], 1, 0).head(3);
+            // auto dqeV =getIK()->dxToDqe(state->values[0], state->values[1], 0, 1).head(3);
+            // std::cout << "dqeU: " << dqeU.transpose() << std::endl;
+            // std::cout << "dqeV: " << dqeV.transpose() << std::endl;
+            // Eigen::Matrix2d g;
+            // g(0, 0) = dqeU.dot(dqeU);  // g_uu = ∂q/∂u · ∂q/∂u
+            // g(0, 1) = g(1, 0) = dqeU.dot(dqeV);  // g_uv = g_vu = ∂q/∂u · ∂q/∂v
+            // g(1, 1) = dqeV.dot(dqeV);  // g_vv = ∂q/∂v · ∂q/∂v
+            // auto detG = g.determinant();
+
+
             
             // calculate weight for the anchor states
-            double weight = motion->getDqu()->norm() * motion->getDqu()->norm();
+            double detG = computeMatrixTensor(motion->getDqu(), motion->getDqv()).determinant();
+            if (detG < 0) throw std::runtime_error("detG < 0");
+            double weight = std::sqrt(detG);
             anchorNodesWithWeight_.emplace_back(motion, weight);
             totalAnchorWeight_ += weight;
             
-            motion = new Motion(si_);
+            motion = new Motion(si_, stateSi_);
         }
     }
+
+    // output the weights of the parameter space mesh
+    std::ofstream file("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/parameterSpaceWeights.csv");
+    file << "U, V, weight, dx_u, dy_u, dz_u, dpsi_u, dtheta_u, dx_v, dy_v, dz_v, dpsi_v, dtheta_v, "
+            // "dnx_u, dny_u, dnz_u,"
+            // "dnx_v, dny_v, dnz_v\n";
+            "dqeu_x, dqeu_y, dqeu_z, dqeu_psi, dqeu_theta,"
+            "dqev_x, dqev_y, dqev_z, dqev_psi, dqev_theta\n";
+    // file << "U, V, weight, dx_u, dy_u, dz_u, dpsi_u, dtheta_u, dx_v, dy_v, dz_v, dpsi_v, dtheta_v, "
+    //     "du_x, du_y, du_z,"
+    //     "dv_x, dv_y, dv_z,"
+    //     "duu_x, duu_y, duu_z,"
+    //     "duv_x, duv_y, duv_z,"
+    //     "dvv_x, dvv_y, dvv_z\n";
+    for (auto &[fst, snd] : anchorNodesWithWeight_)
+    {
+
+        auto state = fst->getState()->as<base::RealVectorStateSpace::StateType>();
+        double u = state->values[0];
+        double v = state->values[1];
+        dp::Vector5d dqu = getIK()->dxToDqe(u, v, 1, 0);
+        dp::Vector5d dqv = getIK()->dxToDqe(u, v, 0, 1);
+        Eigen::Vector3d dn_u, dn_v;
+        // Eigen::Vector3d du, dv, duu, duv, dvv;
+        // getIK()->getNurbs()->getDNormal(u, v, dn_u, dn_v);
+        // getIK()->getNurbs()->getPos2Deriv(u, v, du, dv, duu, duv, dvv);
+        auto dqe_u = getIK()->dxToDqe(u, v, 1, 0);
+        auto dqe_v = getIK()->dxToDqe(u, v, 0, 1);
+
+        // file << state->values[0] << "," << state->values[1] << ","
+        // << snd << ","
+        // << dqu(0) << "," << dqu(1) << "," << dqu (2) << "," << dqu (3) << "," << dqu (4) << ","
+        // << dqv(0) << "," << dqv(1) << "," << dqv (2) << "," << dqv (3) << "," << dqv (4) << ","
+        // << dn_u(0) << "," << dn_u(1) << "," << dn_u(2) << ","
+        // << dn_v(0) << "," << dn_v(1) << "," << dn_v(2) << "\n";
+
+        // file << state->values[0] << "," << state->values[1] << ","
+        // << snd << ","
+        // << dqu(0) << "," << dqu(1) << "," << dqu (2) << "," << dqu (3) << "," << dqu (4) << ","
+        // << dqv(0) << "," << dqv(1) << "," << dqv (2) << "," << dqv (3) << "," << dqv (4) << ","
+        // << du(0) << "," << du(1) << "," << du(2) << ","
+        // << dv(0) << "," << dv(1) << "," << dv(2) << ","
+        // << duu(0) << "," << duu(1) << "," << duu(2) << ","
+        // << duv(0) << "," << duv(1) << "," << duv(2) << ","
+        // << dvv(0) << "," << dvv(1) << "," << dvv(2) << "\n";
+
+        file << state->values[0] << "," << state->values[1] << ","
+        << snd << ","
+        << dqu(0) << "," << dqu(1) << "," << dqu (2) << "," << dqu (3) << "," << dqu (4) << ","
+        << dqv(0) << "," << dqv(1) << "," << dqv (2) << "," << dqv (3) << "," << dqv (4) << ","
+        << dqe_u(0) << "," << dqe_u(1) << "," << dqe_u(2) << "," << dqe_u(3) << "," << dqe_u(4) << ","
+        << dqe_v(0) << "," << dqe_v(1) << "," << dqe_v(2) << "," << dqe_v(3) << "," << dqe_v(4) << "\n";
+    }
+
+    file.close();
 
     while (nodeCount < numSamples_ && !ptc)
     {
@@ -378,39 +490,48 @@ void ompl::geometric::PCSFMT::sample(const base::PlannerTerminationCondition &pt
         ompl::RNG rngAnchor;
         double rngWeight = rngAnchor.uniformReal(0.0, totalAnchorWeight_);
         double sumWeight = 0.0;
-        Motion* anchorMotion;
+        Motion *anchorMotion = nullptr;
         for (auto &anchorNodeWithWeight : anchorNodesWithWeight_)
         {
+            sumWeight += anchorNodeWithWeight.second;
             if (sumWeight >= rngWeight)
             {
                 anchorMotion = anchorNodeWithWeight.first;
-                sumWeight += anchorNodeWithWeight.second;
+                break;
             }
         }
 
         // sample in the region around the selected anchor node
-        auto state = motion->getState();
-        auto *rstate = static_cast<base::RealVectorStateSpace::StateType *>(state);
+        auto state = motion->getState()->as<base::RealVectorStateSpace::StateType>();
         double dim = si_->getStateSpace()->getDimension();
+
         for (unsigned int i = 0; i < dim; ++i)
-            rstate->values[i] = rngAnchor.uniformReal(bounds.low[i], bounds.high[i]);
-
-
-        bool collision_free = si_->isValid(motion->getState());
-        sampleAttempts++;
-
-        if (collision_free)
         {
-            nodeCount++;
-            nn_->add(motion);
-            motion = new Motion(si_);
-        }  // If collision free
+            if (! anchorMotion) throw std::runtime_error("anchorMotion is null");
+            const double anchorVal = anchorMotion->getState()->as<base::RealVectorStateSpace::StateType>()->values[i];
+            state->values[i] = anchorVal + rngAnchor.uniformReal(-samplingRange, samplingRange);
+            state->values[i] = std::clamp(state->values[i], 0.0, 1.0 - 1e-6);
+        }
+
+        const auto conState = motion->getConState()->as<base::RealVectorStateSpace::StateType>();
+        auto q = getIK()->xToQ(state->values[0], state->values[1]);
+        for (unsigned int i = 0; i < stateSi_->getStateSpace()->getDimension(); i++)
+        {
+            conState->values[i] = q(i);
+        }
+
+        sampleAttempts++;
+        nodeCount++;
+        nn_->add(motion);
+        motion = new Motion(si_, stateSi_);
     }
 
     // free the last unused motion object
     si_->freeState(motion->getState());
     delete motion;
 
+    freeSpaceVolume_ = boost::math::binomial_distribution<>::find_upper_bound_on_p(sampleAttempts, nodeCount, 0.05) *
+                   si_->getStateSpace()->getMeasure();
 }
 
 void ompl::geometric::PCSFMT::assureGoalIsSampled()
@@ -418,7 +539,7 @@ void ompl::geometric::PCSFMT::assureGoalIsSampled()
     // Ensure that there is at least one node near each goal
     while (const base::State *goalState = pis_.nextGoal())
     {
-        auto *gMotion = new Motion(si_);
+        auto *gMotion = new Motion(si_, stateSi_);
         si_->copyState(gMotion->getState(), goalState);
 
         // std::vector<Motion *> nearGoal;
@@ -430,6 +551,13 @@ void ompl::geometric::PCSFMT::assureGoalIsSampled()
         OMPL_DEBUG("Setting goal state");
         if (si_->getStateValidityChecker()->isValid(gMotion->getState()))
         {
+            const auto state = gMotion->getState()->as<base::RealVectorStateSpace::StateType>();
+            const auto conState = gMotion->getConState()->as<base::RealVectorStateSpace::StateType>();
+            auto q = getIK()->xToQ(state->values[0], state->values[1]);
+            for (unsigned int i = 0; i < stateSi_->getStateSpace()->getDimension(); i++)
+            {
+                conState->values[i] = q(i);
+            }
             nn_->add(gMotion);
             goalState_ = gMotion->getState();
         }
@@ -481,11 +609,22 @@ ompl::base::PlannerStatus ompl::geometric::PCSFMT::solve(const base::PlannerTerm
     // Add start states to V (nn_) and Open
     while (const base::State *st = pis_.nextStart())
     {
-        initMotion = new Motion(si_);
+        initMotion = new Motion(si_, stateSi_);
         si_->copyState(initMotion->getState(), st);
         Open_.insert(initMotion);
         initMotion->setSetType(Motion::SET_OPEN);
         initMotion->setCost(opt_->initialCost(initMotion->getState()));
+
+        auto initState = initMotion->getState()->as<base::RealVectorStateSpace::StateType>();
+        const auto conState = initMotion->getConState()->as<base::RealVectorStateSpace::StateType>();
+        auto q = getIK()->xToQ(initState->values[0], initState->values[1]);
+        for (unsigned int i = 0; i < stateSi_->getStateSpace()->getDimension(); i++)
+        {
+            conState->values[i] = q(i);
+        }
+
+
+
         nn_->add(initMotion);  // V <-- {x_init}
     }
 
@@ -498,7 +637,8 @@ ompl::base::PlannerStatus ompl::geometric::PCSFMT::solve(const base::PlannerTerm
     // Sample N free states in the configuration space
     if (!sampler_)
         sampler_ = si_->allocStateSampler();
-    sampleFree(ptc);
+    // sampleFree(ptc);
+    sample(ptc);
     assureGoalIsSampled();
     OMPL_INFORM("%s: Starting planning with %u states already in datastructure", getName().c_str(), nn_->size());
 
@@ -514,7 +654,8 @@ ompl::base::PlannerStatus ompl::geometric::PCSFMT::solve(const base::PlannerTerm
     // }
     // else
     // {
-    NNr_ = calculateRadius(si_->getStateDimension(), nn_->size());
+    NNr_ = calculateRadius(stateSi_->getStateDimension(), nn_->size());
+    // NNr_ = 0.5;
     OMPL_DEBUG("Using radius of %f", NNr_);
     // }
 
@@ -544,7 +685,7 @@ ompl::base::PlannerStatus ompl::geometric::PCSFMT::solve(const base::PlannerTerm
             // our functor for sorting nearest neighbors
             CostIndexCompare compareFn(costs, *opt_);
 
-            auto *m = new Motion(si_);
+            auto *m = new Motion(si_, stateSi_);
             while (!ptc && Open_.empty())
             {
                 sampler_->sampleUniform(m->getState());
@@ -665,6 +806,15 @@ void ompl::geometric::PCSFMT::printDebugInfo() const
     OMPL_INFORM("The number to call the distance function: %d", numNearestSearching_);
 }
 
+Eigen::Matrix2d ompl::geometric::PCSFMT::computeMatrixTensor(const dp::Vector5d* dqu, const dp::Vector5d* dqv)
+{
+    Eigen::Matrix2d g;
+    g(0, 0) = dqu->dot(*dqu);  // g_uu = ∂q/∂u · ∂q/∂u
+    g(0, 1) = g(1, 0) = dqu->dot(*dqv);  // g_uv = g_vu = ∂q/∂u · ∂q/∂v
+    g(1, 1) = dqv->dot(*dqv);  // g_vv = ∂q/∂v · ∂q/∂v
+    return g;
+}
+
 void ompl::geometric::PCSFMT::traceSolutionPathThroughTree(Motion *goalMotion)
 {
     std::vector<Motion *> mpath;
@@ -704,11 +854,11 @@ bool ompl::geometric::PCSFMT::expandTreeFromNode(Motion **z)
             // {
             // Only include neighbors that are mutually k-nearest
             // Relies on NN datastructure returning k-nearest in sorted order
-            const base::Cost connCost = estOpt_->motionCost(x->getState(), (*z)->getState());
-            const base::Cost worstCost = opt_->motionCost(neighborhoods_[x].back()->getState(), x->getState());
+            // const base::Cost connCost = estOpt_->motionCost(x->getState(), (*z)->getState());
+            // const base::Cost worstCost = opt_->motionCost(neighborhoods_[x].back()->getState(), x->getState());
 
-            if (opt_->isCostBetterThan(worstCost, connCost))
-                continue;
+            // if (opt_->isCostBetterThan(worstCost, connCost))
+                // continue;
             xNear.push_back(x);
             // }
             // else
@@ -748,7 +898,7 @@ bool ompl::geometric::PCSFMT::expandTreeFromNode(Motion **z)
             {
                 if (!yMin->alreadyCC(x))
                 {
-                    collision_free = si_->checkMotion(yMin->getState(), x->getState());
+                    collision_free = si_->checkMotion(yMin->getState(), x->getState(), cMin.value());
                     ++collisionChecks_;
                     // Due to PCSFMT* design, it is only necessary to save unsuccesful
                     // connection attemps because of collision
@@ -759,7 +909,7 @@ bool ompl::geometric::PCSFMT::expandTreeFromNode(Motion **z)
             else
             {
                 ++collisionChecks_;
-                collision_free = si_->checkMotion(yMin->getState(), x->getState());
+                collision_free = si_->checkMotion(yMin->getState(), x->getState(), cMin.value());
             }
 
             if (collision_free)
@@ -820,6 +970,7 @@ ompl::geometric::PCSFMT::Motion *ompl::geometric::PCSFMT::getBestParent(Motion *
         // const base::Cost dist = opt_->motionCost(s, m->getState());
         dp::Vector5d* dqu = m->getDqu();
         dp::Vector5d* dqv = m->getDqv();
+        //@todo: add a middle point to calculate the local cost
         const base::Cost dist = estOpt_->estimateMotionCost(s, m->getState(), dqu, dqv, getWeights());
         const base::Cost cNew = opt_->combineCosts(neighbors[j]->getCost(), dist);
 
@@ -894,6 +1045,6 @@ void ompl::geometric::PCSFMT::updateNeighborhood(Motion *m, const std::vector<Mo
 double ompl::geometric::PCSFMT::distanceFunction(const Motion *a, const Motion *b)
 {
     numNearestSearching_++;
-    return opt_->motionCost(a->getState(), b->getState()).value();
+    return estOpt_->configMotionCost(a->getConState(), b->getConState()).value();
 }
 

@@ -174,7 +174,7 @@ void ompl::geometric::FMT::getPlannerDataCsv(const std::string &filename) const
     nn_->list(motions);
 
     std::ofstream file(filename);
-    file << "Node,X,Y,Parent,Cost,HeuristicCost\n";
+    file << "Node,U,V,Parent,Cost,HeuristicCost\n";
 
     for (size_t i = 0; i < motions.size(); ++i)
     {

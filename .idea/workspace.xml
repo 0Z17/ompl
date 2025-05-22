@@ -7,8 +7,7 @@
     <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
-    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexRemoved" />
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="3" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="5" type="long" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -97,25 +96,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4458a72d-a736-4beb-9c5a-bef049197ce3" name="更改" comment="commit again">
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/base_path.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_1.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_2.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_3.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_4.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT_rectangle.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ompl/base/AdaptiveDiscreteMotionValidator.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ompl/base/src/AdaptiveDiscreteMotionValidator.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/FMT_planner_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/FMT_planner_data.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/PCSFMT_planner_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/PCSFMT_planner_data.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_AtlasRRTstar.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_AtlasRRTstar.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_FMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_FMT.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_PCSFMT_S3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_PCSFMT_S3.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_AtlasRRTstar.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_AtlasRRTstar.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/surface_EXP.stl" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/surface_EXP.stl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ompl/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ompl/base/MotionValidator.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/base/MotionValidator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ompl/base/SpaceInformation.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/base/SpaceInformation.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/PCSFMT.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/PCSFMT.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/FMT.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/FMT.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/PCSFMT.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/PCSFMT.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -145,12 +146,11 @@
     <setting file="file://$PROJECT_DIR$/demos/external/mjc_client/src/mujoco_client.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/demos/external/surface_contact/src/nurbs.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/ompl/base/src/StateSpace.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../usr/include/c++/9/bits/stl_iterator.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../usr/include/c++/9/ext/new_allocator.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../usr/local/include/pcl-1.14/pcl/surface/on_nurbs/fitting_surface_tdm.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../usr/local/surface_contact/include/invkin.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../usr/local/surface_contact/include/nurbs.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -190,23 +190,23 @@
     &quot;ctest.advertisement.all.test.configuration.is.created&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;//wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/test_output&quot;,
+    &quot;last_opened_file_path&quot;: &quot;//wsl.localhost/Ubuntu-20.04/home/wsl/proj/skyvortex_mujoco&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\src\ompl\base\src" />
+      <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\src\ompl\base" />
       <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\demos\MyPlanners\test_output" />
       <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\src\ompl\base\objectives" />
       <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\src\ompl\base\objectives\src" />
-      <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\demos\MyPlanners" />
-      <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\demos\external\surface_contact" />
     </key>
   </component>
   <component name="RunManager" selected="CMake 应用程序.demo_PcsFmtTest">
@@ -718,7 +718,23 @@
       <workItem from="1744082001695" duration="3626000" />
       <workItem from="1744101787357" duration="2880000" />
       <workItem from="1744245836000" duration="4050000" />
-      <workItem from="1744250410125" duration="8992000" />
+      <workItem from="1744250410125" duration="15993000" />
+      <workItem from="1744341681463" duration="4171000" />
+      <workItem from="1744591307230" duration="4160000" />
+      <workItem from="1744596448879" duration="9303000" />
+      <workItem from="1744620427420" duration="35420000" />
+      <workItem from="1744886578525" duration="17243000" />
+      <workItem from="1744961721494" duration="56694000" />
+      <workItem from="1745239413092" duration="11220000" />
+      <workItem from="1745547036679" duration="3887000" />
+      <workItem from="1745583782889" duration="11015000" />
+      <workItem from="1745828184433" duration="7784000" />
+      <workItem from="1745929479775" duration="1459000" />
+      <workItem from="1745978037924" duration="4288000" />
+      <workItem from="1746586761237" duration="6707000" />
+      <workItem from="1747034119183" duration="4253000" />
+      <workItem from="1747271974185" duration="2246000" />
+      <workItem from="1747360057437" duration="8769000" />
     </task>
     <task id="LOCAL-00001" summary="commit again">
       <option name="closed" value="true" />
@@ -738,6 +754,17 @@
     <isAutomaticCheckingOnLaunch value="false" />
     <isAutomaticFoundErrors value="true" />
     <isAutomaticReloadCMake value="true" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="commit again" />
@@ -762,9 +789,19 @@
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/ompl/base/spaces/src/RealVectorStateSpace.cpp</url>
-          <line>36</line>
-          <option name="timeStamp" value="6" />
+          <url>file://$PROJECT_DIR$/src/ompl/base/MotionValidator.h</url>
+          <line>80</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/ompl/base/MotionValidator.h</url>
+          <line>85</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/ompl/geometric/src/PathGeometric.cpp</url>
+          <line>181</line>
+          <option name="timeStamp" value="32" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

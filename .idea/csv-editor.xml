@@ -24,6 +24,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\demos\MyPlanners\test_output\parameterSpaceWeights.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\demos\MyPlanners\test_output\planning_data_AtlasRRTstar.csv">
           <value>
             <Attribute>
@@ -94,6 +101,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\demos\MyPlanners\test_output\refine_path_FMT_S1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\refine_path_FMT_S3.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\demos\MyPlanners\test_output\refine_path_PCSFMT.csv">
           <value>
             <Attribute>
@@ -102,6 +123,13 @@
           </value>
         </entry>
         <entry key="\demos\MyPlanners\test_output\refine_path_PCSFMT_S1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\refine_path_PCSFMT_S3.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -186,6 +214,13 @@
           </value>
         </entry>
         <entry key="\demos\MyPlanners\test_output\state_path_FMT_S2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\state_path_FMT_S3.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

@@ -278,8 +278,8 @@ namespace ompl
                 Motion() = default;
 
                 /** \brief Constructor that allocates memory for the state */
-                Motion(const base::SpaceInformationPtr &si)
-                  : state_(si->allocState())
+                Motion(const base::SpaceInformationPtr &si, const base::SpaceInformationPtr &stateSi)
+                  : state_(si->allocState()), conState_(stateSi->allocState())
                 {
                 }
 
@@ -548,6 +548,13 @@ namespace ompl
             /** \brief Returns the best parent and the connection cost in the neighborhood of a motion m. */
             Motion *getBestParent(Motion *m, std::vector<Motion *> &neighbors, base::Cost &cMin);
 
+            /** \brief Compute the metric tensor from parameter space to configuration space.
+             * @param dqu The derivative of the configuration with respect to parameter u
+             * @param dqv The derivative of the configuration with respect to parameter v
+             * @return g The metric tensor matrix
+             */
+            static Eigen::Matrix2d computeMatrixTensor(const dp::Vector5d* dqu, const dp::Vector5d* dqv);
+
             /** \brief Print out the debug information */
             void printDebugInfo() const;
 
@@ -611,7 +618,10 @@ namespace ompl
                 radius that is greater than one. The default value is 1.1.
                 In general, a radius between 0.9 and 5 appears to perform the best
              */
-            double radiusMultiplier_{1.1};
+            // double radiusMultiplier_{1.1};
+            // double radiusMultiplier_{1.0};
+            double radiusMultiplier_{0.6};
+            // double radiusMultiplier_{0.2};
             // double radiusMultiplier_{3.0};
 
             /** \brief The state space information */
@@ -642,7 +652,7 @@ namespace ompl
             bool extendedPCSFMT_{false};
 
             /** \brief The number of anchor node of each dimension */
-            double numAnchorNodes_{10};
+            double numAnchorNodes_{20};
 
             /** \brief The list to store the anchor node */
             std::vector<std::pair<Motion *, double>> anchorNodesWithWeight_;

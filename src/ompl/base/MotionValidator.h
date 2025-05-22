@@ -82,6 +82,11 @@ namespace ompl
                 \note This function updates the number of valid and invalid segments. */
             virtual bool checkMotion(const State *s1, const State *s2) const = 0;
 
+            virtual bool checkMotion(const State *s1, const State *s2, double estimatedCost) const
+            {
+                return true;
+            }
+
             /** \brief Check if the path between two states is valid. Also compute the last state that was
                 valid and the time of that state. The time is used to parametrize the motion from \e s1 to \e s2, \e s1
                being at t =
@@ -97,6 +102,11 @@ namespace ompl
 
                 \note This function updates the number of valid and invalid segments. */
             virtual bool checkMotion(const State *s1, const State *s2, std::pair<State *, double> &lastValid) const = 0;
+
+            virtual bool checkMotion(const State *s1, const State *s2, std::pair<State *, double> &lastValid, double estimatedCost) const
+            {
+                return true;
+            }
 
             /** \brief Get the number of segments that tested as valid */
             unsigned int getValidMotionCount() const
