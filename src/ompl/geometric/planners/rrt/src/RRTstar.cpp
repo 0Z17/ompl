@@ -608,6 +608,8 @@ ompl::base::PlannerStatus ompl::geometric::RRTstar::solve(const base::PlannerTer
                 "%.3f",
                 getName().c_str(), statesGenerated, rewireTest, goalMotions_.size(), bestCost_.value());
 
+    numSamples_ = statesGenerated;
+
     // We've added a solution if newSolution == true, and it is an approximate solution if bestGoalMotion_ == false
     return {newSolution != nullptr, bestGoalMotion_ == nullptr};
 }

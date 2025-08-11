@@ -1,0 +1,67 @@
+# OMPL Planning Configuration
+
+# File paths
+files:
+  pcd_file: "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd"
+  model_file: "/home/wsl/proj/skyvortex_mujoco/scene.xml"
+  output_dir: "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output"
+
+# Planning parameters
+planning:
+  # Planning type: FMT, PCSFMT, AtlasRRTstar, BundleBITstar
+  type: "AtlasRRTstar"
+  sample_num: 5000
+  planning_rounds: 1
+  planning_timeout: 20.0
+  atlas_timeout: 5.0
+  random_seed: 114514
+  
+# Start and goal configurations
+trajectory:
+  start_config: [0.4, 0.3]
+  goal_config: [0.6, 0.7]
+  
+# Cost weights for path optimization
+weights: [1.0, 1.0, 1.0, 1.5, 3.5]
+
+# Inverse kinematics parameters
+inverse_kinematics:
+  link_length: 0.96
+  clip_bound: [0.1, 0.9, 0.1, 0.9]
+  
+# State space bounds
+state_bounds:
+  x: [0.0, 4.0]
+  y: [-3.0, 3.0]
+  z: [0.0, 3.5]
+  psi: [-1.5708, 1.5708]  # -PI/2 to PI/2
+  theta: [-1.5708, 1.5708]  # -PI/2 to PI/2
+  
+# Parameter space configuration
+parameter_space:
+  dimensions: 2
+  bounds_low: 0.0
+  bounds_high: 1.0
+  
+# State space configuration
+state_space:
+  dimensions: 5
+  
+# Surface constraint parameters
+surface_constraint:
+  tolerance: 0.003
+  
+# Motion validation
+motion_validation:
+  cost_resolution_factor: 0.05
+  
+# Rendering settings
+rendering:
+  enabled: true
+  render_frequency: 100.0
+  calculation_frequency: 5.0
+  
+# Output settings
+output:
+  save_surface_stl: true
+  surface_normal: [0.0, 0.0, 1.0]  # Unit Z vector

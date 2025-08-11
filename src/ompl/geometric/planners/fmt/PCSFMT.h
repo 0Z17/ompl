@@ -458,6 +458,7 @@ namespace ompl
 
                 /** \brief The derivative of the configuration with respect to parameter v */
                 dp::Vector5d *dqv_{nullptr};
+
             };
 
             /** \brief Comparator used to order motions in a binary heap */
@@ -489,7 +490,7 @@ namespace ompl
             void freeMemory();
 
             /** \brief get the tangent space of the parameter space state */
-            void setTangentVec(Motion *m) const;
+            void setTangentVec(Motion *m);
 
             base::EstimatePathLengthOptimizationObjective* optForward() const
             {
@@ -583,6 +584,9 @@ namespace ompl
 
             /** \brief Number of collision checks performed by the algorithm */
             unsigned int collisionChecks_{0u};
+
+            /** \brief The number of times the tangent vector is obtained */
+            unsigned int numSetTangentVec_{0u};
 
             /** \brief Flag to activate the K nearest neighbors strategy */
             bool nearestK_{false};

@@ -7,7 +7,7 @@
     <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="5" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="3" type="long" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -95,29 +95,41 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4458a72d-a736-4beb-9c5a-bef049197ce3" name="更改" comment="commit again">
-      <change afterPath="$PROJECT_DIR$/src/ompl/base/AdaptiveDiscreteMotionValidator.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ompl/base/src/AdaptiveDiscreteMotionValidator.cpp" afterDir="false" />
+    <list default="true" id="4458a72d-a736-4beb-9c5a-bef049197ce3" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest_.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT_S3_new.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/video_traj.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/video_traj_compliance.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/video_traj_copy.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/video_traj_failure.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/demos/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/FMT_planner_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/FMT_planner_data.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/PCSFMT_planner_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/PCSFMT_planner_data.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_AtlasRRTstar.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_AtlasRRTstar.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_FMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_FMT.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/parameterSpaceWeights.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/parameterSpaceWeights.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_AtlasRRTstar.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_AtlasRRTstar_raw.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_FMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_FMT_raw.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT_raw.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_AtlasRRTstar_S1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_AtlasRRTstar_S1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_AtlasRRTstar_S2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_AtlasRRTstar_S2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_AtlasRRTstar_S3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_AtlasRRTstar_S3.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_FMT_S1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_FMT_S1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_FMT_S2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_FMT_S2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_FMT_S3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_FMT_S3.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_PCSFMT_S1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_PCSFMT_S1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_PCSFMT_S2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_PCSFMT_S2.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_PCSFMT_S3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/refine_path_PCSFMT_S3.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_AtlasRRTstar.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_AtlasRRTstar.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_FMT.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/surface_EXP.stl" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/surface_EXP.stl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ompl/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ompl/base/MotionValidator.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/base/MotionValidator.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ompl/base/SpaceInformation.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/base/SpaceInformation.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/PCSFMT.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/PCSFMT.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/FMT.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/FMT.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/PCSFMT.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/PCSFMT.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/rrt/RRTstar.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/rrt/RRTstar.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/rrt/src/RRTstar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/rrt/src/RRTstar.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,17 +154,35 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:////wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/PcsFmtTest.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:////wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/PcsFmtTest.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:////wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/PcsFmtTest.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:////wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/PcsFmtTest.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:////wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/PcsFmtTest.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:////wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/PcsFmtTest.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:////wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/PcsFmtTest.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:////wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/PcsFmtTest.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:////wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/PcsFmtTest.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:////wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/PcsFmtTest.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:////wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/PcsFmtTest.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:////wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/PcsFmtTest.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:////wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/PcsFmtTest.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:////wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/PcsFmtTest.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest_.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/demos/external/collision_checker_test.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/demos/external/mjc_client/include/mujoco_client.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/demos/external/mjc_client/src/mujoco_client.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/demos/external/surface_contact/src/nurbs.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/ompl/base/SpaceInformation.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/ompl/base/src/StateSpace.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/ompl/geometric/PathGeometric.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/ompl/geometric/planners/fmt/PCSFMT.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/ompl/geometric/planners/rrt/RRT.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../usr/include/c++/9/bits/stl_iterator.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../usr/include/c++/9/ext/new_allocator.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../usr/local/include/pcl-1.14/pcl/surface/on_nurbs/fitting_surface_tdm.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../usr/local/surface_contact/include/invkin.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../usr/local/surface_contact/include/nurbs.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
@@ -190,23 +220,26 @@
     &quot;ctest.advertisement.all.test.configuration.is.created&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;//wsl.localhost/Ubuntu-20.04/home/wsl/proj/skyvortex_mujoco&quot;,
+    &quot;last_opened_file_path&quot;: &quot;//wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/test_output&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\demos\MyPlanners\test_output" />
+      <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\demos\MyPlanners" />
       <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\src\ompl\base\src" />
       <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\src\ompl\base" />
-      <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\demos\MyPlanners\test_output" />
       <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\src\ompl\base\objectives" />
-      <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\src\ompl\base\objectives\src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\demos\MyPlanners\test_output" />
     </key>
   </component>
   <component name="RunManager" selected="CMake 应用程序.demo_PcsFmtTest">
@@ -735,6 +768,35 @@
       <workItem from="1747034119183" duration="4253000" />
       <workItem from="1747271974185" duration="2246000" />
       <workItem from="1747360057437" duration="8769000" />
+      <workItem from="1747904023375" duration="8083000" />
+      <workItem from="1747992518436" duration="1134000" />
+      <workItem from="1748222811649" duration="3428000" />
+      <workItem from="1748242126041" duration="171000" />
+      <workItem from="1748242308133" duration="17021000" />
+      <workItem from="1748566718349" duration="1803000" />
+      <workItem from="1748575646933" duration="56000" />
+      <workItem from="1749005988931" duration="15337000" />
+      <workItem from="1750059043908" duration="10252000" />
+      <workItem from="1750409178325" duration="9886000" />
+      <workItem from="1750469305665" duration="5937000" />
+      <workItem from="1750554652583" duration="9867000" />
+      <workItem from="1750646904177" duration="32323000" />
+      <workItem from="1751617593816" duration="4183000" />
+      <workItem from="1752028307904" duration="14358000" />
+      <workItem from="1752409959477" duration="12000" />
+      <workItem from="1752410038788" duration="4221000" />
+      <workItem from="1752647554939" duration="1575000" />
+      <workItem from="1752667487524" duration="1423000" />
+      <workItem from="1752924983655" duration="1184000" />
+      <workItem from="1752926554280" duration="181000" />
+      <workItem from="1753255424452" duration="7151000" />
+      <workItem from="1753343339871" duration="25349000" />
+      <workItem from="1753600196259" duration="1449000" />
+      <workItem from="1754572520783" duration="1147000" />
+      <workItem from="1754636847343" duration="27350000" />
+      <workItem from="1754729478362" duration="9529000" />
+      <workItem from="1754746557691" duration="3338000" />
+      <workItem from="1754880751155" duration="2179000" />
     </task>
     <task id="LOCAL-00001" summary="commit again">
       <option name="closed" value="true" />
@@ -799,9 +861,8 @@
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/ompl/geometric/src/PathGeometric.cpp</url>
-          <line>181</line>
-          <option name="timeStamp" value="32" />
+          <url>file://$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest_.cpp</url>
+          <option name="timeStamp" value="41" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

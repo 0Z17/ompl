@@ -328,6 +328,12 @@ namespace ompl
                 return bestCost_;
             }
 
+            /** Get the number of samples generated */
+            unsigned int getNumSamples() const
+            {
+                return numSamples_;
+            }
+
         protected:
             /** \brief Representation of a motion */
             class Motion
@@ -511,6 +517,9 @@ namespace ompl
 
             /** \brief Number of iterations the algorithm performed */
             unsigned int iterations_{0u};
+
+            /** \brief Number of samples generated */
+            unsigned int numSamples_{0u};
 
             ///////////////////////////////////////
             // Planner progress property functions

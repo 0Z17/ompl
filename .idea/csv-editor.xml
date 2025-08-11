@@ -31,13 +31,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\demos\MyPlanners\test_output\planning_data_AtlasRRTstar.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\demos\MyPlanners\test_output\planning_data_AtlasRRTstar_S3_3.csv">
           <value>
             <Attribute>
@@ -52,6 +45,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\demos\MyPlanners\test_output\planning_data_AtlasRRTstar_raw.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\planning_data_BundleBITstar.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\demos\MyPlanners\test_output\planning_data_FMT.csv">
           <value>
             <Attribute>
@@ -60,6 +67,13 @@
           </value>
         </entry>
         <entry key="\demos\MyPlanners\test_output\planning_data_FMT_pre.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\planning_data_FMT_raw.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -94,6 +108,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\demos\MyPlanners\test_output\refine_path_AtlasRRTstar_S2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\refine_path_AtlasRRTstar_S3.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\demos\MyPlanners\test_output\refine_path_FMT.csv">
           <value>
             <Attribute>
@@ -102,6 +130,13 @@
           </value>
         </entry>
         <entry key="\demos\MyPlanners\test_output\refine_path_FMT_S1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\refine_path_FMT_S2.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -123,6 +158,13 @@
           </value>
         </entry>
         <entry key="\demos\MyPlanners\test_output\refine_path_PCSFMT_S1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\refine_path_PCSFMT_S2.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -256,6 +298,34 @@
           </value>
         </entry>
         <entry key="\demos\MyPlanners\test_output\state_path_PCSFMT_S3.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\state_path_PCSFMT_S3_new.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\video_traj.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\video_traj_compliance.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\video_traj_failure.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
