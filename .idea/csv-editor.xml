@@ -31,6 +31,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\demos\MyPlanners\test_output\planning_data_AtlasRRTstar.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\demos\MyPlanners\test_output\planning_data_AtlasRRTstar_S3_3.csv">
           <value>
             <Attribute>
@@ -81,6 +88,13 @@
           </value>
         </entry>
         <entry key="\demos\MyPlanners\test_output\planning_data_PCSFMT.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\demos\MyPlanners\test_output\planning_data_PCSFMT2.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

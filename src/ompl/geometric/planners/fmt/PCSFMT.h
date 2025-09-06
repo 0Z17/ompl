@@ -625,6 +625,7 @@ namespace ompl
             // double radiusMultiplier_{1.1};
             // double radiusMultiplier_{1.0};
             double radiusMultiplier_{0.6};
+            // double radiusMultiplier_{0.5};
             // double radiusMultiplier_{0.2};
             // double radiusMultiplier_{3.0};
 

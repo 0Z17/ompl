@@ -18,6 +18,7 @@
 #include <thread>
 
 #include "ConstrainedPlanningCommon.h"
+#include "../PlanarManipulator/PlanarManipulatorIKGoal.h"
 
 namespace ob = ompl::base;
 namespace og = ompl::geometric;
@@ -58,10 +59,10 @@ unsigned int num_sample = 0u;
 // std::vector<double> weights = {1.0, 1.0, 1.0, 1.0, 6.0};
 // std::vector<double> weights = {1.0, 1.0, 1.0, 1.5, 2.5};
 // std::vector<double> weights = {1.0, 1.0, 1.0, 3.0, 6.0};
-//std::vector<double> weights = {1.0, 1.0, 1.0, 1.5, 3.5};
-//std::vector<double> weights = {1.0, 1.0, 1.0, 3.0, 6.0};
+// std::vector<double> weights = {1.0, 1.0, 1.0, 1.5, 3.5};
+std::vector<double> weights = {1.0, 1.0, 1.0, 3.0, 6.0};
  // std::vector<double> weights = {1.0, 1.0, 1.0, 1.5, 2.5};
-std::vector<double> weights = {1.0, 1.0, 1.0, 2, 3.5};
+// std::vector<double> weights = {1.0, 1.0, 1.0, 2, 3.5};
 //std::vector<double> weights = {1.0, 1.0, 1.0, 6.5, 6.5};
 
 bool isStateValid(const ob::State *state)
@@ -212,7 +213,7 @@ void getPlanningData(const int idx, const ob::PathPtr &path, const double planni
     // if the file is empty, write the header
     if (file.tellp() == 0)
     {
-        file << "idx,planning_time,path_cost,operator_movement,num_sample\n";
+        file << "idx,planning_time,path_cost,operator_movement,num_sample, isValid\n";
     }
     if (isValid)
     {
@@ -220,15 +221,22 @@ void getPlanningData(const int idx, const ob::PathPtr &path, const double planni
              << planning_time << ","
              << getPathCost(path, weights) << ","
              << getOperatorMovement(path) << ","
-             << num_sample << "\n";
+             << num_sample << ","
+             << "1\n";
     }
     else
     {
         file << idx << ","
-             << "NaN" << ","
-             << "NaN" << ","
-             << "NaN" << ","
-             << num_sample << "\n";
+        << planning_time << ","
+        << getPathCost(path, weights) << ","
+        << getOperatorMovement(path) << ","
+        << num_sample << ","
+        << "0\n";
+        // file << idx << ","
+        //      << "NaN" << ","
+        //      << "NaN" << ","
+        //      << "NaN" << ","
+        //      << num_sample << "\n";
     }
     file.close();
 }
@@ -239,7 +247,7 @@ void plan(PlanningType planning_type)
     ik->setLinkLength(0.96);
 	//     std::vector<double> clipBound = {0.2, 0.8, 0.2, 0.8};
     std::vector<double> clipBound = {0.1, 0.9, 0.1, 0.9};
-    // ik->setClipBound(clipBound);
+    ik->setClipBound(clipBound);
     // ik->setLinkLength(1.0);
 //    unsigned int seed = 114514;
 //    ompl::RNG::setSeed(seed);
@@ -252,14 +260,24 @@ void plan(PlanningType planning_type)
     std::cout << u << "," << v << "\n";
     std::cout << "//////////////////////////////////////" << "\n";
 
-//     std::vector<double> start_config = {0.2, 0.8};
-//     std::vector<double> goal_config = {0.8, 0.2};
+    auto qMin = ik->xToQ(0,0);
+    auto qMax = ik->xToQ(1,1);
+    std::cout << "qMin = " << qMin << "\n";
+    std::cout << "qMax = " << qMax << "\n";
+    std::cout << "//////////////////////////////////////" << "\n";
+
+     // std::vector<double> start_config = {0.2, 0.8};
+     // std::vector<double> goal_config = {0.8, 0.2};
+
+    std::vector<double> start_config = {0.2, 0.2};
+    std::vector<double> goal_config = {0.8, 0.8};
+
 
     // std::vector<double> start_config = {0.4, 0.1};
     // std::vector<double> goal_config = {0.7, 0.6};
 
-     std::vector<double> start_config = {0.2, 0.2};
-     std::vector<double> goal_config = {0.8, 0.8};
+     // std::vector<double> start_config = {0.2, 0.2};
+     // std::vector<double> goal_config = {0.8, 0.8};
 
     // std::vector<double> start_config = {0.2, 0.2};
     // std::vector<double> goal_config = {0.5, 0.5};
@@ -287,11 +305,18 @@ void plan(PlanningType planning_type)
 //    std::vector<double> goal_config = {0.9, 0.1};
 //    std::vector<double> goal_config = {0.771109, 0.257148};
 
-//    std::vector<double> start_config = {0.2, 0.1};
-//    std::vector<double> goal_config = {0.6, 0.7};
+    // std::vector<double> start_config = {0.2, 0.1};
+    // std::vector<double> goal_config = {0.6, 0.7};
 
-//    std::vector<double> start_config = {0.4, 0.3};
-//    std::vector<double> goal_config = {0.5, 0.555};
+    // std::vector<double> start_config = {0.6, 0.7};
+    // std::vector<double> goal_config = {0.9, 0.1};
+
+    // std::vector<double> start_config = {0.4, 0.3};
+    // std::vector<double> goal_config = {0.5, 0.555};
+
+    std::vector<double> start_config = {0.4, 0.3};
+    std::vector<double> goal_config = {0.6, 0.5};
+
 
     /* params for the planner */
     uint paramDimensionsNum = 2;
@@ -350,12 +375,28 @@ void plan(PlanningType planning_type)
 //    std::vector<double> bound_x{0.0, 4.0}, bound_y{-4.0, 3.0}, bound_z{0.0, 3.5},
 //                        bound_psi{-M_PI/2, M_PI/2}, bound_theta{-M_PI/2, M_PI/2};
 
-    std::vector<double> bound_x{0.5, 2.0}, bound_y{-1.9, 1.9}, bound_z{0.0, 4},
-                    bound_psi{-M_PI/2, M_PI/2}, bound_theta{-M_PI/2, M_PI/2};
+    // std::vector<double> bound_x{0.5, 2.0}, bound_y{-1.9, 1.9}, bound_z{0.0, 4},
+    //                 bound_psi{-M_PI/2, M_PI/2}, bound_theta{-M_PI/2, M_PI/2};
 
     /** For blade segment */
     // std::vector<double> bound_x{4.0, 8.5}, bound_y{13.0, 28.0}, bound_z{60.0, 72.0},
     //                 bound_psi{-1*M_PI/6, 1*M_PI/6}, bound_theta{-M_PI/2, M_PI/2};
+
+    /** For complex surface */
+    // std::vector<double> bound_x{1.0, 3.6}, bound_y{0.0, 3.5}, bound_z{0.0, 4},
+    //             bound_psi{-M_PI/2, M_PI/2}, bound_theta{-M_PI/2, M_PI/2};
+
+    // /** For NURBS surface */
+    // std::vector<double> bound_x{0.55, 0.75}, bound_y{-1.6, 2.35}, bound_z{0.5, 3.5},
+    // bound_psi{-M_PI/2, M_PI/2}, bound_theta{-M_PI/2, M_PI/2};
+
+    /** For expe Blade surface*/
+    // std::vector<double> bound_x{0.7, 1.80}, bound_y{-1.5, 1.6}, bound_z{0.2, 2.1},
+    //                     bound_psi{-M_PI/2, M_PI/2}, bound_theta{-M_PI/2, M_PI/2};
+
+    /** For the complex surface */
+    std::vector<double> bound_x{1.8, 2.2}, bound_y{0.9, 2.1}, bound_z{0.3, 2.6},
+                    bound_psi{-1*M_PI/6, 1*M_PI/6}, bound_theta{-M_PI/2, M_PI/2};
 
     stateBounds.setLow(0, bound_x[0]);
     stateBounds.setHigh(0, bound_x[1]);
@@ -593,11 +634,12 @@ void plan(PlanningType planning_type)
     {
         // solved = ss->solve(1.5);
         plannerCon->setKNearest(false);
-        solved = ss->solve(5.0);
-        num_sample = plannerCon->getNumSamples();
+        // solved = ss->solve(5.0);
+        solved = ss->solve(2.0);
         std::cout << "sample_attempt: " << num_sample << std::endl;
         // solved = ss->solve(60.0);
         // solved = ss->solve(120.0);
+        num_sample = plannerCon->getNumSamples();
     }
     else if (planning_type == BundleBITstar)
     {
@@ -757,8 +799,8 @@ void plan(PlanningType planning_type)
             // statePath->as<og::PathGeometric>()->append(s->as<ob::State>());
         }
 
-        // og::PathSimplifier ps(csi);
-        // ps.smoothBSpline(*statePath->as<og::PathGeometric>(), 3, 0.0005);
+        og::PathSimplifier ps(csi);
+        ps.smoothBSpline(*statePath->as<og::PathGeometric>(), 3, 0.0005);
 
     }
 
@@ -770,16 +812,17 @@ int main(int argc, char **argv)
     int idx = 0;
     // int planningRound = 200;
     int planningRound = 100;
+    // int planningRound = 1;
 
      bool isRenderResult = false;
-//    bool isRenderResult = true;
+    // bool isRenderResult = true;
     // PlanningType planning_type = PCSFMT;
-  // PlanningType planning_type = FMT;
+    // PlanningType planning_type = FMT;
      PlanningType planning_type = AtlasRRTstar;
     // PlanningType planning_type = BundleBITstar;
     // glfwMakeContextCurrent(nullptr);
-//    nurbs->fitSurface(Eigen::Vector3d::UnitZ());
-     nurbs->fitSurface();
+    nurbs->fitSurface(Eigen::Vector3d::UnitZ());
+     // nurbs->fitSurface();
     nurbs->saveSurfaceAsStl("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/surface_EXP.stl");
 
     dp::Vector6d qs = ik->xToQs(0.7,0.7);
@@ -842,12 +885,13 @@ int main(int argc, char **argv)
             lastState->as<ob::RealVectorStateSpace::StateType>()->values[3],
             lastState->as<ob::RealVectorStateSpace::StateType>()->values[4];
 
-            auto goalConfig = ik->xToQ(0.8, 0.8);
+            auto goalConfig = ik->xToQ(0.6, 0.5);
 
             bool isValid = true;
-            if ((goalConfig - lastConfig).norm() > 0.3 )
+            if ((goalConfig - lastConfig).norm() > 0.15 )
             {
                 isValid = false;
+                getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_AtlasRRTstar.csv", isValid);
             }
             else
             {
@@ -881,6 +925,12 @@ int main(int argc, char **argv)
             }
 
         }
+        // if (getPathCost(statePath, weights) < 3.00)
+        // {
+        //     isRenderResult = true;
+        //     std::cout << "Path cost: " << getPathCost(statePath, weights) << std::endl;
+        //     std::cout << "Path Cost: " << getOperatorMovement(statePath)*180/M_PI << std::endl;
+        // }
 
         if (isRenderResult)
         {

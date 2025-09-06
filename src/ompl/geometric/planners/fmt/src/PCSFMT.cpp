@@ -279,57 +279,57 @@ double ompl::geometric::PCSFMT::calculateUnitBallVolume(const unsigned int dimen
     return 2.0 * boost::math::constants::pi<double>() / dimension * calculateUnitBallVolume(dimension - 2);
 }
 
-// void ompl::geometric::PCSFMT::setTangentVec(Motion *m) const
-// {
-//     const auto ik = getIK();
-//     const auto u = m->getState()->as<base::RealVectorStateSpace::StateType>()->values[0];
-//     const auto v = m->getState()->as<base::RealVectorStateSpace::StateType>()->values[1];
-//     const auto q = ik->xToQ(u, v);
-//     const double psi = q(3);
-//     const double theta = q(4);
-//     const auto axis_psi = Eigen::Vector3d(0, 0, 1);
-//     const auto axis_theta = Eigen::Vector3d(std::cos(psi + M_PI / 2), std::sin(psi + M_PI / 2), 0);
-//     const double length = ik->getLinkLength();
-//     const auto vec = - length * Eigen::Vector3d(std::cos(psi)*std::cos(theta),
-//                                                          std::sin(psi)*std::cos(theta),
-//                                                          std::sin(theta));
-//     auto [dqu, dqv] = ik->getTangentVec(u, v);
-//
-//     // add the linear velocity derivative from dpsi and dtheta
-//     const Eigen::Vector3d psi_vel = axis_psi.cross(vec);
-//     const Eigen::Vector3d theta_vel = axis_theta.cross(vec);
-//     dqu.head(3) += psi_vel * dqu(3);
-//     dqv.head(3) += psi_vel * dqv(3);
-//     dqu.head(3) += theta_vel * dqu(4);
-//     dqv.head(3) += theta_vel * dqv(4);
-//
-//     // set the tangent vectors
-//     const auto qPtr = new dp::Vector5d(q);
-//     const auto dquPtr = new dp::Vector5d(dqu);
-//     const auto dqvPtr = new dp::Vector5d(dqv);
-//     m->setQ(qPtr);
-//     m->setDqu(dquPtr);
-//     m->setDqv(dqvPtr);
-// }
-
 void ompl::geometric::PCSFMT::setTangentVec(Motion *m)
 {
     const auto ik = getIK();
     const auto u = m->getState()->as<base::RealVectorStateSpace::StateType>()->values[0];
     const auto v = m->getState()->as<base::RealVectorStateSpace::StateType>()->values[1];
     const auto q = ik->xToQ(u, v);
+    const double psi = q(3);
+    const double theta = q(4);
+    const auto axis_psi = Eigen::Vector3d(0, 0, 1);
+    const auto axis_theta = Eigen::Vector3d(std::cos(psi + M_PI / 2), std::sin(psi + M_PI / 2), 0);
+    const double length = ik->getLinkLength();
+    const auto vec = - length * Eigen::Vector3d(std::cos(psi)*std::cos(theta),
+                                                         std::sin(psi)*std::cos(theta),
+                                                         std::sin(theta));
+    auto [dqu, dqv] = ik->getTangentVecQe(u, v);
 
-    auto [dqu, dqv] = ik->getTangentVec(u, v);
+    // add the linear velocity derivative from dpsi and dtheta
+    const Eigen::Vector3d psi_vel = axis_psi.cross(vec);
+    const Eigen::Vector3d theta_vel = axis_theta.cross(vec);
+    dqu.head(3) += psi_vel * dqu(3);
+    dqv.head(3) += psi_vel * dqv(3);
+    dqu.head(3) += theta_vel * dqu(4);
+    dqv.head(3) += theta_vel * dqv(4);
 
+    // set the tangent vectors
     const auto qPtr = new dp::Vector5d(q);
     const auto dquPtr = new dp::Vector5d(dqu);
     const auto dqvPtr = new dp::Vector5d(dqv);
     m->setQ(qPtr);
     m->setDqu(dquPtr);
     m->setDqv(dqvPtr);
-
-    numSetTangentVec_++;
 }
+
+// void ompl::geometric::PCSFMT::setTangentVec(Motion *m)
+// {
+//     const auto ik = getIK();
+//     const auto u = m->getState()->as<base::RealVectorStateSpace::StateType>()->values[0];
+//     const auto v = m->getState()->as<base::RealVectorStateSpace::StateType>()->values[1];
+//     const auto q = ik->xToQ(u, v);
+//
+//     auto [dqu, dqv] = ik->getTangentVec(u, v);
+//
+//     const auto qPtr = new dp::Vector5d(q);
+//     const auto dquPtr = new dp::Vector5d(dqu);
+//     const auto dqvPtr = new dp::Vector5d(dqv);
+//     m->setQ(qPtr);
+//     m->setDqu(dquPtr);
+//     m->setDqv(dqvPtr);
+//
+//     numSetTangentVec_++;
+// }
 
 double ompl::geometric::PCSFMT::calculateRadius(const unsigned int dimension, const unsigned int n) const
 {
