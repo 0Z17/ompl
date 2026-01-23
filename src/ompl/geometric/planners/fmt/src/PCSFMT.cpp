@@ -436,7 +436,7 @@ void ompl::geometric::PCSFMT::sample(const base::PlannerTerminationCondition &pt
             // auto detG = g.determinant();
 
 
-            
+
             // calculate weight for the anchor states
             double detG = computeMatrixTensor(motion->getDqu(), motion->getDqv()).determinant();
             if (detG < 0) throw std::runtime_error("detG < 0");
