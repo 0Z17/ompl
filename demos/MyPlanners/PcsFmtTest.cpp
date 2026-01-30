@@ -811,18 +811,18 @@ int main(int argc, char **argv)
 {
     int idx = 0;
     // int planningRound = 200;
-    int planningRound = 100;
-    // int planningRound = 1;
+    // int planningRound = 100;
+    int planningRound = 1;
 
-     bool isRenderResult = false;
-    // bool isRenderResult = true;
-    // PlanningType planning_type = PCSFMT;
+     // bool isRenderResult = false;
+    bool isRenderResult = true;
+    PlanningType planning_type = PCSFMT;
     // PlanningType planning_type = FMT;
-     PlanningType planning_type = AtlasRRTstar;
+     // PlanningType planning_type = AtlasRRTstar;
     // PlanningType planning_type = BundleBITstar;
     // glfwMakeContextCurrent(nullptr);
-    nurbs->fitSurface(Eigen::Vector3d::UnitZ());
-     // nurbs->fitSurface();
+    // nurbs->fitSurface(Eigen::Vector3d::UnitZ());
+     nurbs->fitSurface();
     nurbs->saveSurfaceAsStl("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/surface_EXP.stl");
 
     dp::Vector6d qs = ik->xToQs(0.7,0.7);
