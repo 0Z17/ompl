@@ -314,8 +314,8 @@ void plan(PlanningType planning_type)
     // std::vector<double> start_config = {0.4, 0.3};
     // std::vector<double> goal_config = {0.5, 0.555};
 
-    std::vector<double> start_config = {0.4, 0.3};
-    std::vector<double> goal_config = {0.6, 0.5};
+    // std::vector<double> start_config = {0.4, 0.3};
+    // std::vector<double> goal_config = {0.6, 0.5};
 
 
     /* params for the planner */
