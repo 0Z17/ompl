@@ -97,6 +97,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4458a72d-a736-4beb-9c5a-bef049197ce3" name="更改" comment="commit again">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -16,9 +16,15 @@
 #include "mujoco_client.h"
 #include <chrono>
 #include <thread>
+#include <cstdlib>
 
 #include "ConstrainedPlanningCommon.h"
 #include "../PlanarManipulator/PlanarManipulatorIKGoal.h"
+
+std::string getEnvVar(const std::string& var, const std::string& defaultValue) {
+    const char* value = std::getenv(var.c_str());
+    return value ? std::string(value) : defaultValue;
+}
 
 namespace ob = ompl::base;
 namespace og = ompl::geometric;
@@ -34,20 +40,8 @@ enum PlanningType
     BundleBITstar
 };
 
- std::string pcdFile = "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd";
-// std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_bridge1.pcd";
-// std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_plane2.pcd";
-// std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_cylinder.pcd";
-// std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_EXP.pcd";
-// std::string pcdFile = "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud_turbine.pcd";
-// std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/surface_complex.pcd";
-// std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/blade_segment.pcd";
-// std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/surf.pcd";
-// std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/scans_S2.pcd";
-// std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/tube_pointcloud.pcd";
-// std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/pointcloud.pcd";
-//std::string pcdFile =  "/home/wsl/proj/planning_ws/src/surface_reconstructor/data/surface_outdoor.pcd";
-std::string modelFile = "/home/wsl/proj/skyvortex_mujoco/scene.xml";
+std::string pcdFile = getEnvVar("PCD_FILE", "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd");
+std::string modelFile = getEnvVar("MODEL_FILE", "/home/wsl/proj/skyvortex_mujoco/scene.xml");
 const auto nurbs = new sr::Nurbs(pcdFile);
 auto ik = new dp::InvKin(nurbs);
 mc::MujocoClient client(modelFile.c_str());
@@ -659,15 +653,14 @@ void plan(PlanningType planning_type)
         path = pdef->getSolutionPath();
         std::cout << "Found solution:" << std::endl;
 
+        std::string outputDir = getEnvVar("OUTPUT_DIR", "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output");
         if (planning_type == PCSFMT)
         {
-            static_cast<og::PCSFMT*>(planner.get())->getPlannerDataCsv("/home/wsl/proj/my_ompl/demos/MyPlanners/"
-                                                                       "test_output/PCSFMT_planner_data.csv");
+            static_cast<og::PCSFMT*>(planner.get())->getPlannerDataCsv(outputDir + "/PCSFMT_planner_data.csv");
         }
         else if (planning_type == FMT)
         {
-            static_cast<og::FMT*>(planner.get())->getPlannerDataCsv("/home/wsl/proj/my_ompl/demos/MyPlanners/"
-                                                                   "test_output/FMT_planner_data.csv");
+            static_cast<og::FMT*>(planner.get())->getPlannerDataCsv(outputDir + "/FMT_planner_data.csv");
         }
 
         // ob::PlannerData data(si);
@@ -680,19 +673,18 @@ void plan(PlanningType planning_type)
         }
     }
     else
-    {
-        if (planning_type == PCSFMT)
         {
-            static_cast<og::PCSFMT*>(planner.get())->getPlannerDataCsv("/home/wsl/proj/my_ompl/demos/MyPlanners/"
-                                                                       "test_output/PCSFMT_planner_data.csv");
+            std::string outputDir = getEnvVar("OUTPUT_DIR", "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output");
+            if (planning_type == PCSFMT)
+            {
+                static_cast<og::PCSFMT*>(planner.get())->getPlannerDataCsv(outputDir + "/PCSFMT_planner_data.csv");
+            }
+            else if (planning_type == FMT)
+            {
+                static_cast<og::FMT*>(planner.get())->getPlannerDataCsv(outputDir + "/FMT_planner_data.csv");
+            }
+            std::cout << "No solution found" << std::endl;
         }
-        else if (planning_type == FMT)
-        {
-            static_cast<og::FMT*>(planner.get())->getPlannerDataCsv("/home/wsl/proj/my_ompl/demos/MyPlanners/"
-                                                                   "test_output/FMT_planner_data.csv");
-        }
-        std::cout << "No solution found" << std::endl;
-    }
 
     if (planning_type != AtlasRRTstar && planning_type != BundleBITstar)
     {
@@ -732,7 +724,8 @@ void plan(PlanningType planning_type)
         if (!pathBundle.check())
             OMPL_WARN("Interpolated simplified path fails check!");
 
-        std::ofstream file("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_BundleBITstar.csv");
+        std::string outputDir = getEnvVar("OUTPUT_DIR", "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output");
+        std::ofstream file(outputDir + "/state_path_BundleBITstar.csv");
         file << "X,Y,Z,Psi,Theta\n";
 
         int idxP = 0;
@@ -776,7 +769,8 @@ void plan(PlanningType planning_type)
         if (!pathAtlas.check())
             OMPL_WARN("Interpolated simplified path fails check!");
 
-        std::ofstream file("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_AtlasRRTstar.csv");
+        std::string outputDir = getEnvVar("OUTPUT_DIR", "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output");
+        std::ofstream file(outputDir + "/state_path_AtlasRRTstar.csv");
         file << "X,Y,Z,Psi,Theta\n";
 
 
@@ -823,7 +817,8 @@ int main(int argc, char **argv)
     // glfwMakeContextCurrent(nullptr);
     // nurbs->fitSurface(Eigen::Vector3d::UnitZ());
      nurbs->fitSurface();
-    nurbs->saveSurfaceAsStl("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/surface_EXP.stl");
+    std::string outputDir = getEnvVar("OUTPUT_DIR", "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output");
+    nurbs->saveSurfaceAsStl(outputDir + "/surface_EXP.stl");
 
     dp::Vector6d qs = ik->xToQs(0.7,0.7);
     std::cout << qs << std::endl;
@@ -842,11 +837,11 @@ int main(int argc, char **argv)
 
         if (planning_type == AtlasRRTstar)
         {
-            data = read_csv("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_AtlasRRTstar.csv");
+            data = read_csv(outputDir + "/state_path_AtlasRRTstar.csv");
         }
         if (planning_type == BundleBITstar)
         {
-            data = read_csv("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_BundleBITstar.csv");
+            data = read_csv(outputDir + "/state_path_BundleBITstar.csv");
         }
 
         auto stateSpace(std::make_shared<ob::RealVectorStateSpace>(5));
@@ -864,15 +859,16 @@ int main(int argc, char **argv)
             statePath->as<og::PathGeometric>()->append(s->as<ob::State>());
         }
 
+        std::string outputDir = getEnvVar("OUTPUT_DIR", "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output");
         if (planning_type == PCSFMT)
         {
-            getPathCsv(statePath, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_PCSFMT.csv");
-            getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_PCSFMT.csv");
+            getPathCsv(statePath, outputDir + "/state_path_PCSFMT.csv");
+            getPlanningData(idx, statePath, planning_time, outputDir + "/planning_data_PCSFMT.csv");
         }
         else if (planning_type == FMT)
         {
-            getPathCsv(statePath, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/state_path_FMT.csv");
-            getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_FMT.csv");
+            getPathCsv(statePath, outputDir + "/state_path_FMT.csv");
+            getPlanningData(idx, statePath, planning_time, outputDir + "/planning_data_FMT.csv");
         }
         else if (planning_type == AtlasRRTstar)
         {
@@ -891,11 +887,11 @@ int main(int argc, char **argv)
             if ((goalConfig - lastConfig).norm() > 0.15 )
             {
                 isValid = false;
-                getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_AtlasRRTstar.csv", isValid);
+                getPlanningData(idx, statePath, planning_time, outputDir + "/planning_data_AtlasRRTstar.csv", isValid);
             }
             else
             {
-                getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_AtlasRRTstar.csv", isValid);
+                getPlanningData(idx, statePath, planning_time, outputDir + "/planning_data_AtlasRRTstar.csv", isValid);
                 // break;
             }
 
@@ -920,7 +916,7 @@ int main(int argc, char **argv)
             }
             else
             {
-                getPlanningData(idx, statePath, planning_time, "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/planning_data_BundleBITstar.csv", isValid);
+                getPlanningData(idx, statePath, planning_time, outputDir + "/planning_data_BundleBITstar.csv", isValid);
                 // break;
             }
 
