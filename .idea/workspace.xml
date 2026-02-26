@@ -8,7 +8,6 @@
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="3" type="long" />
-    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexRemoved" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -51,6 +50,7 @@
       <config projectName="ompl" targetName="demo_ThunderLightning" />
       <config projectName="ompl" targetName="demo_MultiLevelPlanningRigidBody2D" />
       <config projectName="ompl" targetName="demo_MultiLevelPlanningHyperCube" />
+      <config projectName="ompl" targetName="demo_PlanningCompare" />
       <config projectName="ompl" targetName="demo_ConstrainedPlanningImplicitChain" />
       <config projectName="ompl" targetName="test_constraint_sphere" />
       <config projectName="ompl" targetName="clean_bindings" />
@@ -69,7 +69,9 @@
       <config projectName="ompl" targetName="uninstall" />
       <config projectName="ompl" targetName="test_halton_sampling" />
       <config projectName="ompl" targetName="demo_PlannerData" />
+      <config projectName="ompl" targetName="demo_PcdToStl" />
       <config projectName="ompl" targetName="test_pdf" />
+      <config projectName="ompl" targetName="demo_MjRenderScript" />
       <config projectName="ompl" targetName="test_2dmap_control" />
       <config projectName="ompl" targetName="test_gridb" />
       <config projectName="ompl" targetName="demo_RigidBodyPlanningWithODESolverAndControls" />
@@ -98,7 +100,13 @@
   <component name="ChangeListManager">
     <list default="true" id="4458a72d-a736-4beb-9c5a-bef049197ce3" name="更改" comment="commit again">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PcsFmtTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/demos/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/PCSFMT_planner_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/PCSFMT_planner_data.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/parameterSpaceWeights.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/parameterSpaceWeights.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/planning_data_PCSFMT.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/test_output/state_path_PCSFMT.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/external/mjc_client/include/mujoco_client.h" beforeDir="false" afterPath="$PROJECT_DIR$/demos/external/mjc_client/include/mujoco_client.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/external/mjc_client/src/mujoco_client.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/external/mjc_client/src/mujoco_client.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,37 +169,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;C/C++ 文件.test_demo.cpp.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.collision_checker_test.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.demo_ConstrainedPlanningSphere.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.demo_ConstrainedPlanningTorus.executor&quot;: &quot;Debug&quot;,
-    &quot;CMake 应用程序.demo_PcsFmtTest.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.demo_ik_test.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.test_demo.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
-    &quot;cf.advertisement.text.overridden&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;ctest.advertisement.all.test.configuration.is.created&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;//wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/test_output&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "C/C++ 文件.test_demo.cpp.executor": "Run",
+    "CMake 应用程序.collision_checker_test.executor": "Run",
+    "CMake 应用程序.demo_ConstrainedPlanningSphere.executor": "Run",
+    "CMake 应用程序.demo_ConstrainedPlanningTorus.executor": "Debug",
+    "CMake 应用程序.demo_PcdToStl.executor": "Run",
+    "CMake 应用程序.demo_PcsFmtOnly.executor": "Run",
+    "CMake 应用程序.demo_PcsFmtTest.executor": "Run",
+    "CMake 应用程序.demo_PlanningCompare.executor": "Run",
+    "CMake 应用程序.demo_ik_test.executor": "Run",
+    "CMake 应用程序.test_demo.executor": "Run",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "cf.advertisement.text.overridden": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "ctest.advertisement.all.test.configuration.is.created": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "//wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners/test_output",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\demos\MyPlanners\test_output" />
@@ -204,7 +215,12 @@
       <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\demos\MyPlanners\test_output" />
     </key>
   </component>
-  <component name="RunManager" selected="CMake 应用程序.demo_PcsFmtTest">
+  <component name="RunManager" selected="CMake 应用程序.demo_PlanningCompare">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="test_2dmap_ik" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="test_2dmap_ik" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="test_2dmap_ik" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -362,6 +378,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="demo_MjRenderScript" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_MjRenderScript" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_MjRenderScript">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="demo_MultiLevelPlanarManipulator" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_MultiLevelPlanarManipulator" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_MultiLevelPlanarManipulator">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -397,6 +418,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="demo_PcdToStl" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PcdToStl" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PcdToStl">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="demo_PcsFmtTest" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PcsFmtTest" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PcsFmtTest">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -413,6 +439,11 @@
       </method>
     </configuration>
     <configuration name="demo_PlannerProgressProperties" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PlannerProgressProperties" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PlannerProgressProperties">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="demo_PlanningCompare" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PlanningCompare" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PlanningCompare">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -577,6 +608,7 @@
       <item itemvalue="CMake 应用程序.demo_HypercubeBenchmark" />
       <item itemvalue="CMake 应用程序.demo_KinematicChainBenchmark" />
       <item itemvalue="CMake 应用程序.demo_Koules" />
+      <item itemvalue="CMake 应用程序.demo_MjRenderScript" />
       <item itemvalue="CMake 应用程序.demo_MultiLevelPlanarManipulator" />
       <item itemvalue="CMake 应用程序.demo_MultiLevelPlanningHyperCubeBenchmark" />
       <item itemvalue="CMake 应用程序.demo_MultiLevelPlanningHyperCube" />
@@ -584,10 +616,12 @@
       <item itemvalue="CMake 应用程序.demo_MultiLevelPlanningRigidBody2D" />
       <item itemvalue="CMake 应用程序.demo_MultiLevelPlanningRigidBody3D" />
       <item itemvalue="CMake 应用程序.demo_OptimalPlanning" />
+      <item itemvalue="CMake 应用程序.demo_PcdToStl" />
       <item itemvalue="CMake 应用程序.demo_PcsFmtTest" />
       <item itemvalue="CMake 应用程序.demo_PlanarManipulator" />
       <item itemvalue="CMake 应用程序.demo_PlannerData" />
       <item itemvalue="CMake 应用程序.demo_PlannerProgressProperties" />
+      <item itemvalue="CMake 应用程序.demo_PlanningCompare" />
       <item itemvalue="CMake 应用程序.demo_Point2DPlanning" />
       <item itemvalue="CMake 应用程序.demo_RigidBodyPlanningWithControls" />
       <item itemvalue="CMake 应用程序.demo_RigidBodyPlanningWithIK" />
@@ -775,6 +809,10 @@
       <workItem from="1766473108115" duration="834000" />
       <workItem from="1769135036093" duration="2672000" />
       <workItem from="1769256966801" duration="2943000" />
+      <workItem from="1769846314351" duration="174000" />
+      <workItem from="1771900528832" duration="3411000" />
+      <workItem from="1772006466247" duration="3770000" />
+      <workItem from="1772011806306" duration="11365000" />
     </task>
     <task id="LOCAL-00001" summary="commit again">
       <option name="closed" value="true" />

@@ -111,6 +111,20 @@ if (OMPL_BUILD_DEMOS)
 #           surface_contact
     )
 
+    add_executable(demo_PlanningCompare MyPlanners/PlanningCompare.cpp)
+    target_link_libraries(demo_PlanningCompare PRIVATE
+            ompl::ompl
+            Eigen3::Eigen
+            Boost::filesystem
+            Boost::system
+            Boost::program_options
+            ${SURFACE_CONTACT_LIBRARIES}
+            ${PCL_COMMON_LIBRARIES}
+            ${PCL_SURFACE_LIBRARIES}
+            ${PCL_IO_LIBRARIES}
+            ${VTK_LIBRARIES}
+            mujoco_client)
+
     add_executable(demo_PcsFmtTest MyPlanners/PcsFmtTest.cpp MyPlanners/PlanningConfig.cpp)
     target_link_libraries(demo_PcsFmtTest PRIVATE
             ompl::ompl
@@ -141,6 +155,26 @@ if (OMPL_BUILD_DEMOS)
             ${VTK_LIBRARIES}
             mujoco_client)
 #            surface_contact)
+
+    add_executable(demo_PcdToStl MyPlanners/PcdToStl.cpp)
+    target_link_libraries(demo_PcdToStl PRIVATE
+            Eigen3::Eigen
+            Boost::filesystem
+            Boost::system
+            ${SURFACE_CONTACT_LIBRARIES}
+            ${PCL_COMMON_LIBRARIES}
+            ${PCL_SURFACE_LIBRARIES}
+            ${PCL_IO_LIBRARIES}
+            ${VTK_LIBRARIES})
+
+    # Add MjRenderScript executable
+    add_executable(demo_MjRenderScript MyPlanners/MjRenderScript.cpp)
+    target_link_libraries(demo_MjRenderScript PRIVATE
+            Eigen3::Eigen
+            Boost::filesystem
+            Boost::system
+            Boost::program_options
+            mujoco_client)
 
     find_package(yaml-cpp CONFIG)
     set_package_properties(yaml-cpp PROPERTIES

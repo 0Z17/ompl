@@ -172,6 +172,7 @@ void mc::MujocoClient::initializeGlfw()
     glfwSetMouseButtonCallback(window_.get(), mouse_button_callback);
     glfwSetCursorPosCallback(window_.get(), cursor_position_callback);
     glfwSetScrollCallback(window_.get(), scroll_callback);
+    glfwSetKeyCallback(window_.get(), key_callback);
 }
 
 void mc::MujocoClient::render() {
@@ -362,6 +363,14 @@ void mc::MujocoClient::cursor_position_callback_impl(GLFWwindow* window, double 
 void mc::MujocoClient::scroll_callback_impl(GLFWwindow* window, double xoffset, double yoffset) {
     cam_.distance -= yoffset * 0.1; // Adjust zoom speed
     if (cam_.distance < 0.1) cam_.distance = 0.1; // Prevent distance from becoming too small
+}
+
+void mc::MujocoClient::key_callback_impl(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (key == GLFW_KEY_P && action == GLFW_PRESS) {
+        printf("[Camera] lookat=(%.3f, %.3f, %.3f)  distance=%.3f  azimuth=%.1f  elevation=%.1f\n",
+               cam_.lookat[0], cam_.lookat[1], cam_.lookat[2],
+               cam_.distance, cam_.azimuth, cam_.elevation);
+    }
 }
 
 

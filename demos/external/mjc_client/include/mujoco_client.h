@@ -67,6 +67,7 @@ public:
     void mouse_button_callback_impl(GLFWwindow* window, int button, int action, int mods);
     void cursor_position_callback_impl(GLFWwindow* window, double xpos, double ypos);
     void scroll_callback_impl(GLFWwindow* window, double xoffset, double yoffset);
+    void key_callback_impl(GLFWwindow* window, int key, int scancode, int action, int mods);
     [[nodiscard]] GLFWwindow* getWindow() const { return window_.get(); }
 
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
@@ -84,6 +85,11 @@ public:
     static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
         if (auto *client = static_cast<MujocoClient *>(glfwGetWindowUserPointer(window))) {
             client->scroll_callback_impl(window, xoffset, yoffset);
+        }
+    };
+    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+        if (auto *client = static_cast<MujocoClient *>(glfwGetWindowUserPointer(window))) {
+            client->key_callback_impl(window, key, scancode, action, mods);
         }
     };
 
@@ -141,10 +147,16 @@ protected:
     // Eigen::Matrix<double, 6, 6> forwardForceMap_;
     // Eigen::Matrix<double, 6, 6> inverseForceMap_;
 
-    std::vector<double> camPoint_{0.0,-1.0,2.0};
-    double camDis_{4.0};
-    double camAzimuth_{30.0};
-    double camElevation_{0.0};
+    // std::vector<double> camPoint_{0.0,-1.0,2.0};
+    // double camDis_{4.0};
+    // double camAzimuth_{30.0};
+    // double camElevation_{0.0};
+
+    std::vector<double> camPoint_{6.731, 20.178, 65.749};
+    double camDis_{12.9};
+    double camAzimuth_{-13.2};
+    double camElevation_{-31.5};
+
 
     const char* baseBodyName_{"base_link"};
     const char* baseJointName_{"free_joint"};
