@@ -622,8 +622,8 @@ namespace ompl
                 In general, a radius between 0.9 and 5 appears to perform the best
              */
             // double radiusMultiplier_{1.1};
-            // double radiusMultiplier_{1.0};
-            double radiusMultiplier_{0.6};
+            double radiusMultiplier_{1.1};
+            // double radiusMultiplier_{0.6};
             // double radiusMultiplier_{0.5};
             // double radiusMultiplier_{0.2};
             // double radiusMultiplier_{3.0};
@@ -660,6 +660,9 @@ namespace ompl
 
             /** \brief The list to store the anchor node */
             std::vector<std::pair<Motion *, double>> anchorNodesWithWeight_;
+
+            /** \brief The list to store the max eigenvalues of the anchor node */
+            std::vector<double> anchorNodesMaxEigen_;
 
             /** \brief The weight vector for the anchor node */
             double totalAnchorWeight_{0.};

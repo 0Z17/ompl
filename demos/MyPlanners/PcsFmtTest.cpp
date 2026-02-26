@@ -40,7 +40,8 @@ enum PlanningType
     BundleBITstar
 };
 
-std::string pcdFile = getEnvVar("PCD_FILE", "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd");
+std::string pcdFile = getEnvVar("PCD_FILE", "/home/wsl/proj/T_mech_R1/S1/blade_segment.pcd");
+// std::string pcdFile = getEnvVar("PCD_FILE", "/home/wsl/proj/skyvortex_mujoco/assets/NURBS.pcd");
 std::string modelFile = getEnvVar("MODEL_FILE", "/home/wsl/proj/skyvortex_mujoco/scene.xml");
 const auto nurbs = new sr::Nurbs(pcdFile);
 auto ik = new dp::InvKin(nurbs);
@@ -815,8 +816,8 @@ int main(int argc, char **argv)
      // PlanningType planning_type = AtlasRRTstar;
     // PlanningType planning_type = BundleBITstar;
     // glfwMakeContextCurrent(nullptr);
-    // nurbs->fitSurface(Eigen::Vector3d::UnitZ());
-     nurbs->fitSurface();
+    nurbs->fitSurface(Eigen::Vector3d::UnitZ());
+     // nurbs->fitSurface();
     std::string outputDir = getEnvVar("OUTPUT_DIR", "/home/wsl/proj/my_ompl/demos/MyPlanners/test_output");
     nurbs->saveSurfaceAsStl(outputDir + "/surface_EXP.stl");
 

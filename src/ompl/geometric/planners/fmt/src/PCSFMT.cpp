@@ -290,14 +290,19 @@ void ompl::geometric::PCSFMT::setTangentVec(Motion *m)
     const auto axis_psi = Eigen::Vector3d(0, 0, 1);
     const auto axis_theta = Eigen::Vector3d(std::cos(psi + M_PI / 2), std::sin(psi + M_PI / 2), 0);
     const double length = ik->getLinkLength();
-    const auto vec = - length * Eigen::Vector3d(std::cos(psi)*std::cos(theta),
+    const Eigen::Vector3d vec = - length * Eigen::Vector3d(std::cos(psi)*std::cos(theta),
                                                          std::sin(psi)*std::cos(theta),
                                                          std::sin(theta));
+    // std::cout << "[DEBUG] psi=" << psi << " theta=" << theta << " length=" << length << std::endl;
+    // std::cout << "[DEBUG] vec BEFORE getTangentVecQe: " << vec.transpose() << "  addr=" << (void*)vec.data() << std::endl;
     auto [dqu, dqv] = ik->getTangentVecQe(u, v);
-
+    // std::cout << "[DEBUG] dqu" << dqu << "[DEBUG] dqv" << dqv << std::endl;
+    // std::cout << "[DEBUG] vec AFTER  getTangentVecQe: " << vec.transpose() << "  addr=" << (void*)vec.data() << std::endl;
     // add the linear velocity derivative from dpsi and dtheta
     const Eigen::Vector3d psi_vel = axis_psi.cross(vec);
+    // std::cout << "psi_vel: " << psi_vel << std::endl;
     const Eigen::Vector3d theta_vel = axis_theta.cross(vec);
+    // std::cout << "theta_vel: " << theta_vel << std::endl;
     dqu.head(3) += psi_vel * dqu(3);
     dqv.head(3) += psi_vel * dqv(3);
     dqu.head(3) += theta_vel * dqu(4);
@@ -331,9 +336,38 @@ void ompl::geometric::PCSFMT::setTangentVec(Motion *m)
 //     numSetTangentVec_++;
 // }
 
+// double ompl::geometric::PCSFMT::calculateRadius(const unsigned int dimension, const unsigned int n) const
+// {
+//     double a = 1.0 / (double)dimension;
+//     // double unitBallVolume = calculateUnitBallVolume(dimension);
+//     double unitBallVolume = calculateUnitBallVolume(2);
+//     double minWeight = std::numeric_limits<double>::max();
+//     if (!anchorNodesWithWeight_.empty())
+//     {
+//         auto min_it = std::min_element(
+//             anchorNodesWithWeight_.begin(),
+//             anchorNodesWithWeight_.end(),
+//             [](const auto& a, const auto& b) {
+//                 return a.second < b.second;
+//             }
+//         );
+//         minWeight = min_it->second;
+//     }
+//     else
+//     {
+//         std::cerr << "anchorNodesWithWeight_ is empty" << std::endl;
+//     }
+//
+//     return radiusMultiplier_ * 2.0 * std::pow(a, a) * std::pow(freeSpaceVolume_ *
+//         totalAnchorWeight_* pow( 1.0 / numAnchorNodes_, 2) / (unitBallVolume * minWeight), a) *
+//            std::pow(log((double)n) / (double)n, a);
+// }
+
 double ompl::geometric::PCSFMT::calculateRadius(const unsigned int dimension, const unsigned int n) const
 {
     double a = 1.0 / (double)dimension;
+    double l = 1.0;
+    double fUpper = 1.0;
     // double unitBallVolume = calculateUnitBallVolume(dimension);
     double unitBallVolume = calculateUnitBallVolume(2);
     double minWeight = std::numeric_limits<double>::max();
@@ -347,15 +381,24 @@ double ompl::geometric::PCSFMT::calculateRadius(const unsigned int dimension, co
             }
         );
         minWeight = min_it->second;
+
+        l = (minWeight/totalAnchorWeight_)*(numAnchorNodes_*numAnchorNodes_);
     }
     else
     {
         std::cerr << "anchorNodesWithWeight_ is empty" << std::endl;
     }
 
-    return radiusMultiplier_ * 2.0 * std::pow(a, a) * std::pow(freeSpaceVolume_ *
+
+    if (anchorNodesMaxEigen_.empty())
+        std::cerr << "anchorNodesWithWeight_ is empty" << std::endl;
+    fUpper = std::sqrt(*std::max_element(anchorNodesMaxEigen_.begin(), anchorNodesMaxEigen_.end()));
+
+    return radiusMultiplier_ * 2.0 * fUpper * std::pow(a*l, a) * std::pow(freeSpaceVolume_ *
         totalAnchorWeight_* pow( 1.0 / numAnchorNodes_, 2) / (unitBallVolume * minWeight), a) *
            std::pow(log((double)n) / (double)n, a);
+    // return radiusMultiplier_ * 2.0 * fUpper * std::pow(a*l, a) * std::pow(freeSpaceVolume_ / unitBallVolume, a) *
+    //    std::pow(log((double)n) / (double)n, a);
 }
 
 void ompl::geometric::PCSFMT::sampleFree(const base::PlannerTerminationCondition &ptc)
@@ -438,7 +481,12 @@ void ompl::geometric::PCSFMT::sample(const base::PlannerTerminationCondition &pt
 
 
             // calculate weight for the anchor states
-            double detG = computeMatrixTensor(motion->getDqu(), motion->getDqv()).determinant();
+            auto matrixT = computeMatrixTensor(motion->getDqu(), motion->getDqv());
+            Eigen::SelfAdjointEigenSolver<Eigen::Matrix2d> solver(matrixT);
+            double maxEigenvalue = solver.eigenvalues().maxCoeff();
+            anchorNodesMaxEigen_.push_back(maxEigenvalue);
+
+            double detG = matrixT.determinant();
             if (detG < 0) throw std::runtime_error("detG < 0");
             double weight = std::sqrt(detG);
             anchorNodesWithWeight_.emplace_back(motion, weight);
@@ -673,7 +721,8 @@ ompl::base::PlannerStatus ompl::geometric::PCSFMT::solve(const base::PlannerTerm
     // }
     // else
     // {
-    NNr_ = calculateRadius(stateSi_->getStateDimension(), nn_->size());
+    // NNr_ = calculateRadius(stateSi_->getStateDimension(), nn_->size());
+    NNr_ = calculateRadius(si_->getStateDimension(), nn_->size());
     // NNr_ = 0.5;
     OMPL_DEBUG("Using radius of %f", NNr_);
     // }
@@ -1064,6 +1113,10 @@ void ompl::geometric::PCSFMT::updateNeighborhood(Motion *m, const std::vector<Mo
 double ompl::geometric::PCSFMT::distanceFunction(const Motion *a, const Motion *b)
 {
     numNearestSearching_++;
+    // double dis = estOpt_->configMotionCost(a->getConState(), b->getConState()).value();
+    // std::cout << "distance: " << dis << std::endl;
+    // return dis;
     return estOpt_->configMotionCost(a->getConState(), b->getConState()).value();
+    // return opt_->motionCost(a->getState(), b->getState()).value();
 }
 

@@ -35,8 +35,8 @@ namespace mc = mujoco_client;
 
 // --- 规划算法选择 ---
 enum PlannerType { PLANNER_PCSFMT, PLANNER_FMT };
-// static const PlannerType PLANNING_TYPE = PLANNER_PCSFMT;
-static const PlannerType PLANNING_TYPE = PLANNER_FMT;
+static const PlannerType PLANNING_TYPE = PLANNER_PCSFMT;
+// static const PlannerType PLANNING_TYPE = PLANNER_FMT;
 // --- 输入/输出路径（也可通过环境变量覆盖）---
 static const std::string DEFAULT_PCD_FILE   = "/home/wsl/proj/T_mech_R1/S1/blade_segment.pcd";
 static const std::string DEFAULT_MODEL_FILE = "/home/wsl/proj/skyvortex_mujoco/scene.xml";
@@ -58,15 +58,15 @@ static const double LINK_LENGTH = 0.96;
 
 // --- 规划器参数 ---
 static const int    SAMPLE_NUM      = 5000;   // 采样点数量
-static const double SOLVE_TIMEOUT   = 20.0;   // 规划超时（秒）
-static const double RESOL_FACTOR    = 0.05;   // 运动验证分辨率系数
+static const double SOLVE_TIMEOUT   = 10.0;   // 规划超时（秒）
+static const double RESOL_FACTOR    = 0.1;   // 运动验证分辨率系数
 
 // --- 路径平滑参数 ---
 static const int    BSPLINE_STEPS   = 3;
 static const double BSPLINE_DT      = 0.0005;
 
 // --- 是否启用 MuJoCo 可视化回放 ---
-static const bool   RENDER_RESULT   = true;
+static const bool   RENDER_RESULT   = false;
 static const double RENDER_FPS      = 100.0;  // 渲染帧率
 static const double PLAYBACK_FPS    = 5.0;    // 路径回放帧率
 
