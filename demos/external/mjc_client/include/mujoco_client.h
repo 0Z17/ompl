@@ -147,15 +147,15 @@ protected:
     // Eigen::Matrix<double, 6, 6> forwardForceMap_;
     // Eigen::Matrix<double, 6, 6> inverseForceMap_;
 
-    // std::vector<double> camPoint_{0.0,-1.0,2.0};
-    // double camDis_{4.0};
-    // double camAzimuth_{30.0};
-    // double camElevation_{0.0};
+    std::vector<double> camPoint_{0.0,-1.0,2.0};
+    double camDis_{4.0};
+    double camAzimuth_{30.0};
+    double camElevation_{0.0};
 
-    std::vector<double> camPoint_{6.731, 20.178, 65.749};
-    double camDis_{12.9};
-    double camAzimuth_{-13.2};
-    double camElevation_{-31.5};
+    // std::vector<double> camPoint_{6.731, 20.178, 65.749};
+    // double camDis_{12.9};
+    // double camAzimuth_{-13.2};
+    // double camElevation_{-31.5};
 
 
     const char* baseBodyName_{"base_link"};
