@@ -254,6 +254,18 @@ namespace ompl
             /** \brief Get the whole data of the planner and output it to a csv file */
             void getPlannerDataCsv(const std::string &filename) const;
 
+            /** \brief Reset the tree structure while keeping samples and neighborhoods for replanning.
+                This allows reusing the sampled nodes and their neighbor relationships for a new
+                start/goal pair without resampling. */
+            void resetTreeForNewGoal();
+
+            /** \brief Manually add a waypoint to the sample set.
+                This ensures that specific waypoints are included in the sampling,
+                preventing "no sample found" errors when planning through a sequence of waypoints.
+                @param u The u parameter (first coordinate in parameter space)
+                @param v The v parameter (second coordinate in parameter space) */
+            void addWaypointToSamples(double u, double v);
+
         protected:
             /** \brief Representation of a motion
               */
@@ -654,6 +666,9 @@ namespace ompl
 
             /** \brief Add new samples if the tree was not able to find a solution. */
             bool extendedPCSFMT_{false};
+
+            /** \brief Flag to indicate if samples have already been generated (for reuse) */
+            bool samplesGenerated_{false};
 
             /** \brief The number of anchor node of each dimension */
             double numAnchorNodes_{20};

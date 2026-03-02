@@ -47,9 +47,6 @@ static const std::vector<std::vector<double>> WAYPOINTS = {
     {0.2, 0.2},  // A
     {0.7, 0.5},  // B
     {0.4, 0.8},  // C
-    {0.6, 0.5},  // D
-    {0.4, 0.3},  // E
-    {0.8, 0.8},  // F
 };
 
 // --- 代价权重 [X, Y, Z, Psi, Theta] ---
@@ -72,7 +69,7 @@ static const int    BSPLINE_STEPS   = 3;
 static const double BSPLINE_DT      = 0.0005;
 
 // --- 是否启用 MuJoCo 可视化回放 ---
-static const bool   RENDER_RESULT   = false;
+static const bool   RENDER_RESULT   = true;
 static const double RENDER_FPS      = 100.0;  // 渲染帧率
 static const double PLAYBACK_FPS    = 5.0;    // 路径回放帧率
 
@@ -102,12 +99,6 @@ static ob::PathPtr   g_path;
 static ob::PathPtr   g_statePath;
 static double        g_planningTime = 0.0;
 static unsigned int  g_numSample    = 0u;
-
-// ---- 用于复用采样的全局对象 ----
-static ob::SpaceInformationPtr      g_reuseSi;
-static ob::SpaceInformationPtr      g_reuseStateSi;
-static std::shared_ptr<og::PCSFMT>  g_reusePlanner;
-static bool                         g_samplesInitialized = false;
 
 // ---- 碰撞检测（参数空间）----
 bool isStateValid(const ob::State *state)
@@ -190,7 +181,6 @@ void savePlanningData(int idx, const ob::PathPtr &path, double planTime, const s
 
 // ---- 核心规划函数：规划单段 startCfg -> goalCfg，返回关节空间路径 ----
 // 返回 nullptr 表示规划失败
-// 第一次调用时进行采样，后续调用复用采样点和邻居关系
 std::shared_ptr<og::PathGeometric> planSegment(const std::vector<double> &startCfg,
                                                const std::vector<double> &goalCfg,
                                                int segIdx)
@@ -201,30 +191,24 @@ std::shared_ptr<og::PathGeometric> planSegment(const std::vector<double> &startC
     const uint paramDim = 2;
     const uint stateDim = 5;
 
-    ob::SpaceInformationPtr si;
-    ob::SpaceInformationPtr stateSi;
-    std::shared_ptr<og::PCSFMT> pcsfmtPlanner;
+    auto space      = std::make_shared<ob::RealVectorStateSpace>(paramDim);
+    auto stateSpace = std::make_shared<ob::RealVectorStateSpace>(stateDim);
 
-    // 第一次调用：初始化并采样
-    if (!g_samplesInitialized && PLANNING_TYPE == PLANNER_PCSFMT)
+    ob::RealVectorBounds bounds(paramDim);
+    bounds.setLow(0.0);
+    bounds.setHigh(1.0);
+    space->setBounds(bounds);
+
+    auto si      = std::make_shared<ob::SpaceInformation>(space);
+    auto stateSi = std::make_shared<ob::SpaceInformation>(stateSpace);
+
+    si->setStateValidityChecker(isStateValid);
+    stateSi->setStateValidityChecker(isStateValidForQ);
+
+    auto motionValidator = std::make_shared<ob::AdaptiveDiscreteMotionValidator>(si);
+
+    if (PLANNING_TYPE == PLANNER_PCSFMT)
     {
-        OMPL_INFORM("Segment %d: Initializing samples and neighborhoods (first time)", segIdx);
-
-        auto space      = std::make_shared<ob::RealVectorStateSpace>(paramDim);
-        auto stateSpace = std::make_shared<ob::RealVectorStateSpace>(stateDim);
-
-        ob::RealVectorBounds bounds(paramDim);
-        bounds.setLow(0.0);
-        bounds.setHigh(1.0);
-        space->setBounds(bounds);
-
-        si      = std::make_shared<ob::SpaceInformation>(space);
-        stateSi = std::make_shared<ob::SpaceInformation>(stateSpace);
-
-        si->setStateValidityChecker(isStateValid);
-        stateSi->setStateValidityChecker(isStateValidForQ);
-
-        auto motionValidator = std::make_shared<ob::AdaptiveDiscreteMotionValidator>(si);
         Eigen::Matrix<double, 5, 1> weightsVec;
         weightsVec << WEIGHTS[0], WEIGHTS[1], WEIGHTS[2], WEIGHTS[3], WEIGHTS[4];
         auto qStart = g_ik->xToQ(startCfg[0], startCfg[1]);
@@ -232,51 +216,12 @@ std::shared_ptr<og::PathGeometric> planSegment(const std::vector<double> &startC
         double estimateResol = (qStart - qGoal).cwiseProduct(weightsVec).norm() * RESOL_FACTOR;
         motionValidator->setCostResolution(estimateResol);
         si->setMotionValidator(motionValidator);
-        si->setup();
-
-        pcsfmtPlanner = std::make_shared<og::PCSFMT>(si, stateSi, g_ik);
-        pcsfmtPlanner->setNumSamples(SAMPLE_NUM);
-        pcsfmtPlanner->setWeights(const_cast<std::vector<double>&>(WEIGHTS));
-
-        // 保存到全局变量供后续复用
-        g_reuseSi = si;
-        g_reuseStateSi = stateSi;
-        g_reusePlanner = pcsfmtPlanner;
-        g_samplesInitialized = true;
-    }
-    else if (g_samplesInitialized && PLANNING_TYPE == PLANNER_PCSFMT)
-    {
-        // 后续调用：复用采样，只重置树结构
-        OMPL_INFORM("Segment %d: Reusing samples and neighborhoods", segIdx);
-
-        si = g_reuseSi;
-        stateSi = g_reuseStateSi;
-        pcsfmtPlanner = g_reusePlanner;
-
-        // 重置树结构但保留采样点和邻居
-        pcsfmtPlanner->resetTreeForNewGoal();
-    }
-    else
-    {
-        // FMT 不支持复用，每次都重新采样
-        auto space      = std::make_shared<ob::RealVectorStateSpace>(paramDim);
-        auto stateSpace = std::make_shared<ob::RealVectorStateSpace>(stateDim);
-
-        ob::RealVectorBounds bounds(paramDim);
-        bounds.setLow(0.0);
-        bounds.setHigh(1.0);
-        space->setBounds(bounds);
-
-        si      = std::make_shared<ob::SpaceInformation>(space);
-        stateSi = std::make_shared<ob::SpaceInformation>(stateSpace);
-
-        si->setStateValidityChecker(isStateValid);
-        stateSi->setStateValidityChecker(isStateValidForQ);
-        si->setup();
     }
 
-    // 设置起点和终点
-    ob::ScopedState<> start(si->getStateSpace()), goal(si->getStateSpace());
+    si->setup();
+
+    // 起点 / 终点
+    ob::ScopedState<> start(space), goal(space);
     start->as<ob::RealVectorStateSpace::StateType>()->values[0] = startCfg[0];
     start->as<ob::RealVectorStateSpace::StateType>()->values[1] = startCfg[1];
     goal->as<ob::RealVectorStateSpace::StateType>()->values[0]  = goalCfg[0];
@@ -285,17 +230,19 @@ std::shared_ptr<og::PathGeometric> planSegment(const std::vector<double> &startC
     auto pdef = std::make_shared<ob::ProblemDefinition>(si);
     pdef->setStartAndGoalStates(start, goal);
 
-
     if (PLANNING_TYPE == PLANNER_PCSFMT)
         pdef->setOptimizationObjective(std::make_shared<ob::EstimatePathLengthOptimizationObjective>(si));
     else
         pdef->setOptimizationObjective(std::make_shared<ob::PathLengthOptimizationObjective>(si));
 
-    // 创建或复用规划器
+    // 创建规划器
     ob::PlannerPtr planner;
     if (PLANNING_TYPE == PLANNER_PCSFMT)
     {
-        planner = pcsfmtPlanner;
+        auto p = std::make_shared<og::PCSFMT>(si, stateSi, g_ik);
+        p->setNumSamples(SAMPLE_NUM);
+        p->setWeights(const_cast<std::vector<double>&>(WEIGHTS));
+        planner = p;
     }
     else
     {
@@ -310,17 +257,6 @@ std::shared_ptr<og::PathGeometric> planSegment(const std::vector<double> &startC
 
     si->printSettings(std::cout);
     pdef->print(std::cout);
-
-    // 对于 PCSFMT，在第一次规划前，手动添加所有 waypoints 作为采样点
-    // 这样确保每个中间点都有对应的采样，避免后续规划找不到目标点
-    if (PLANNING_TYPE == PLANNER_PCSFMT && segIdx == 1)
-    {
-        OMPL_INFORM("Adding all waypoints to the sample set before first planning");
-        for (const auto &waypoint : WAYPOINTS)
-        {
-            pcsfmtPlanner->addWaypointToSamples(waypoint[0], waypoint[1]);
-        }
-    }
 
     // 规划
     ompl::time::point t0 = ompl::time::now();
@@ -468,12 +404,6 @@ int main(int argc, char **argv)
                 }
             }
         }
-
-        // 本轮规划结束，重置采样标志以便下一轮重新采样
-        g_samplesInitialized = false;
-        g_reusePlanner.reset();
-        g_reuseSi.reset();
-        g_reuseStateSi.reset();
     }
 
     delete g_client;

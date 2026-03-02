@@ -176,9 +176,6 @@ void ompl::geometric::PCSFMT::clear()
     // clear the anchor nodes and their weights
     anchorNodesWithWeight_.clear();
     totalAnchorWeight_ = 0.0;
-
-    // Reset samples generated flag
-    samplesGenerated_ = false;
 }
 
 void ompl::geometric::PCSFMT::getPlannerData(base::PlannerData &data) const
@@ -242,73 +239,6 @@ void ompl::geometric::PCSFMT::getPlannerDataCsv(const std::string &filename) con
 
     file.close();
 }
-
-void ompl::geometric::PCSFMT::resetTreeForNewGoal()
-{
-    // Get all motions from the nearest neighbor structure
-    std::vector<Motion *> motions;
-    if (nn_)
-        nn_->list(motions);
-
-    // Reset tree structure for each motion while keeping samples and neighborhoods
-    for (auto *m : motions)
-    {
-        // Clear parent-child relationships
-        m->setParent(nullptr);
-        m->getChildren().clear();
-
-        // Reset costs
-        m->setCost(base::Cost(std::numeric_limits<double>::infinity()));
-        m->setHeuristicCost(base::Cost(0.0));
-
-        // Reset set type to unvisited
-        m->setSetType(Motion::SET_UNVISITED);
-
-        // Note: We keep the collision check cache (collChecksDone_) as it's still valid
-        // Note: We keep state, conState, q, dqu, dqv as they represent the sample itself
-    }
-
-    // Clear the Open heap
-    Open_.clear();
-
-    // Keep neighborhoods_ - the neighbor relationships are still valid for the same samples
-    // Keep nn_ - the nearest neighbor structure with all samples
-    // Keep anchorNodesWithWeight_ and totalAnchorWeight_ - anchor nodes are still valid
-
-    // Reset goal motion
-    lastGoalMotion_ = nullptr;
-
-    // Reset the problem definition's solution paths
-    if (pdef_)
-        pdef_->clearSolutionPaths();
-
-    OMPL_INFORM("PCSFMT: Tree reset for new goal. Samples and neighborhoods preserved.");
-}
-
-void ompl::geometric::PCSFMT::addWaypointToSamples(double u, double v)
-{
-    // Create a new motion for the waypoint
-    auto *motion = new Motion(si_, stateSi_);
-
-    // Set the parameter space state (u, v)
-    const auto state = motion->getState()->as<base::RealVectorStateSpace::StateType>();
-    state->values[0] = u;
-    state->values[1] = v;
-
-    // Compute and set the configuration space state (joint angles)
-    const auto conState = motion->getConState()->as<base::RealVectorStateSpace::StateType>();
-    auto q = getIK()->xToQ(u, v);
-    for (unsigned int i = 0; i < stateSi_->getStateSpace()->getDimension(); i++)
-    {
-        conState->values[i] = q(i);
-    }
-
-    // Add to nearest neighbor structure
-    nn_->add(motion);
-
-    OMPL_INFORM("PCSFMT: Added waypoint (%.3f, %.3f) to sample set", u, v);
-}
-
 
 void ompl::geometric::PCSFMT::saveNeighborhood(Motion *m)
 {
@@ -567,12 +497,12 @@ void ompl::geometric::PCSFMT::sample(const base::PlannerTerminationCondition &pt
     }
 
     // output the weights of the parameter space mesh
-    // std::ofstream file("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/parameterSpaceWeights.csv");
-    // file << "U, V, weight, dx_u, dy_u, dz_u, dpsi_u, dtheta_u, dx_v, dy_v, dz_v, dpsi_v, dtheta_v, "
+    std::ofstream file("/home/wsl/proj/my_ompl/demos/MyPlanners/test_output/parameterSpaceWeights.csv");
+    file << "U, V, weight, dx_u, dy_u, dz_u, dpsi_u, dtheta_u, dx_v, dy_v, dz_v, dpsi_v, dtheta_v, "
             // "dnx_u, dny_u, dnz_u,"
             // "dnx_v, dny_v, dnz_v\n";
-            // "dqeu_x, dqeu_y, dqeu_z, dqeu_psi, dqeu_theta,"
-            // "dqev_x, dqev_y, dqev_z, dqev_psi, dqev_theta\n";
+            "dqeu_x, dqeu_y, dqeu_z, dqeu_psi, dqeu_theta,"
+            "dqev_x, dqev_y, dqev_z, dqev_psi, dqev_theta\n";
     // file << "U, V, weight, dx_u, dy_u, dz_u, dpsi_u, dtheta_u, dx_v, dy_v, dz_v, dpsi_v, dtheta_v, "
     //     "du_x, du_y, du_z,"
     //     "dv_x, dv_y, dv_z,"
@@ -611,15 +541,15 @@ void ompl::geometric::PCSFMT::sample(const base::PlannerTerminationCondition &pt
         // << duv(0) << "," << duv(1) << "," << duv(2) << ","
         // << dvv(0) << "," << dvv(1) << "," << dvv(2) << "\n";
 
-        // file << state->values[0] << "," << state->values[1] << ","
-        // << snd << ","
-        // << dqu(0) << "," << dqu(1) << "," << dqu (2) << "," << dqu (3) << "," << dqu (4) << ","
-        // << dqv(0) << "," << dqv(1) << "," << dqv (2) << "," << dqv (3) << "," << dqv (4) << ","
-        // << dqe_u(0) << "," << dqe_u(1) << "," << dqe_u(2) << "," << dqe_u(3) << "," << dqe_u(4) << ","
-        // << dqe_v(0) << "," << dqe_v(1) << "," << dqe_v(2) << "," << dqe_v(3) << "," << dqe_v(4) << "\n";
+        file << state->values[0] << "," << state->values[1] << ","
+        << snd << ","
+        << dqu(0) << "," << dqu(1) << "," << dqu (2) << "," << dqu (3) << "," << dqu (4) << ","
+        << dqv(0) << "," << dqv(1) << "," << dqv (2) << "," << dqv (3) << "," << dqv (4) << ","
+        << dqe_u(0) << "," << dqe_u(1) << "," << dqe_u(2) << "," << dqe_u(3) << "," << dqe_u(4) << ","
+        << dqe_v(0) << "," << dqe_v(1) << "," << dqe_v(2) << "," << dqe_v(3) << "," << dqe_v(4) << "\n";
     }
 
-    // file.close();
+    file.close();
 
     while (nodeCount < numSamples_ && !ptc)
     {
@@ -746,68 +676,23 @@ ompl::base::PlannerStatus ompl::geometric::PCSFMT::solve(const base::PlannerTerm
     // Add start states to V (nn_) and Open
     while (const base::State *st = pis_.nextStart())
     {
-        // When reusing samples, find the existing sample that exactly matches the start state
-        if (samplesGenerated_)
+        initMotion = new Motion(si_, stateSi_);
+        si_->copyState(initMotion->getState(), st);
+        Open_.insert(initMotion);
+        initMotion->setSetType(Motion::SET_OPEN);
+        initMotion->setCost(opt_->initialCost(initMotion->getState()));
+
+        auto initState = initMotion->getState()->as<base::RealVectorStateSpace::StateType>();
+        const auto conState = initMotion->getConState()->as<base::RealVectorStateSpace::StateType>();
+        auto q = getIK()->xToQ(initState->values[0], initState->values[1]);
+        for (unsigned int i = 0; i < stateSi_->getStateSpace()->getDimension(); i++)
         {
-            // Get the start state coordinates
-            const auto startState = st->as<base::RealVectorStateSpace::StateType>();
-            const double start_u = startState->values[0];
-            const double start_v = startState->values[1];
-
-            std::vector<Motion *> allMotions;
-            nn_->list(allMotions);
-
-            initMotion = nullptr;
-            const double tolerance = 1e-6;  // Tolerance for floating point comparison
-
-            for (auto *m : allMotions)
-            {
-                const auto mState = m->getState()->as<base::RealVectorStateSpace::StateType>();
-                const double m_u = mState->values[0];
-                const double m_v = mState->values[1];
-
-                if (std::abs(m_u - start_u) < tolerance && std::abs(m_v - start_v) < tolerance)
-                {
-                    initMotion = m;
-                    break;
-                }
-            }
-
-            if (initMotion != nullptr)
-            {
-                // Reuse existing sample as start
-                Open_.insert(initMotion);
-                initMotion->setSetType(Motion::SET_OPEN);
-                initMotion->setCost(opt_->initialCost(initMotion->getState()));
-                OMPL_INFORM("Reusing existing sample [%.3f, %.3f] as start state",
-                           initMotion->getState()->as<base::RealVectorStateSpace::StateType>()->values[0],
-                           initMotion->getState()->as<base::RealVectorStateSpace::StateType>()->values[1]);
-            }
-            else
-            {
-                OMPL_ERROR("No existing sample found matching start state [%.3f, %.3f]", start_u, start_v);
-                return base::PlannerStatus::INVALID_START;
-            }
+            conState->values[i] = q(i);
         }
-        else
-        {
-            // First time: create new motion for start state
-            initMotion = new Motion(si_, stateSi_);
-            si_->copyState(initMotion->getState(), st);
-            Open_.insert(initMotion);
-            initMotion->setSetType(Motion::SET_OPEN);
-            initMotion->setCost(opt_->initialCost(initMotion->getState()));
 
-            auto initState = initMotion->getState()->as<base::RealVectorStateSpace::StateType>();
-            const auto conState = initMotion->getConState()->as<base::RealVectorStateSpace::StateType>();
-            auto q = getIK()->xToQ(initState->values[0], initState->values[1]);
-            for (unsigned int i = 0; i < stateSi_->getStateSpace()->getDimension(); i++)
-            {
-                conState->values[i] = q(i);
-            }
 
-            nn_->add(initMotion);  // V <-- {x_init}
-        }
+
+        nn_->add(initMotion);  // V <-- {x_init}
     }
 
     if (initMotion == nullptr)
@@ -817,31 +702,30 @@ ompl::base::PlannerStatus ompl::geometric::PCSFMT::solve(const base::PlannerTerm
     }
 
     // Sample N free states in the configuration space
-    if (!samplesGenerated_)
-    {
-        if (!sampler_)
-            sampler_ = si_->allocStateSampler();
-        // sampleFree(ptc);
-        sample(ptc);
-        assureGoalIsSampled();
-        samplesGenerated_ = true;
-        OMPL_INFORM("%s: Samples generated. Total states in datastructure: %u", getName().c_str(), nn_->size());
-    }
-    else
-    {
-        // Samples already exist, just add goal if needed
-        assureGoalIsSampled();
-        OMPL_INFORM("%s: Reusing existing samples. Total states in datastructure: %u", getName().c_str(), nn_->size());
-    }
+    if (!sampler_)
+        sampler_ = si_->allocStateSampler();
+    // sampleFree(ptc);
+    sample(ptc);
+    assureGoalIsSampled();
+    OMPL_INFORM("%s: Starting planning with %u states already in datastructure", getName().c_str(), nn_->size());
 
     // Calculate the nearest neighbor search radius
     /// \todo Create a PRM-like connection strategy
-    // NNk_ = std::ceil(std::pow(2.0 * radiusMultiplier_, (double)si_->getStateDimension()) *
-    //                 (boost::math::constants::e<double>() / (double)si_->getStateDimension()) *
-    //                 log((double)nn_->size()));
-    // OMPL_DEBUG("Using nearest-neighbors k of %d", NNk_);
+    // if (nearestK_)
+    // {
+    // radiusMultiplier_ = 0.5;
+    NNk_ = std::ceil(std::pow(2.0 * radiusMultiplier_, (double)si_->getStateDimension()) *
+                     (boost::math::constants::e<double>() / (double)si_->getStateDimension()) *
+                     log((double)nn_->size()));
+    OMPL_DEBUG("Using nearest-neighbors k of %d", NNk_);
+    // }
+    // else
+    // {
+    // NNr_ = calculateRadius(stateSi_->getStateDimension(), nn_->size());
     NNr_ = calculateRadius(si_->getStateDimension(), nn_->size());
+    // NNr_ = 0.5;
     OMPL_DEBUG("Using radius of %f", NNr_);
+    // }
 
     // Execute the planner, and return early if the planner returns a failure
     bool plannerSuccess = false;
