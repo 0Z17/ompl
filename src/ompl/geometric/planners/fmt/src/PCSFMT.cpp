@@ -65,6 +65,9 @@ ompl::geometric::PCSFMT::PCSFMT(const base::SpaceInformationPtr &si, const base:
     // Set the IK solver
     setIK(invKin);
 
+    // Initialize samples generated flag
+    samplesGenerated_ = false;
+
     specs_.approximateSolutions = false;
     specs_.directed = false;
 

@@ -9,8 +9,8 @@
 int main(int argc, char** argv)
 {
     // --- 输入/输出路径（可通过环境变量或命令行参数覆盖）---
-    std::string pcd_file  = "/home/wsl/proj/T_mech_R1/S1/blade_segment.pcd";
-    std::string stl_file  = "/home/wsl/proj/T_mech_R1/S1/blade_segment.stl";
+    std::string pcd_file  = "/home/wsl/proj/T_mech_R1/E2/scans_S2.pcd";
+    std::string stl_file  = "/home/wsl/proj/T_mech_R1/E2/scans_S2.stl";
     double      resolution = 50.0;
 
     // 命令行参数：PcdToStl <pcd_file> [stl_file] [resolution]

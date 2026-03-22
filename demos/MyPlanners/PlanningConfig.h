@@ -24,8 +24,7 @@ struct Planning {
 };
 
 struct Trajectory {
-    std::vector<double> start_config;
-    std::vector<double> goal_config;
+    std::vector<std::vector<double>> waypoints;  // 多路径点序列
 };
 
 struct InverseKinematics {
@@ -59,6 +58,11 @@ struct MotionValidation {
     double cost_resolution_factor;
 };
 
+struct BSpline {
+    int steps;
+    double dt;
+};
+
 struct Rendering {
     bool enabled;
     double render_frequency;
@@ -68,6 +72,8 @@ struct Rendering {
 struct Output {
     bool save_surface_stl;
     std::vector<double> surface_normal;
+    bool export_visualization;
+    int surface_grid_n;
 };
 
 class PlanningConfig {
@@ -82,6 +88,7 @@ public:
     StateSpace state_space;
     SurfaceConstraint surface_constraint;
     MotionValidation motion_validation;
+    BSpline bspline;
     Rendering rendering;
     Output output;
 

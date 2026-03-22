@@ -111,7 +111,7 @@ if (OMPL_BUILD_DEMOS)
 #           surface_contact
     )
 
-    add_executable(demo_PlanningCompare MyPlanners/PlanningCompare.cpp)
+    add_executable(demo_PlanningCompare MyPlanners/PlanningCompare.cpp MyPlanners/PlanningConfig.cpp)
     target_link_libraries(demo_PlanningCompare PRIVATE
             ompl::ompl
             Eigen3::Eigen
@@ -123,7 +123,8 @@ if (OMPL_BUILD_DEMOS)
             ${PCL_SURFACE_LIBRARIES}
             ${PCL_IO_LIBRARIES}
             ${VTK_LIBRARIES}
-            mujoco_client)
+            mujoco_client
+            yaml-cpp::yaml-cpp)
 
     add_executable(demo_PcsFmtTest MyPlanners/PcsFmtTest.cpp MyPlanners/PlanningConfig.cpp)
     target_link_libraries(demo_PcsFmtTest PRIVATE

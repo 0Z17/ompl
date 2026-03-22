@@ -58,7 +58,7 @@ ompl::base::Cost ompl::base::WeightedPathLengthOptimizationObjective::motionCost
 {
     const Eigen::Map<Eigen::VectorXd> &config1 = *s1->as<ConstrainedStateSpace::StateType>();
     auto q1 = config1.head(5);
-    const Eigen::Map<Eigen::VectorXd> &config2 = *s1->as<ConstrainedStateSpace::StateType>();
+    const Eigen::Map<Eigen::VectorXd> &config2 = *s2->as<ConstrainedStateSpace::StateType>();
     auto q2 = config2.head(5);
 
     auto cost = Cost((q1 - q2).cwiseProduct(weights_).norm());

@@ -23,8 +23,10 @@ bool PlanningConfig::loadFromFile(const std::string& config_file) {
         
         // Load trajectory configuration
         auto trajectory_node = config["trajectory"];
-        trajectory.start_config = getRequired<std::vector<double>>(trajectory_node, "start_config");
-        trajectory.goal_config = getRequired<std::vector<double>>(trajectory_node, "goal_config");
+        if (!trajectory_node["waypoints"])
+            throw std::runtime_error("Missing required config key: waypoints");
+        for (const auto &wp : trajectory_node["waypoints"])
+            trajectory.waypoints.push_back(wp.as<std::vector<double>>());
         
         // Load weights
         weights = getRequired<std::vector<double>>(config, "weights");
@@ -65,11 +67,18 @@ bool PlanningConfig::loadFromFile(const std::string& config_file) {
         rendering.enabled = getRequired<bool>(rendering_node, "enabled");
         rendering.render_frequency = getRequired<double>(rendering_node, "render_frequency");
         rendering.calculation_frequency = getRequired<double>(rendering_node, "calculation_frequency");
-        
+
+        // Load bspline configuration
+        auto bspline_node = config["bspline"];
+        bspline.steps = getRequired<int>(bspline_node, "steps");
+        bspline.dt = getRequired<double>(bspline_node, "dt");
+
         // Load output configuration
         auto output_node = config["output"];
         output.save_surface_stl = getRequired<bool>(output_node, "save_surface_stl");
         output.surface_normal = getRequired<std::vector<double>>(output_node, "surface_normal");
+        output.export_visualization = getRequired<bool>(output_node, "export_visualization");
+        output.surface_grid_n = getRequired<int>(output_node, "surface_grid_n");
         
         return true;
         
@@ -94,20 +103,15 @@ void PlanningConfig::printConfig() const {
     std::cout << "  Atlas Timeout: " << planning.atlas_timeout << std::endl;
     std::cout << "  Random Seed: " << planning.random_seed << std::endl;
     
-    std::cout << "Trajectory:" << std::endl;
-    std::cout << "  Start Config: [";
-    for (size_t i = 0; i < trajectory.start_config.size(); ++i) {
-        std::cout << trajectory.start_config[i];
-        if (i < trajectory.start_config.size() - 1) std::cout << ", ";
+    std::cout << "Trajectory waypoints:" << std::endl;
+    for (size_t i = 0; i < trajectory.waypoints.size(); ++i) {
+        std::cout << "  [" << i << "]: [";
+        for (size_t j = 0; j < trajectory.waypoints[i].size(); ++j) {
+            std::cout << trajectory.waypoints[i][j];
+            if (j < trajectory.waypoints[i].size() - 1) std::cout << ", ";
+        }
+        std::cout << "]" << std::endl;
     }
-    std::cout << "]" << std::endl;
-    
-    std::cout << "  Goal Config: [";
-    for (size_t i = 0; i < trajectory.goal_config.size(); ++i) {
-        std::cout << trajectory.goal_config[i];
-        if (i < trajectory.goal_config.size() - 1) std::cout << ", ";
-    }
-    std::cout << "]" << std::endl;
     
     std::cout << "Weights: [";
     for (size_t i = 0; i < weights.size(); ++i) {

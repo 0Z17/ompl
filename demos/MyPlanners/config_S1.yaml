@@ -1,0 +1,81 @@
+# ============================================================
+#  PlanningCompare 配置文件 — 场景 S1
+#  用法: demo_PlanningCompare config_S1.yaml
+# ============================================================
+
+# --- 输入/输出路径 ---
+files:
+  pcd_file:   /home/wsl/proj/T_mech_R1/S1/blade_segment.pcd
+  model_file: /home/wsl/proj/skyvortex_mujoco/scene.xml
+  output_dir: /home/wsl/proj/T_mech_R1/S1
+
+# --- 规划算法：PCSFMT / FMT / AtlasRRTstar ---
+planning:
+  type:             FMT
+  sample_num:       5000
+  planning_rounds:  1
+  planning_timeout: 1.0
+  atlas_timeout:    5.0
+  random_seed:      0       # 0 = 每次随机
+
+# --- 路径点序列（参数空间 u,v ∈ [0,1]），依次规划 A->B->C->... ---
+trajectory:
+  waypoints:
+    - [0.2, 0.2]   # A
+    - [0.8, 0.2]   # B
+    - [0.5, 0.5]   # C
+    - [0.2, 0.8]   # D
+    - [0.8, 0.8]   # E
+
+# --- 代价权重 [X, Y, Z, Psi, Theta] ---
+weights: [1.0, 1.0, 1.0, 3.0, 6.0]
+
+# --- 机械臂参数 ---
+inverse_kinematics:
+  link_length: 0.96
+  clip_bound:  [0.1, 0.9, 0.1, 0.9]   # [u_min, u_max, v_min, v_max]
+
+# --- 状态空间边界（仅 AtlasRRTstar 使用，PCSFMT/FMT 忽略） ---
+state_bounds:
+  psi:   [-0.7854, 0.7854]   # -π/4 ~ π/4
+  theta: [-1.5708, 1.5708]   # -π/2 ~ π/2
+  # x/y/z 由点云动态计算，此处留空占位
+  x:     [0.0, 0.0]
+  y:     [0.0, 0.0]
+  z:     [0.0, 0.0]
+
+# --- 参数空间配置 ---
+parameter_space:
+  dimensions:  2
+  bounds_low:  0.0
+  bounds_high: 1.0
+
+# --- 状态空间配置 ---
+state_space:
+  dimensions: 5
+
+# --- 曲面约束（AtlasRRTstar 使用） ---
+surface_constraint:
+  tolerance: 0.1
+
+# --- 运动验证分辨率系数 ---
+motion_validation:
+  cost_resolution_factor: 0.1
+
+# --- B-Spline 路径平滑 ---
+bspline:
+  steps: 3
+  dt:    0.0005
+
+# --- MuJoCo 可视化回放 ---
+rendering:
+  enabled:               true
+  render_frequency:      100.0   # 渲染帧率 (Hz)
+  calculation_frequency: 20.0    # 路径回放帧率 (Hz)
+
+# --- 数据导出 ---
+output:
+  export_visualization: true   # 导出 CSV 并运行 Python 可视化
+  surface_grid_n:       20     # 曲面离散分辨率
+  save_surface_stl:     false
+  surface_normal:       [-1.0, 0.0, 0.0]

@@ -1,0 +1,72 @@
+# ============================================================
+#  PlanningCompare 配置文件 — 场景 S2
+#  用法: demo_PlanningCompare config_S2.yaml
+# ============================================================
+
+files:
+  pcd_file:   /home/wsl/proj/T_mech_R1/E1_single/pcd_indoor.pcd
+  model_file: /home/wsl/proj/skyvortex_mujoco/scene.xml
+  output_dir: /home/wsl/proj/T_mech_R1/E1_single
+
+planning:
+  type:             FMT
+  sample_num:       5000
+  planning_rounds:  1
+  planning_timeout: 2.0
+  atlas_timeout:    2.0
+  random_seed:      0
+
+trajectory:
+  waypoints:
+    - [0.9, 0.8]
+    - [0.5, 0.375]
+    - [0.1, 0.8]
+#    - [0.2, 0.2]
+#    - [0.8, 0.2]
+#    - [0.8, 0.5]
+#    - [0.2, 0.5]
+#    - [0.2, 0.8]
+#    - [0.8, 0.8]
+
+
+weights: [1.0, 1.0, 1.0, 3.0, 6.0]
+
+inverse_kinematics:
+  link_length: 0.96
+  clip_bound:  [0.1, 0.9, 0.1, 0.9]
+
+state_bounds:
+  psi:   [-0.7854, 0.7854]
+  theta: [-1.5708, 1.5708]
+  x:     [0.0, 0.0]
+  y:     [0.0, 0.0]
+  z:     [0.0, 0.0]
+
+parameter_space:
+  dimensions:  2
+  bounds_low:  0.0
+  bounds_high: 1.0
+
+state_space:
+  dimensions: 5
+
+surface_constraint:
+  tolerance: 0.1
+
+motion_validation:
+  cost_resolution_factor: 0.1
+
+bspline:
+  steps: 3
+  dt:    0.0005
+
+rendering:
+  enabled:               true
+  render_frequency:      100.0
+  calculation_frequency: 40.0
+
+output:
+  export_visualization: true
+  surface_grid_n:       20
+  save_surface_stl:     false
+  surface_normal:       [-1.0, 0.0, 0.0]
