@@ -20,6 +20,7 @@ bool PlanningConfig::loadFromFile(const std::string& config_file) {
         planning.planning_timeout = getRequired<double>(planning_node, "planning_timeout");
         planning.atlas_timeout = getRequired<double>(planning_node, "atlas_timeout");
         planning.random_seed = getRequired<unsigned int>(planning_node, "random_seed");
+        planning.collision_check = getOptional<bool>(planning_node, "collision_check", false);
         
         // Load trajectory configuration
         auto trajectory_node = config["trajectory"];

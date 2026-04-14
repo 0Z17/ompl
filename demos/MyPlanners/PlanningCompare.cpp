@@ -15,6 +15,7 @@
 #include <ompl/base/objectives/PathLengthOptimizationObjective.h>
 #include <ompl/base/objectives/WeightedPathLengthOptimizationObjective.h>
 #include <ompl/base/AdaptiveDiscreteMotionValidator.h>
+#include <ompl/base/PlannerData.h>
 #include <ompl/base/spaces/constraint/AtlasStateSpace.h>
 #include <ompl/base/spaces/constraint/ConstrainedStateSpace.h>
 #include <ompl/base/ConstrainedSpaceInformation.h>
@@ -31,6 +32,7 @@
 #include <cstdlib>
 #include <chrono>
 #include <thread>
+#include <random>
 
 namespace ob = ompl::base;
 namespace og = ompl::geometric;
@@ -66,19 +68,28 @@ static bool                         g_samplesInitialized = false;
 // ---- 碰撞检测（参数空间）----
 bool isStateValid(const ob::State *state)
 {
-    return true;
+    if (!g_cfg.planning.collision_check) return true;
+    auto u = state->as<ob::RealVectorStateSpace::StateType>()->values[0];
+    auto v = state->as<ob::RealVectorStateSpace::StateType>()->values[1];
+    auto q = g_ik->xToQ(u, v);
+    return !g_client->isCollision(std::vector<double>(q.data(), q.data() + q.size()));
 }
 
 // ---- 碰撞检测（关节空间）----
 bool isStateValidForQ(const ob::State *state)
 {
-    return true;
+    if (!g_cfg.planning.collision_check) return true;
+    auto q = state->as<ob::RealVectorStateSpace::StateType>()->values;
+    return !g_client->isCollision(std::vector<double>(q, q + 5));
 }
 
 // ---- 碰撞检测（Atlas 约束空间）----
 bool isStateValidForAtlas(const ob::State *state)
 {
-    return true;
+    if (!g_cfg.planning.collision_check) return true;
+    auto q = state->as<ob::ConstrainedStateSpace::StateType>()->getState()
+                  ->as<ob::RealVectorStateSpace::StateType>()->values;
+    return !g_client->isCollision(std::vector<double>(q, q + 5));
 }
 
 // ---- 路径代价计算 ----
@@ -185,17 +196,18 @@ void savePathCsv(const ob::PathPtr &path, const std::string &filename)
 }
 
 // ---- 将规划统计数据追加到 CSV ----
-void savePlanningData(int idx, const ob::PathPtr &path, double planTime, const std::string &filename)
+void savePlanningData(int idx, const ob::PathPtr &path, double planTime, uint32_t seed, const std::string &filename)
 {
     std::ofstream file(filename, std::ios::app);
     if (file.tellp() == 0)
-        file << "idx,planning_time,path_cost,operator_movement,num_sample,isValid\n";
+        file << "idx,planning_time,path_cost,operator_movement,num_sample,seed,isValid\n";
 
     file << idx << ","
          << planTime << ","
          << getPathCost(path) << ","
          << getOperatorMovement(path) << ","
          << g_numSample << ","
+         << seed << ","
          << "1\n";
 }
 
@@ -214,9 +226,9 @@ public:
         nurbs_->getClosestPoint(pe, u, v);
         Eigen::Vector3d surface_point;
         nurbs_->getPos(u, v, surface_point);
-        auto qs = g_ik->xToQ(u, v);
         const double distance = (pe - surface_point).norm();
         out[0] = distance / 0.01;
+        auto qs = g_ik->xToQ(u, v);
         out[1] = (qs[3] - x[3]) / 0.1;
         out[2] = (qs[4] - x[4]) / 0.1;
     }
@@ -329,15 +341,22 @@ std::shared_ptr<og::PathGeometric> planSegment(const std::vector<double> &startC
         ob::PlannerStatus solved = ss->solve(g_cfg.planning.planning_timeout);
         g_planningTime += ompl::time::seconds(ompl::time::now() - t0);
 
+        ob::PlannerData plannerData(csi);
+        planner->getPlannerData(plannerData);
+        g_numSample = plannerData.numVertices();
+
         if (!solved)
         {
             std::cout << "Segment " << segIdx << ": No solution found" << std::endl;
             return nullptr;
         }
 
-        ss->simplifySolution(0.05);
+        // ss->simplifySolution(0.05);
         auto pathAtlas = ss->getSolutionPath();
         pathAtlas.interpolate();
+
+        og::PathSimplifier ps(csi);
+        ps.smoothBSpline(pathAtlas, g_cfg.bspline.steps, g_cfg.bspline.dt);
 
         auto resultStateSi = std::make_shared<ob::SpaceInformation>(
             std::make_shared<ob::RealVectorStateSpace>(stateDim));
@@ -535,8 +554,18 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    // 确定 master seed：配置为 0 时用系统随机数生成一个，否则使用配置值
+    uint32_t masterSeed;
     if (g_cfg.planning.random_seed != 0)
-        ompl::RNG::setSeed(g_cfg.planning.random_seed);
+    {
+        masterSeed = static_cast<uint32_t>(g_cfg.planning.random_seed);
+        OMPL_INFORM("Using configured master seed: %u", masterSeed);
+    }
+    else
+    {
+        masterSeed = static_cast<uint32_t>(std::random_device{}());
+        OMPL_INFORM("random_seed=0, generated master seed: %u", masterSeed);
+    }
 
     const auto &waypoints = g_cfg.trajectory.waypoints;
     if (waypoints.size() < 2)
@@ -553,7 +582,7 @@ int main(int argc, char **argv)
     Eigen::Vector3d surfNormal(g_cfg.output.surface_normal[0],
                                g_cfg.output.surface_normal[1],
                                g_cfg.output.surface_normal[2]);
-    g_nurbs->fitSurface(surfNormal);
+    g_nurbs->fitSurfaceByCorners(surfNormal);
 
     const std::string &plannerTag = g_cfg.planning.type;
     const std::string &outputDir  = g_cfg.files.output_dir;
@@ -563,6 +592,12 @@ int main(int argc, char **argv)
         int idx = round + 1;
         g_planningTime = 0.0;
 
+        // random_seed==0 时每轮种子不同；配置了具体种子时每轮固定用该种子
+        uint32_t roundSeed = (g_cfg.planning.random_seed == 0)
+                             ? masterSeed + static_cast<uint32_t>(round)
+                             : masterSeed;
+        ompl::RNG::setSeed(roundSeed);
+        OMPL_INFORM("Round %d: using seed %u", idx, roundSeed);
         if (round > 0)
         {
             OMPL_INFORM("Round %d: Resetting planner for new round", idx);
@@ -609,7 +644,7 @@ int main(int argc, char **argv)
 
         g_statePath = fullPath;
         savePathCsv(g_statePath, outputDir + "/state_path_" + plannerTag + ".csv");
-        savePlanningData(idx, g_statePath, g_planningTime,
+        savePlanningData(idx, g_statePath, g_planningTime, roundSeed,
                          outputDir + "/planning_data_" + plannerTag + ".csv");
 
         if (g_cfg.rendering.enabled)

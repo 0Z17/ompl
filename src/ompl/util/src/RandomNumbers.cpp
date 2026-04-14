@@ -75,8 +75,8 @@ namespace
             {
                 if (someSeedsGenerated_)
                 {
-                    OMPL_ERROR("Random number generation already started. Changing seed now will not lead to "
-                               "deterministic sampling.");
+                    OMPL_INFORM("Re-seeding random number generator (seed=%u). Previously created RNG objects "
+                                "are not affected.", seed);
                 }
                 else
                 {

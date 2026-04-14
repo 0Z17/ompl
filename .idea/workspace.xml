@@ -7,8 +7,7 @@
     <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
-    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexRemoved" />
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="4" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="7" type="long" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -39,6 +38,7 @@
       <config projectName="ompl" targetName="test_demo" />
       <config projectName="ompl" targetName="demo_Point2DPlanning" />
       <config projectName="ompl" targetName="demo_HypercubeBenchmark" />
+      <config projectName="ompl" targetName="demo_PcdToMeshCsv" />
       <config projectName="ompl" targetName="test_state_spaces" />
       <config projectName="ompl" targetName="demo_SpaceTimePlanning" />
       <config projectName="ompl" targetName="demo_ConstrainedPlanningTorus" />
@@ -100,7 +100,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4458a72d-a736-4beb-9c5a-bef049197ce3" name="更改" comment="commit again">
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/config_E1_single.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/config_E2_single.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/demos/CMakeLists.txt" afterDir="false" />
@@ -108,8 +108,10 @@
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PlanningCompare.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PlanningCompare.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PlanningConfig.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PlanningConfig.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PlanningConfig.h" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PlanningConfig.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ompl/base/objectives/src/WeightedPathLengthOptimizationObjective.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/base/objectives/src/WeightedPathLengthOptimizationObjective.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/PCSFMT.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/geometric/planners/fmt/src/PCSFMT.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/config_E1.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/config_E1.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/config_E1_single.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/config_E1_single.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/config_E2.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/config_E2.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ompl/util/src/RandomNumbers.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/util/src/RandomNumbers.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,6 +182,7 @@
     &quot;CMake 应用程序.collision_checker_test.executor&quot;: &quot;Run&quot;,
     &quot;CMake 应用程序.demo_ConstrainedPlanningSphere.executor&quot;: &quot;Run&quot;,
     &quot;CMake 应用程序.demo_ConstrainedPlanningTorus.executor&quot;: &quot;Debug&quot;,
+    &quot;CMake 应用程序.demo_PcdToMeshCsv.executor&quot;: &quot;Run&quot;,
     &quot;CMake 应用程序.demo_PcdToStl.executor&quot;: &quot;Run&quot;,
     &quot;CMake 应用程序.demo_PcsFmtOnly.executor&quot;: &quot;Run&quot;,
     &quot;CMake 应用程序.demo_PcsFmtTest.executor&quot;: &quot;Run&quot;,
@@ -418,7 +421,12 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_PcdToStl" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PcdToStl" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PcdToStl">
+    <configuration name="demo_PcdToMeshCsv" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-i /home/wsl/proj/T_mech_R1/E2/surface_indoor_calib.pcd -o /home/wsl/proj/T_mech_R1/E2/surface_indoor_calib.csv -r 100" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PcdToMeshCsv" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PcdToMeshCsv">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="demo_PcdToStl" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-i /home/wsl/proj/T_mech_R1/E3/outdoor_blade_2.pcd -o /home/wsl/proj/T_mech_R1/E3/outdoor_blade_2.stl" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PcdToStl" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PcdToStl">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -443,7 +451,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_PlanningCompare" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="/home/wsl/proj/my_ompl/demos/MyPlanners/config_E1_single.yaml" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PlanningCompare" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PlanningCompare">
+    <configuration name="demo_PlanningCompare" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="/home/wsl/proj/my_ompl/demos/MyPlanners/config_E2_single.yaml" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PlanningCompare" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PlanningCompare">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -616,6 +624,7 @@
       <item itemvalue="CMake 应用程序.demo_MultiLevelPlanningRigidBody2D" />
       <item itemvalue="CMake 应用程序.demo_MultiLevelPlanningRigidBody3D" />
       <item itemvalue="CMake 应用程序.demo_OptimalPlanning" />
+      <item itemvalue="CMake 应用程序.demo_PcdToMeshCsv" />
       <item itemvalue="CMake 应用程序.demo_PcdToStl" />
       <item itemvalue="CMake 应用程序.demo_PcsFmtTest" />
       <item itemvalue="CMake 应用程序.demo_PlanarManipulator" />
@@ -820,7 +829,18 @@
       <workItem from="1772500542394" duration="49180000" />
       <workItem from="1773305577054" duration="6571000" />
       <workItem from="1773404357567" duration="6869000" />
-      <workItem from="1773565629324" duration="22533000" />
+      <workItem from="1773565629324" duration="28841000" />
+      <workItem from="1774265084265" duration="5125000" />
+      <workItem from="1774316119873" duration="14320000" />
+      <workItem from="1774528860421" duration="1538000" />
+      <workItem from="1774530739908" duration="7100000" />
+      <workItem from="1774665424668" duration="1514000" />
+      <workItem from="1775285936061" duration="5681000" />
+      <workItem from="1775895736765" duration="5252000" />
+      <workItem from="1775964190693" duration="1313000" />
+      <workItem from="1776047318731" duration="6466000" />
+      <workItem from="1776069643988" duration="18000" />
+      <workItem from="1776070280657" duration="15557000" />
     </task>
     <task id="LOCAL-00001" summary="commit again">
       <option name="closed" value="true" />

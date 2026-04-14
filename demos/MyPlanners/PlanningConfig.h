@@ -21,6 +21,7 @@ struct Planning {
     double planning_timeout;
     double atlas_timeout;
     unsigned int random_seed;
+    bool collision_check;
 };
 
 struct Trajectory {
