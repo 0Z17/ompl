@@ -11,11 +11,14 @@ files:
 planning:
   type:             AtlasRRTstar
   sample_num:       5000
-  planning_rounds:  20
+  planning_rounds:  10
   planning_timeout: 2.0
   atlas_timeout:    2.0
   random_seed:      0
   collision_check:  true
+  atlas_goal_tolerance: 0.05
+  atlas_simplify: false
+  atlas_simplify_duration: 0.05
 
 trajectory:
   waypoints:

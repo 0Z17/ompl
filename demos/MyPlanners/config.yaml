@@ -15,7 +15,10 @@ planning:
   planning_timeout: 20.0
   atlas_timeout: 5.0
   random_seed: 114514
-  
+  atlas_goal_tolerance: 0.05
+  atlas_simplify: false
+  atlas_simplify_duration: 0.05
+
 # Start and goal configurations
 trajectory:
   start_config: [0.4, 0.3]

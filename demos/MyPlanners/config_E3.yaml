@@ -16,6 +16,9 @@ planning:
   atlas_timeout:    5.0
   random_seed:      0
   collision_check:  false
+  atlas_goal_tolerance: 0.05
+  atlas_simplify: false
+  atlas_simplify_duration: 0.05
 
 trajectory:
   waypoints:

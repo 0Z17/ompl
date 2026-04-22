@@ -25,6 +25,7 @@
 #include "nurbs.h"
 #include "mujoco_client.h"
 #include "PlanningConfig.h"
+#include "FastCollisionChecker.h"
 #include <pcl/io/pcd_io.h>
 #include <iostream>
 #include <fstream>
@@ -50,9 +51,10 @@ enum PlannerType { PLANNER_PCSFMT, PLANNER_FMT, PLANNER_ATLASRRTSTAR };
 
 static PlannerType g_plannerType = PLANNER_PCSFMT;
 
-static sr::Nurbs        *g_nurbs  = nullptr;
-static dp::InvKin       *g_ik     = nullptr;
-static mc::MujocoClient *g_client = nullptr;
+static sr::Nurbs           *g_nurbs   = nullptr;
+static dp::InvKin          *g_ik      = nullptr;
+static mc::MujocoClient    *g_client  = nullptr;
+static FastCollisionChecker g_fastColl;
 
 static ob::PathPtr   g_path;
 static ob::PathPtr   g_statePath;
@@ -72,7 +74,7 @@ bool isStateValid(const ob::State *state)
     auto u = state->as<ob::RealVectorStateSpace::StateType>()->values[0];
     auto v = state->as<ob::RealVectorStateSpace::StateType>()->values[1];
     auto q = g_ik->xToQ(u, v);
-    return !g_client->isCollision(std::vector<double>(q.data(), q.data() + q.size()));
+    return !g_fastColl.isCollision(q.data());
 }
 
 // ---- 碰撞检测（关节空间）----
@@ -80,7 +82,7 @@ bool isStateValidForQ(const ob::State *state)
 {
     if (!g_cfg.planning.collision_check) return true;
     auto q = state->as<ob::RealVectorStateSpace::StateType>()->values;
-    return !g_client->isCollision(std::vector<double>(q, q + 5));
+    return !g_fastColl.isCollision(q);
 }
 
 // ---- 碰撞检测（Atlas 约束空间）----
@@ -89,7 +91,7 @@ bool isStateValidForAtlas(const ob::State *state)
     if (!g_cfg.planning.collision_check) return true;
     auto q = state->as<ob::ConstrainedStateSpace::StateType>()->getState()
                   ->as<ob::RealVectorStateSpace::StateType>()->values;
-    return !g_client->isCollision(std::vector<double>(q, q + 5));
+    return !g_fastColl.isCollision(q);
 }
 
 // ---- 路径代价计算 ----
@@ -196,7 +198,7 @@ void savePathCsv(const ob::PathPtr &path, const std::string &filename)
 }
 
 // ---- 将规划统计数据追加到 CSV ----
-void savePlanningData(int idx, const ob::PathPtr &path, double planTime, uint32_t seed, const std::string &filename)
+void savePlanningData(int idx, const ob::PathPtr &path, double planTime, uint32_t seed, int isValid, const std::string &filename)
 {
     std::ofstream file(filename, std::ios::app);
     if (file.tellp() == 0)
@@ -208,7 +210,7 @@ void savePlanningData(int idx, const ob::PathPtr &path, double planTime, uint32_
          << getOperatorMovement(path) << ","
          << g_numSample << ","
          << seed << ","
-         << "1\n";
+         << isValid << "\n";
 }
 
 // ---- SurfaceConstraint 类定义（用于 AtlasRRTstar）----
@@ -351,7 +353,8 @@ std::shared_ptr<og::PathGeometric> planSegment(const std::vector<double> &startC
             return nullptr;
         }
 
-        // ss->simplifySolution(0.05);
+        if (g_cfg.planning.atlas_simplify)
+            ss->simplifySolution(g_cfg.planning.atlas_simplify_duration);
         auto pathAtlas = ss->getSolutionPath();
         pathAtlas.interpolate();
 
@@ -579,10 +582,18 @@ int main(int argc, char **argv)
     g_ik     = new dp::InvKin(g_nurbs);
     g_client = new mc::MujocoClient(g_cfg.files.model_file.c_str());
 
+    // 测试用障碍物 boxes（位置远离机器人工作区，不会触发碰撞）
+    g_fastColl.addBox({ 5.0,  0.0,  1.0}, {0.3, 0.3, 0.5});
+    g_fastColl.addBox({-5.0,  3.0,  0.5}, {0.4, 0.2, 0.4});
+    g_fastColl.addBox({ 0.0,  6.0,  1.5}, {0.2, 0.5, 0.3});
+    g_fastColl.addBox({ 4.0, -4.0,  0.8}, {0.3, 0.3, 0.6});
+    g_fastColl.addBox({-3.0, -5.0,  1.2}, {0.5, 0.2, 0.4});
+
     Eigen::Vector3d surfNormal(g_cfg.output.surface_normal[0],
                                g_cfg.output.surface_normal[1],
                                g_cfg.output.surface_normal[2]);
-    g_nurbs->fitSurfaceByCorners(surfNormal);
+    // g_nurbs->fitSurfaceByCorners(surfNormal);
+    g_nurbs->fitSurface(surfNormal);
 
     const std::string &plannerTag = g_cfg.planning.type;
     const std::string &outputDir  = g_cfg.files.output_dir;
@@ -644,7 +655,28 @@ int main(int argc, char **argv)
 
         g_statePath = fullPath;
         savePathCsv(g_statePath, outputDir + "/state_path_" + plannerTag + ".csv");
-        savePlanningData(idx, g_statePath, g_planningTime, roundSeed,
+
+        // AtlasRRTstar：检查实际轨迹终点与设定终点的关节空间距离
+        int isValid = 1;
+        if (g_plannerType == PLANNER_ATLASRRTSTAR)
+        {
+            const auto &lastWp = waypoints.back();
+            auto qGoal = g_ik->xToQ(lastWp[0], lastWp[1]);
+            auto pathStates = g_statePath->as<og::PathGeometric>()->getStates();
+            const auto *lastState = pathStates.back()->as<ob::RealVectorStateSpace::StateType>();
+            double dist = 0.0;
+            for (int i = 0; i < 5; ++i)
+                dist += std::pow(lastState->values[i] - qGoal[i], 2);
+            dist = std::sqrt(dist);
+            if (dist > g_cfg.planning.atlas_goal_tolerance)
+            {
+                OMPL_WARN("AtlasRRTstar: endpoint distance %.4f exceeds tolerance %.4f, marking invalid",
+                          dist, g_cfg.planning.atlas_goal_tolerance);
+                isValid = 0;
+            }
+        }
+
+        savePlanningData(idx, g_statePath, g_planningTime, roundSeed, isValid,
                          outputDir + "/planning_data_" + plannerTag + ".csv");
 
         if (g_cfg.rendering.enabled)
@@ -700,6 +732,8 @@ int main(int argc, char **argv)
             OMPL_WARN("No solution found, skipping visualization.");
         }
     }
+
+    g_fastColl.printStats();
 
     delete g_client;
     delete g_ik;

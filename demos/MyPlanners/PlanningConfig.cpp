@@ -21,6 +21,9 @@ bool PlanningConfig::loadFromFile(const std::string& config_file) {
         planning.atlas_timeout = getRequired<double>(planning_node, "atlas_timeout");
         planning.random_seed = getRequired<unsigned int>(planning_node, "random_seed");
         planning.collision_check = getOptional<bool>(planning_node, "collision_check", false);
+        planning.atlas_goal_tolerance = getOptional<double>(planning_node, "atlas_goal_tolerance", 0.05);
+        planning.atlas_simplify = getOptional<bool>(planning_node, "atlas_simplify", false);
+        planning.atlas_simplify_duration = getOptional<double>(planning_node, "atlas_simplify_duration", 0.05);
         
         // Load trajectory configuration
         auto trajectory_node = config["trajectory"];

@@ -100,18 +100,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4458a72d-a736-4beb-9c5a-bef049197ce3" name="更改" comment="commit again">
-      <change afterPath="$PROJECT_DIR$/demos/MyPlanners/config_E2_single.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/demos/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PcdToStl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PcdToStl.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PlanningCompare.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PlanningCompare.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PlanningConfig.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PlanningConfig.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/PlanningConfig.h" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/PlanningConfig.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/config.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/config_E1.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/config_E1.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/config_E1_single.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/config_E1_single.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demos/MyPlanners/config_E2.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/config_E2.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ompl/util/src/RandomNumbers.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ompl/util/src/RandomNumbers.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/config_E2_single.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/config_E2_single.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/config_E3.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/config_E3.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/config_E3_single.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/config_E3_single.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/config_S1.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/config_S1.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/MyPlanners/config_S2.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/demos/MyPlanners/config_S2.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -176,41 +177,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;C/C++ 文件.test_demo.cpp.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.collision_checker_test.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.demo_ConstrainedPlanningSphere.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.demo_ConstrainedPlanningTorus.executor&quot;: &quot;Debug&quot;,
-    &quot;CMake 应用程序.demo_PcdToMeshCsv.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.demo_PcdToStl.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.demo_PcsFmtOnly.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.demo_PcsFmtTest.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.demo_PlanningCompare.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.demo_ik_test.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.test_demo.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
-    &quot;cf.advertisement.text.overridden&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;ctest.advertisement.all.test.configuration.is.created&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;//wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.anthropic.code.plugin.settings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "C/C++ 文件.test_demo.cpp.executor": "Run",
+    "CMake 应用程序.collision_checker_test.executor": "Run",
+    "CMake 应用程序.demo_ConstrainedPlanningSphere.executor": "Run",
+    "CMake 应用程序.demo_ConstrainedPlanningTorus.executor": "Debug",
+    "CMake 应用程序.demo_PcdToMeshCsv.executor": "Run",
+    "CMake 应用程序.demo_PcdToStl.executor": "Run",
+    "CMake 应用程序.demo_PcsFmtOnly.executor": "Run",
+    "CMake 应用程序.demo_PcsFmtTest.executor": "Run",
+    "CMake 应用程序.demo_PlanningCompare.executor": "Run",
+    "CMake 应用程序.demo_ik_test.executor": "Run",
+    "CMake 应用程序.test_demo.executor": "Run",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "cf.advertisement.text.overridden": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "ctest.advertisement.all.test.configuration.is.created": "true",
+    "git-widget-placeholder": "<未知>",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "//wsl.localhost/Ubuntu-20.04/home/wsl/proj/my_ompl/demos/MyPlanners",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.anthropic.code.plugin.settings",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="\\wsl.localhost\Ubuntu-20.04\home\wsl\proj\my_ompl\demos\MyPlanners" />
@@ -451,7 +452,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demo_PlanningCompare" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="/home/wsl/proj/my_ompl/demos/MyPlanners/config_E2_single.yaml" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PlanningCompare" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PlanningCompare">
+    <configuration name="demo_PlanningCompare" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="/home/wsl/proj/my_ompl/demos/MyPlanners/config_S1.yaml" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ompl" TARGET_NAME="demo_PlanningCompare" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ompl" RUN_TARGET_NAME="demo_PlanningCompare">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -841,6 +842,10 @@
       <workItem from="1776047318731" duration="6466000" />
       <workItem from="1776069643988" duration="18000" />
       <workItem from="1776070280657" duration="15557000" />
+      <workItem from="1776132362685" duration="13685000" />
+      <workItem from="1776360128909" duration="690000" />
+      <workItem from="1776367014419" duration="360000" />
+      <workItem from="1776367567532" duration="9425000" />
     </task>
     <task id="LOCAL-00001" summary="commit again">
       <option name="closed" value="true" />
