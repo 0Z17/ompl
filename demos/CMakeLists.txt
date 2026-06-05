@@ -179,6 +179,18 @@ if (OMPL_BUILD_DEMOS)
             ${PCL_IO_LIBRARIES}
             ${VTK_LIBRARIES})
 
+    add_executable(demo_NurbsClosestPoint MyPlanners/NurbsClosestPoint.cpp MyPlanners/PlanningConfig.cpp)
+    target_link_libraries(demo_NurbsClosestPoint PRIVATE
+            Eigen3::Eigen
+            Boost::filesystem
+            Boost::system
+            ${SURFACE_CONTACT_LIBRARIES}
+            ${PCL_COMMON_LIBRARIES}
+            ${PCL_SURFACE_LIBRARIES}
+            ${PCL_IO_LIBRARIES}
+            ${VTK_LIBRARIES}
+            yaml-cpp::yaml-cpp)
+
     # Add MjRenderScript executable
     add_executable(demo_MjRenderScript MyPlanners/MjRenderScript.cpp)
     target_link_libraries(demo_MjRenderScript PRIVATE
